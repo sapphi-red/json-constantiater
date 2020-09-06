@@ -225,7 +225,7 @@ func (g *Generator) GenerateJsonLenSingle(access string, typeExpr ast.Expr, j js
 		if j.noescape {
 			g.WriteString(fmt.Sprintf("int64(len(%s))\n", access))
 		} else {
-			g.WriteString(fmt.Sprintf("int64(float64(len(%s)) * 1.2)\n", access))
+			g.WriteString(fmt.Sprintf("lib.GetEscapedLen(%s)\n", access))
 		}
 	case "bool":
 		g.WriteString(fmt.Sprintf("l += %d\n", getLenOfSimpleType(typName)))
