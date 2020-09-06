@@ -17,7 +17,7 @@ func AppendByteWithEscape(dest []byte, src string) []byte {
 			dest = append(dest, '\\', 't')
 		default:
 			if c < byte(0x20) {
-				dest = append(dest, 'u', hextable[c>>4], hextable[c&0x0f])
+				dest = append(dest, 'u', '0', '0', hextable[c>>4], hextable[c&0x0f])
 			} else {
 				dest = append(dest, c)
 			}
