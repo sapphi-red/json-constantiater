@@ -34,9 +34,43 @@ func (g *Generator) DeclarePkgNameAndImports(name string) {
 
 func (g *Generator) GenerateNewJsonMarshal(n string) {
 	g.WriteString(fmt.Sprintf("func (t *%s) NewJsonMarshal() []byte {\n", n))
-	g.WriteString(fmt.Sprintf("res := make([]byte, 0, %d)\n", 160)) // TODO calc size
+	g.WriteString("res := make([]byte, 0, t.JsonLen())\n")
 	g.WriteString("res = t.AppendJsonString(res)\n")
 	g.WriteString("return res\n")
+	g.WriteString("}\n\n")
+}
+
+func (g *Generator) GenerateStructJsonLen(n string, s *ast.StructType) {
+	g.WriteString(fmt.Sprintf("func (t *%s) JsonLen() int64 {\n", n))
+	g.WriteString("var l int64 = 0\n")
+	for _, f := range s.Fields.List {
+		g.GenerateJsonLenField(f)
+	}
+	g.WriteString("return l\n")
+	g.WriteString("}\n\n")
+}
+
+func (g *Generator) GenerateArrayJsonLen(n string, s *ast.ArrayType) {
+	g.WriteString(fmt.Sprintf("func (t *%s) JsonLen() int64 {\n", n))
+	g.WriteString("var l int64 = 0\n")
+
+	g.WriteString("for _, e := range *t {\n")
+	g.WriteString("l += e.JsonLen()\n")
+	g.WriteString("}\n")
+
+	g.WriteString("return l\n")
+	g.WriteString("}\n\n")
+}
+
+func (g *Generator) GenerateMapJsonLen(n string, s *ast.MapType) {
+	g.WriteString(fmt.Sprintf("func (t *%s) JsonLen() int64 {\n", n))
+	g.WriteString("var l int64 = 0\n")
+
+	g.WriteString("for _, e := range *t {\n")
+	g.WriteString("l += e.JsonLen()\n")
+	g.WriteString("}\n")
+
+	g.WriteString("return l\n")
 	g.WriteString("}\n\n")
 }
 
@@ -90,30 +124,19 @@ func (g *Generator) GenerateAppendJsonStringField(f *ast.Field) {
 	if len(f.Names) > 1 {
 		panic("doesnt support several names")
 	}
-
-	fieldName := f.Names[0].Name
-
-	var j jsonTag
-	if f.Tag != nil {
-		j = parseJsonTag(f.Tag.Value)
-	}
-	if j.name == "-" {
+	fd, skip := getFieldData(f)
+	if skip {
 		return
 	}
 
-	// use field name when tag name is empty
-	if j.name == "" {
-		j.name = ToSnakeCase(fieldName)
-	}
-
-	access := "t." + fieldName
+	access := "t." + fd.fieldName
+	j := fd.tag
 
 	if j.omitempty {
 		g.GenerateOmitEmptyIfNot(access, f.Type)
 	}
 
 	g.WriteString(fmt.Sprintf("res = append(res, `\"%s\":`...)\n", j.name))
-
 	g.GenerateAppendJsonStringValue(access, f.Type, j)
 
 	if j.omitempty {
@@ -159,7 +182,50 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 	}
 }
 
+func (g *Generator) GenerateJsonLenField(f *ast.Field) {
+	if len(f.Names) > 1 {
+		panic("doesnt support several names")
+	}
+
+	fd, skip := getFieldData(f)
+	if skip {
+		return
+	}
+
+	access := "t." + fd.fieldName
+	j := fd.tag
+
+	if j.omitempty {
+		g.GenerateOmitEmptyIfNot(access, f.Type)
+	}
+	g.GenerateJsonLenSingle(access, f.Type, j)
+	if j.omitempty {
+		g.WriteString("}\n")
+	}
+}
+
 var intReg = regexp.MustCompile("^u?int(?:8|16|32|64)?$")
+
+func (g *Generator) GenerateJsonLenSingle(access string, typeExpr ast.Expr, j jsonTag) {
+	typName := types.ExprString(typeExpr)
+	switch typName {
+	case "string":
+		g.WriteString("l += ")
+		if j.noescape {
+			g.WriteString(fmt.Sprintf("int64(len(%s))\n", access))
+		} else {
+			g.WriteString(fmt.Sprintf("int64(float64(len(%s)) * 1.2)\n", access))
+		}
+	case "bool":
+		g.WriteString(fmt.Sprintf("l += %d\n", getLenOfSimpleType(typName)))
+	default:
+		if intReg.MatchString(typName) {
+			g.WriteString(fmt.Sprintf("l += %d\n", getLenOfSimpleType(typName)))
+		} else {
+			g.WriteString(fmt.Sprintf("l += %s.JsonLen()\n", access))
+		}
+	}
+}
 
 func (g *Generator) GenerateOmitEmptyIfNot(access string, typeExpr ast.Expr) {
 	typName := types.ExprString(typeExpr)

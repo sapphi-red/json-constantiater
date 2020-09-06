@@ -1,10 +1,33 @@
 package main
 
 import (
+	"go/ast"
 	"reflect"
 	"strconv"
 	"strings"
 )
+
+type fieldData struct {
+	fieldName string
+	tag jsonTag
+}
+
+func getFieldData(f *ast.Field) (fd fieldData, skip bool) {
+	fd.fieldName = f.Names[0].Name
+
+	if f.Tag != nil {
+		fd.tag = parseJsonTag(f.Tag.Value)
+	}
+	if fd.tag.name == "-" {
+		return fd, true
+	}
+
+	if fd.tag.name == "" {
+		fd.tag.name = ToSnakeCase(fd.fieldName)
+	}
+
+	return fd, false
+}
 
 type jsonTag struct {
 	name      string
