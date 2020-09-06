@@ -109,8 +109,7 @@ func (g *Generator) GenerateMapAppendJsonString(n string, s *ast.MapType) {
 	g.WriteString("res = append(res, ',')\n")
 	g.WriteString("}\n")
 
-	g.WriteString("res = res[:len(res)-1]\n")
-	g.WriteString("res = append(res, ']')\n")
+	g.WriteString("res[len(res)-1] = ']'\n")
 	g.WriteString("return res\n")
 	g.WriteString("}\n\n")
 }
@@ -125,8 +124,7 @@ func (g *Generator) GenerateArrayAppendJsonString(n string, s *ast.ArrayType) {
 	g.WriteString("res = append(res, ',')\n")
 	g.WriteString("}\n")
 
-	g.WriteString("res = res[:len(res)-1]\n")
-	g.WriteString("res = append(res, ']')\n")
+	g.WriteString("res[len(res)-1] = ']'\n")
 	g.WriteString("return res\n")
 	g.WriteString("}\n\n")
 }
