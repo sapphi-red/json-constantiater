@@ -7,8 +7,9 @@ import (
 )
 
 type jsonTag struct {
-	name string
-	noescape bool
+	name      string
+	noescape  bool
+	omitempty bool
 }
 
 func parseJsonTag(tag string) (j jsonTag) {
@@ -24,8 +25,11 @@ func parseJsonTag(tag string) (j jsonTag) {
 	}
 	if len(strs) > 1 {
 		for _, s := range strs {
-			if s == "noescape" {
+			switch s {
+			case "noescape":
 				j.noescape = true
+			case "omitempty":
+				j.omitempty = true
 			}
 		}
 	}

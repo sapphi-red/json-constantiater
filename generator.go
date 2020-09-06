@@ -86,10 +86,19 @@ func (g *Generator) GenerateAppendJsonStringField(f *ast.Field) {
 		j.name = ToSnakeCase(fieldName)
 	}
 
+	access := "t." + fieldName
+
+	if j.omitempty {
+		g.GenerateOmitEmptyIfNot(access, f.Type)
+	}
+
 	g.WriteString(fmt.Sprintf("res = append(res, `\"%s\":`...)\n", j.name))
 
-	access := "t." + fieldName
 	g.GenerateAppendJsonStringValue(access, f.Type, j)
+
+	if j.omitempty {
+		g.WriteString("}\n")
+	}
 }
 
 func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Expr, j jsonTag) {
@@ -107,5 +116,17 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 		g.WriteString(fmt.Sprintf("res = lib.AppendInt(res, %s)\n", access))
 	default:
 		g.WriteString(fmt.Sprintf("res = %s.AppendJsonString(res)\n", access))
+	}
+}
+
+func (g *Generator) GenerateOmitEmptyIfNot(access string, typeExpr ast.Expr) {
+	typName := types.ExprString(typeExpr)
+	switch typName {
+	case "string":
+		g.WriteString(fmt.Sprintf("if %s != \"\" {\n", access))
+	case "int":
+		g.WriteString(fmt.Sprintf("if %s != 0 {\n", access))
+	default:
+		panic(fmt.Sprintf("unsupported omitempty: %s", typName))
 	}
 }
