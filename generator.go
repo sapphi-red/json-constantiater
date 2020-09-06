@@ -77,6 +77,11 @@ func (g *Generator) GenerateAppendJsonStringField(f *ast.Field) {
 	if f.Tag != nil {
 		j = parseJsonTag(f.Tag.Value)
 	}
+	if j.name == "-" {
+		return
+	}
+
+	// use field name when tag name is empty
 	if j.name == "" {
 		j.name = ToSnakeCase(fieldName)
 	}
