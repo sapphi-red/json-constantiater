@@ -88,7 +88,7 @@ func (g *Generator) GenerateStructAppendJsonString(n string, s *ast.StructType) 
 	g.WriteString("res = append(res, '{')\n")
 	for i, f := range s.Fields.List {
 		g.GenerateAppendJsonStringField(f)
-		if i != len(s.Fields.List) - 1 {
+		if i != len(s.Fields.List)-1 {
 			g.WriteString("res = append(res, ',')\n")
 		}
 	}

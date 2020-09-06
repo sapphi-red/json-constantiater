@@ -9,7 +9,7 @@ import (
 
 type fieldData struct {
 	fieldName string
-	tag jsonTag
+	tag       jsonTag
 }
 
 func getFieldData(f *ast.Field) (fd fieldData, skip bool) {
