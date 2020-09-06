@@ -6,6 +6,7 @@ import (
 	"go/ast"
 	"go/format"
 	"go/types"
+	"regexp"
 )
 
 type Generator struct {
@@ -115,19 +116,41 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 		g.WriteString("res = append(res, '\"')\n")
 	case "int":
 		g.WriteString(fmt.Sprintf("res = lib.AppendInt(res, %s)\n", access))
+	case "int8":
+		g.WriteString(fmt.Sprintf("res = lib.AppendInt8(res, %s)\n", access))
+	case "int16":
+		g.WriteString(fmt.Sprintf("res = lib.AppendInt16(res, %s)\n", access))
+	case "int32":
+		g.WriteString(fmt.Sprintf("res = lib.AppendInt32(res, %s)\n", access))
+	case "int64":
+		g.WriteString(fmt.Sprintf("res = lib.AppendInt64(res, %s)\n", access))
+	case "uint":
+		g.WriteString(fmt.Sprintf("res = lib.AppendUint(res, %s)\n", access))
+	case "uint8":
+		g.WriteString(fmt.Sprintf("res = lib.AppendUint8(res, %s)\n", access))
+	case "uint16":
+		g.WriteString(fmt.Sprintf("res = lib.AppendUint16(res, %s)\n", access))
+	case "uint32":
+		g.WriteString(fmt.Sprintf("res = lib.AppendUint32(res, %s)\n", access))
+	case "uint64":
+		g.WriteString(fmt.Sprintf("res = lib.AppendUint64(res, %s)\n", access))
 	default:
 		g.WriteString(fmt.Sprintf("res = %s.AppendJsonString(res)\n", access))
 	}
 }
+
+var intReg = regexp.MustCompile("^u?int(?:8|16|32|64)?$")
 
 func (g *Generator) GenerateOmitEmptyIfNot(access string, typeExpr ast.Expr) {
 	typName := types.ExprString(typeExpr)
 	switch typName {
 	case "string":
 		g.WriteString(fmt.Sprintf("if %s != \"\" {\n", access))
-	case "int":
-		g.WriteString(fmt.Sprintf("if %s != 0 {\n", access))
 	default:
-		panic(fmt.Sprintf("unsupported omitempty: %s", typName))
+		if intReg.MatchString(typName) {
+			g.WriteString(fmt.Sprintf("if %s != 0 {\n", access))
+		} else {
+			panic(fmt.Sprintf("unsupported omitempty: %s", typName))
+		}
 	}
 }
