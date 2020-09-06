@@ -216,6 +216,11 @@ func (g *Generator) GenerateJsonLenField(f *ast.Field) {
 var intReg = regexp.MustCompile("^u?int(?:8|16|32|64)?$")
 
 func (g *Generator) GenerateJsonLenSingle(access string, typeExpr ast.Expr, j jsonTag) {
+	if j.len > 0 {
+		g.WriteString(fmt.Sprintf("l += %d\n", j.len))
+		return
+	}
+
 	typName := types.ExprString(typeExpr)
 	switch typName {
 	case "string":

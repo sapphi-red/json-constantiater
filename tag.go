@@ -31,6 +31,7 @@ func getFieldData(f *ast.Field) (fd fieldData, skip bool) {
 
 type jsonTag struct {
 	name      string
+	len       uint64
 	noescape  bool
 	omitempty bool
 }
@@ -53,6 +54,14 @@ func parseJsonTag(tag string) (j jsonTag) {
 				j.noescape = true
 			case "omitempty":
 				j.omitempty = true
+			default:
+				if strings.HasPrefix(s, "len") {
+					l, err := strconv.ParseUint(s[3:], 10, 64)
+					if err != nil {
+						panic(err)
+					}
+					j.len = l
+				}
 			}
 		}
 	}
