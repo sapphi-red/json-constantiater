@@ -41,11 +41,12 @@ func (g *Generator) GenerateNewJsonMarshal(n string) {
 func (g *Generator) GenerateStructAppendJsonString(n string, s *ast.StructType) {
 	g.WriteString(fmt.Sprintf("func (t *%s) AppendJsonString(res []byte) []byte {\n", n))
 	g.WriteString("res = append(res, '{')\n")
-	for _, f := range s.Fields.List {
+	for i, f := range s.Fields.List {
 		g.GenerateAppendJsonStringField(f)
-		g.WriteString("res = append(res, ',')\n")
+		if i != len(s.Fields.List) - 1 {
+			g.WriteString("res = append(res, ',')\n")
+		}
 	}
-	g.WriteString("res = res[:len(res)-1]\n")
 	g.WriteString("res = append(res, '}')\n")
 	g.WriteString("return res\n")
 	g.WriteString("}\n\n")
