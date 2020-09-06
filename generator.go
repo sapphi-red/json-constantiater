@@ -7,6 +7,7 @@ import (
 	"go/format"
 	"go/types"
 	"regexp"
+	"strings"
 )
 
 type Generator struct {
@@ -153,6 +154,10 @@ func (g *Generator) GenerateOmitEmptyIfNot(access string, typeExpr ast.Expr) {
 	default:
 		if intReg.MatchString(typName) {
 			g.WriteString(fmt.Sprintf("if %s != 0 {\n", access))
+		} else if strings.HasPrefix(typName, "[]") || strings.HasPrefix(typName, "map") {
+			g.WriteString(fmt.Sprintf("if len(%s) > 0 {\n", access))
+		} else if strings.HasPrefix(typName, "*") {
+			g.WriteString(fmt.Sprintf("if %s != nil {\n", access))
 		} else {
 			panic(fmt.Sprintf("unsupported omitempty: %s", typName))
 		}
