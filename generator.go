@@ -114,6 +114,8 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 			g.WriteString(fmt.Sprintf("res = lib.AppendByteWithEscape(res, %s)\n", access))
 		}
 		g.WriteString("res = append(res, '\"')\n")
+	case "bool":
+		g.WriteString(fmt.Sprintf("res = lib.AppendBool(res, %s)\n", access))
 	case "int":
 		g.WriteString(fmt.Sprintf("res = lib.AppendInt(res, %s)\n", access))
 	case "int8":
@@ -146,6 +148,8 @@ func (g *Generator) GenerateOmitEmptyIfNot(access string, typeExpr ast.Expr) {
 	switch typName {
 	case "string":
 		g.WriteString(fmt.Sprintf("if %s != \"\" {\n", access))
+	case "bool":
+		g.WriteString(fmt.Sprintf("if %s {\n", access))
 	default:
 		if intReg.MatchString(typName) {
 			g.WriteString(fmt.Sprintf("if %s != 0 {\n", access))
