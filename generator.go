@@ -54,6 +54,23 @@ func (g *Generator) GenerateStructAppendJsonString(n string, s *ast.StructType) 
 	g.WriteString("}\n\n")
 }
 
+func (g *Generator) GenerateMapAppendJsonString(n string, s *ast.MapType) {
+	g.WriteString(fmt.Sprintf("func (t *%s) AppendJsonString(res []byte) []byte {\n", n))
+	g.WriteString("res = append(res, '[')\n")
+
+	g.WriteString("for k, v := range *t {\n")
+	g.GenerateAppendJsonStringValue("k", s.Key, jsonTag{})
+	g.WriteString("res = append(res, ',')\n")
+	g.GenerateAppendJsonStringValue("v", s.Value, jsonTag{})
+	g.WriteString("res = append(res, ',')\n")
+	g.WriteString("}\n")
+
+	g.WriteString("res = res[:len(res)-1]\n")
+	g.WriteString("res = append(res, ']')\n")
+	g.WriteString("return res\n")
+	g.WriteString("}\n\n")
+}
+
 func (g *Generator) GenerateArrayAppendJsonString(n string, s *ast.ArrayType) {
 	g.WriteString(fmt.Sprintf("func (t *%s) AppendJsonString(res []byte) []byte {\n", n))
 	g.WriteString("res = append(res, '[')\n")
@@ -159,7 +176,7 @@ func (g *Generator) GenerateOmitEmptyIfNot(access string, typeExpr ast.Expr) {
 		} else if strings.HasPrefix(typName, "*") {
 			g.WriteString(fmt.Sprintf("if %s != nil {\n", access))
 		} else {
-			panic(fmt.Sprintf("unsupported omitempty: %s", typName))
+			g.WriteString(fmt.Sprintf("if !%s.IsEmpty() {\n", access))
 		}
 	}
 }

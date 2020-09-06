@@ -5,6 +5,7 @@ import (
 	"go/ast"
 	"go/parser"
 	"go/token"
+	"go/types"
 	"io/ioutil"
 	"strings"
 
@@ -33,13 +34,18 @@ func main() {
 		typ := n.(*ast.TypeSpec)
 		name := typ.Name.Name
 
-		switch stru := typ.Type.(type) {
+		switch typ := typ.Type.(type) {
 		case *ast.StructType:
 			g.GenerateNewJsonMarshal(name)
-			g.GenerateStructAppendJsonString(name, stru)
+			g.GenerateStructAppendJsonString(name, typ)
 		case *ast.ArrayType:
 			g.GenerateNewJsonMarshal(name)
-			g.GenerateArrayAppendJsonString(name, stru)
+			g.GenerateArrayAppendJsonString(name, typ)
+		case *ast.MapType:
+			if types.ExprString(typ.Key) == "string" {
+				g.GenerateNewJsonMarshal(name)
+				g.GenerateMapAppendJsonString(name, typ)
+			}
 		}
 	})
 
