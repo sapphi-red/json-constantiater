@@ -158,8 +158,7 @@ func AppendInt64(dest []byte, src int64) []byte {
 	if 0 <= src && src < nSmalls {
 		return append(dest, small(src)...)
 	}
-	dest, _ = formatBits(dest, uint64(src), 10, src < 0, true)
-	return dest
+	return formatBits(dest, uint64(src), src < 0)
 }
 
 func AppendUint(dest []byte, src uint) []byte {
@@ -182,9 +181,13 @@ func AppendUint64(dest []byte, src uint64) []byte {
 	if src < nSmalls {
 		return append(dest, smallU(src)...)
 	}
-	dest, _ = formatBits(dest, uint64(src), 10, true, true)
-	return dest
+	return formatBits(dest, src, true)
 }
 
-//go:linkname formatBits strconv.formatBits
-func formatBits(dst []byte, u uint64, base int, neg, append_ bool) (d []byte, s string)
+func formatBits(dst []byte, u uint64, neg bool) []byte {
+	d, _ := strconv_formatBits(dst, u, 10, neg, true)
+	return d
+}
+
+//go:linkname strconv_formatBits strconv.formatBits
+func strconv_formatBits(dst []byte, u uint64, base int, neg, append_ bool) (d []byte, s string)
