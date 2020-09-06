@@ -32,7 +32,12 @@ func (g *Generator) DeclarePkgNameAndImports(name string) {
 	g.WriteString("import \"github.com/sapphi-red/json-constantiater/lib\"\n\n")
 }
 
+func (g *Generator) GenerateNosplit() {
+	g.WriteString("//go:nosplit\n")
+}
+
 func (g *Generator) GenerateNewJsonMarshal(n string) {
+	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) NewJsonMarshal() []byte {\n", n))
 	g.WriteString("res := make([]byte, 0, t.JsonLen())\n")
 	g.WriteString("res = t.AppendJsonString(res)\n")
@@ -41,6 +46,7 @@ func (g *Generator) GenerateNewJsonMarshal(n string) {
 }
 
 func (g *Generator) GenerateStructJsonLen(n string, s *ast.StructType) {
+	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) JsonLen() int64 {\n", n))
 	g.WriteString("var l int64 = 0\n")
 	for _, f := range s.Fields.List {
@@ -51,6 +57,7 @@ func (g *Generator) GenerateStructJsonLen(n string, s *ast.StructType) {
 }
 
 func (g *Generator) GenerateArrayJsonLen(n string, s *ast.ArrayType) {
+	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) JsonLen() int64 {\n", n))
 	g.WriteString("var l int64 = 0\n")
 
@@ -63,6 +70,7 @@ func (g *Generator) GenerateArrayJsonLen(n string, s *ast.ArrayType) {
 }
 
 func (g *Generator) GenerateMapJsonLen(n string, s *ast.MapType) {
+	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) JsonLen() int64 {\n", n))
 	g.WriteString("var l int64 = 0\n")
 
@@ -75,6 +83,7 @@ func (g *Generator) GenerateMapJsonLen(n string, s *ast.MapType) {
 }
 
 func (g *Generator) GenerateStructAppendJsonString(n string, s *ast.StructType) {
+	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) AppendJsonString(res []byte) []byte {\n", n))
 	g.WriteString("res = append(res, '{')\n")
 	for i, f := range s.Fields.List {
@@ -89,6 +98,7 @@ func (g *Generator) GenerateStructAppendJsonString(n string, s *ast.StructType) 
 }
 
 func (g *Generator) GenerateMapAppendJsonString(n string, s *ast.MapType) {
+	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) AppendJsonString(res []byte) []byte {\n", n))
 	g.WriteString("res = append(res, '[')\n")
 
@@ -106,6 +116,7 @@ func (g *Generator) GenerateMapAppendJsonString(n string, s *ast.MapType) {
 }
 
 func (g *Generator) GenerateArrayAppendJsonString(n string, s *ast.ArrayType) {
+	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) AppendJsonString(res []byte) []byte {\n", n))
 	g.WriteString("res = append(res, '[')\n")
 
