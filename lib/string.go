@@ -26,8 +26,8 @@ func AppendByteWithEscape(dest []byte, src string) []byte {
 	return dest
 }
 
-func GetEscapedLen(src string) int64 {
-	var l int64 = 0
+func GetEscapedLen(src string) uint64 {
+	var l uint64 = 0
 	for _, c := range []byte(src) {
 		switch c {
 		case '\\', '"', '\n', '\r', '\t':

@@ -47,8 +47,8 @@ func (g *Generator) GenerateNewJsonMarshal(n string) {
 
 func (g *Generator) GenerateStructJsonLen(n string, s *ast.StructType) {
 	g.GenerateNosplit()
-	g.WriteString(fmt.Sprintf("func (t *%s) JsonLen() int64 {\n", n))
-	g.WriteString("var l int64 = 0\n")
+	g.WriteString(fmt.Sprintf("func (t *%s) JsonLen() uint64 {\n", n))
+	g.WriteString("var l uint64 = 0\n")
 	for _, f := range s.Fields.List {
 		g.GenerateJsonLenField(f)
 	}
@@ -58,8 +58,8 @@ func (g *Generator) GenerateStructJsonLen(n string, s *ast.StructType) {
 
 func (g *Generator) GenerateArrayJsonLen(n string, s *ast.ArrayType) {
 	g.GenerateNosplit()
-	g.WriteString(fmt.Sprintf("func (t *%s) JsonLen() int64 {\n", n))
-	g.WriteString("var l int64 = 0\n")
+	g.WriteString(fmt.Sprintf("func (t *%s) JsonLen() uint64 {\n", n))
+	g.WriteString("var l uint64 = 0\n")
 
 	g.WriteString("for _, e := range *t {\n")
 	g.WriteString("l += e.JsonLen()\n")
@@ -71,8 +71,8 @@ func (g *Generator) GenerateArrayJsonLen(n string, s *ast.ArrayType) {
 
 func (g *Generator) GenerateMapJsonLen(n string, s *ast.MapType) {
 	g.GenerateNosplit()
-	g.WriteString(fmt.Sprintf("func (t *%s) JsonLen() int64 {\n", n))
-	g.WriteString("var l int64 = 0\n")
+	g.WriteString(fmt.Sprintf("func (t *%s) JsonLen() uint64 {\n", n))
+	g.WriteString("var l uint64 = 0\n")
 
 	g.WriteString("for _, e := range *t {\n")
 	g.WriteString("l += e.JsonLen()\n")
@@ -226,7 +226,7 @@ func (g *Generator) GenerateJsonLenSingle(access string, typeExpr ast.Expr, j js
 	case "string":
 		g.WriteString("l += ")
 		if j.noescape {
-			g.WriteString(fmt.Sprintf("int64(len(%s))\n", access))
+			g.WriteString(fmt.Sprintf("uint64(len(%s))\n", access))
 		} else {
 			g.WriteString(fmt.Sprintf("lib.GetEscapedLen(%s)\n", access))
 		}
