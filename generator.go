@@ -48,37 +48,38 @@ func (g *Generator) GenerateNewJsonMarshal(n string) {
 func (g *Generator) GenerateStructJsonLen(n string, s *ast.StructType) {
 	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) JsonLen() uint64 {\n", n))
-	g.WriteString("var l uint64 = 0\n")
+	g.WriteString("var l uint64 = 2\n") // head `{` and tail `}`
 	for _, f := range s.Fields.List {
-		g.GenerateJsonLenField(f)
+		g.GenerateJsonLenField(f) // `,` included
 	}
-	g.WriteString("return l\n")
+	g.WriteString("return l - 1\n") // 1 for tail `,`
 	g.WriteString("}\n\n")
 }
 
 func (g *Generator) GenerateArrayJsonLen(n string, s *ast.ArrayType) {
 	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) JsonLen() uint64 {\n", n))
-	g.WriteString("var l uint64 = 0\n")
+	g.WriteString("var l uint64 = 2\n") // head `[` and tail `]`
 
 	g.WriteString("for _, e := range *t {\n")
-	g.WriteString("l += e.JsonLen()\n")
+	g.WriteString("l += e.JsonLen() + 1\n") // 1 for `,`
 	g.WriteString("}\n")
 
-	g.WriteString("return l\n")
+	g.WriteString("return l - 1\n") // 1 for tail `,`
 	g.WriteString("}\n\n")
 }
 
 func (g *Generator) GenerateMapJsonLen(n string, s *ast.MapType) {
 	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) JsonLen() uint64 {\n", n))
-	g.WriteString("var l uint64 = 0\n")
+	g.WriteString("var l uint64 = 2\n") // head `{` and tail `}`
 
-	g.WriteString("for _, e := range *t {\n")
-	g.WriteString("l += e.JsonLen()\n")
+	g.WriteString("for k, v := range *t {\n")
+	g.WriteString("l += lib.GetEscapedLen(k) + 2 + 1\n") // 2 for `"`, 1 for `:`
+	g.WriteString("l += v.JsonLen() + 1\n")              // 1 for `,`
 	g.WriteString("}\n")
 
-	g.WriteString("return l\n")
+	g.WriteString("return l - 1\n") // 1 for tail `,`
 	g.WriteString("}\n\n")
 }
 
@@ -191,6 +192,7 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 	}
 }
 
+// includes tail `,`
 func (g *Generator) GenerateJsonLenField(f *ast.Field) {
 	if len(f.Names) > 1 {
 		panic("doesnt support several names")
@@ -208,6 +210,7 @@ func (g *Generator) GenerateJsonLenField(f *ast.Field) {
 		g.GenerateOmitEmptyIfNot(access, f.Type)
 	}
 	g.GenerateJsonLenSingle(access, f.Type, j)
+	g.WriteString(fmt.Sprintf("l += 2 + %d + 1 + 1\n", len(fd.tag.name))) // 2 for `"`, 1 for `:`, 1 for tail `,`
 	if j.omitempty {
 		g.WriteString("}\n")
 	}
@@ -216,15 +219,20 @@ func (g *Generator) GenerateJsonLenField(f *ast.Field) {
 var intReg = regexp.MustCompile("^u?int(?:8|16|32|64)?$")
 
 func (g *Generator) GenerateJsonLenSingle(access string, typeExpr ast.Expr, j jsonTag) {
+	typName := types.ExprString(typeExpr)
+
 	if j.len > 0 {
-		g.WriteString(fmt.Sprintf("l += %d\n", j.len))
+		if typName == "string" {
+			g.WriteString(fmt.Sprintf("l += %d\n", 2+j.len)) // 2 for `"`
+		} else {
+			g.WriteString(fmt.Sprintf("l += %d\n", j.len))
+		}
 		return
 	}
 
-	typName := types.ExprString(typeExpr)
 	switch typName {
 	case "string":
-		g.WriteString("l += ")
+		g.WriteString("l += 2 + ") // 2 for `"`
 		if j.noescape {
 			g.WriteString(fmt.Sprintf("uint64(len(%s))\n", access))
 		} else {
