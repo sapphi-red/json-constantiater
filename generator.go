@@ -6,6 +6,7 @@ import (
 	"go/ast"
 	"go/format"
 	"go/types"
+	"log"
 	"regexp"
 	"strings"
 )
@@ -22,7 +23,7 @@ func (g *Generator) GenerateHead() {
 func (g *Generator) FormatGetString() []byte {
 	src, err := format.Source(g.Bytes())
 	if err != nil {
-		panic(err)
+		log.Fatalln(err, string(g.Bytes()))
 	}
 	return src
 }
