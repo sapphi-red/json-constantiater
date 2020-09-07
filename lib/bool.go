@@ -2,7 +2,7 @@ package lib
 
 func AppendBool(dest []byte, src bool) []byte {
 	if src {
-		return append(dest, "true"...)
+		return append(dest, 't', 'r', 'u', 'e')
 	}
-	return append(dest, "false"...)
+	return append(dest, 'f', 'a', 'l', 's', 'e')
 }
