@@ -146,7 +146,7 @@ func (g *Generator) GenerateAppendJsonStringField(f *ast.Field) {
 		g.GenerateOmitEmptyIfNot(access, f.Type)
 	}
 
-	g.WriteString(fmt.Sprintf("res = lib.AppendString(res, `\"%s\":`)\n", j.name))
+	g.WriteString(fmt.Sprintf("res = append(res, `\"%s\":`...)\n", j.name))
 	g.GenerateAppendJsonStringValue(access, f.Type, j)
 
 	if j.omitempty {
@@ -160,7 +160,7 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 	case "string":
 		g.WriteString("res = append(res, '\"')\n")
 		if j.noescape {
-			g.WriteString(fmt.Sprintf("res = lib.AppendString(res, %s)\n", access))
+			g.WriteString(fmt.Sprintf("res = append(res, %s...)\n", access))
 		} else {
 			g.WriteString(fmt.Sprintf("res = lib.AppendByteWithEscape(res, %s)\n", access))
 		}
