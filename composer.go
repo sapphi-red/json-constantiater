@@ -107,6 +107,22 @@ func appendComposedStmt(list []ast.Stmt, lits []ast.BasicLit) []ast.Stmt {
 		newStr += litVal
 	}
 
+	var newLit *ast.BasicLit
+	var ellipsis token.Pos
+	if len(newStr) > 1{
+		newLit = &ast.BasicLit{
+			Kind:  token.STRING,
+			Value: strconv.Quote(newStr),
+		}
+		ellipsis = 1
+	} else {
+		newLit = &ast.BasicLit{
+			Kind:  token.CHAR,
+			Value: strconv.QuoteRune(rune(newStr[0])),
+		}
+		ellipsis = 0
+	}
+
 	composed := ast.AssignStmt{
 		Lhs: []ast.Expr{ast.NewIdent("res")},
 		Tok: token.ASSIGN,
@@ -114,12 +130,9 @@ func appendComposedStmt(list []ast.Stmt, lits []ast.BasicLit) []ast.Stmt {
 			Fun: ast.NewIdent("append"),
 			Args: []ast.Expr{
 				ast.NewIdent("res"),
-				&ast.BasicLit{
-					Kind:  token.STRING,
-					Value: strconv.Quote(newStr),
-				},
+				newLit,
 			},
-			Ellipsis: 1,
+			Ellipsis: ellipsis,
 		}},
 	}
 	return append(list, &composed)
