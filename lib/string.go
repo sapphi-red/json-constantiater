@@ -21,6 +21,7 @@ var sizeTable = [256]uint8{
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 }
 
+//go:nosplit
 func AppendByteWithEscape(dest []byte, src string) []byte {
 	for _, c := range []byte(src) {
 		switch sizeTable[c] {
@@ -46,6 +47,7 @@ func AppendByteWithEscape(dest []byte, src string) []byte {
 	return dest
 }
 
+//go:nosplit
 func GetEscapedLen(src string) uint64 {
 	var l uint64 = uint64(len(src))
 	for _, c := range []byte(src) {
