@@ -38,7 +38,7 @@ import (
 
 func composeAppend(input string) []byte {
 	fs := token.NewFileSet()
-	file, err := parser.ParseFile(fs, "gen.go", input, 0)
+	file, err := parser.ParseFile(fs, "gen.go", input, parser.ParseComments)
 	if err != nil {
 		log.Fatalln(err, input)
 	}
