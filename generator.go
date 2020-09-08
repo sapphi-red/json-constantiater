@@ -36,8 +36,7 @@ func (g *Generator) GenerateNewJsonMarshal(n string) {
 	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) NewJsonMarshal() []byte {\n", n))
 	g.WriteString("res := make([]byte, 0, t.JsonLen())\n")
-	g.WriteString("res = t.AppendJsonString(res)\n")
-	g.WriteString("return res\n")
+	g.WriteString("return t.AppendJsonString(res)\n")
 	g.WriteString("}\n\n")
 }
 
@@ -89,8 +88,7 @@ func (g *Generator) GenerateStructAppendJsonString(n string, s *ast.StructType) 
 			g.WriteString("res = append(res, ',')\n")
 		}
 	}
-	g.WriteString("res = append(res, '}')\n")
-	g.WriteString("return res\n")
+	g.WriteString("return append(res, '}')\n")
 	g.WriteString("}\n\n")
 }
 
