@@ -65,7 +65,13 @@ func composeAppend(input string) []byte {
 		panic(err)
 	}
 
-	return bytes.Replace(output.Bytes(), []byte("\n\n"), []byte("\n"), -1)
+	removedLineBreaks := bytes.Replace(
+		bytes.Replace(output.Bytes(), []byte("\n\n\tres"), []byte("\n\tres"), -1),
+		[]byte("\n\n\treturn res"),
+		[]byte("\n\treturn res"),
+	-1)
+
+	return removedLineBreaks
 }
 
 func composeAppendBody(body *ast.BlockStmt) *ast.BlockStmt {
