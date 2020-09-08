@@ -118,24 +118,24 @@ const smallsString2 = "000001002003004005006007008009" +
 
 const nSmalls = 1000
 
-func small(i int64) string {
+func appendSmall(dest []byte, i int64) []byte {
 	if i < 10 {
-		return digits[i : i+1]
+		return append(dest, digits[i : i+1]...)
 	}
 	if i < 100 {
-		return smallsString[i*2 : i*2+2]
+		return append(dest, smallsString[i*2 : i*2+2]...)
 	}
-	return smallsString2[i*3 : i*3+3]
+	return append(dest, smallsString2[i*3 : i*3+3]...)
 }
 
-func smallU(i uint64) string {
+func appendSmallU(dest []byte, i uint64) []byte {
 	if i < 10 {
-		return digits[i : i+1]
+		return append(dest, digits[i : i+1]...)
 	}
 	if i < 100 {
-		return smallsString[i*2 : i*2+2]
+		return append(dest, smallsString[i*2 : i*2+2]...)
 	}
-	return smallsString2[i*3 : i*3+3]
+	return append(dest, smallsString2[i*3 : i*3+3]...)
 }
 
 func AppendInt(dest []byte, src int) []byte {
@@ -156,7 +156,7 @@ func AppendInt32(dest []byte, src int32) []byte {
 
 func AppendInt64(dest []byte, src int64) []byte {
 	if 0 <= src && src < nSmalls {
-		return append(dest, small(src)...)
+		return appendSmall(dest, src)
 	}
 	return formatBits(dest, uint64(src), src < 0)
 }
@@ -179,7 +179,7 @@ func AppendUint32(dest []byte, src uint32) []byte {
 
 func AppendUint64(dest []byte, src uint64) []byte {
 	if src < nSmalls {
-		return append(dest, smallU(src)...)
+		return appendSmallU(dest, src)
 	}
 	return formatBits(dest, src, true)
 }
