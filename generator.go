@@ -150,6 +150,17 @@ func (g *Generator) GenerateAppendJsonStringField(f *ast.Field) {
 
 func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Expr, j jsonTag) {
 	typName := types.ExprString(typeExpr)
+	isPointerAndNotOmitEmpty := !j.omitempty && strings.HasPrefix(typName, "*")
+
+	if isPointerAndNotOmitEmpty {
+		g.WriteString(fmt.Sprintf("if %s == nil {\n", access))
+		g.WriteString("res = append(res, `null`...)\n")
+		g.WriteString("} else {\n")
+
+		typName = strings.TrimPrefix(typName, "*")
+		access = "*" + access
+	}
+
 	switch typName {
 	case "string":
 		g.WriteString("res = append(res, '\"')\n")
@@ -182,7 +193,11 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 	case "uint64":
 		g.WriteString(fmt.Sprintf("res = lib.AppendUint64(res, %s)\n", access))
 	default:
-		g.WriteString(fmt.Sprintf("res = %s.AppendJsonString(res)\n", access))
+		g.WriteString(fmt.Sprintf("res = %s.AppendJsonString(res)\n", strings.TrimPrefix(access, "*")))
+	}
+
+	if isPointerAndNotOmitEmpty {
+		g.WriteString("}\n")
 	}
 }
 
@@ -214,6 +229,16 @@ var intReg = regexp.MustCompile("^u?int(?:8|16|32|64)?$")
 
 func (g *Generator) GenerateJsonLenSingle(access string, typeExpr ast.Expr, j jsonTag) {
 	typName := types.ExprString(typeExpr)
+	isPointerAndNotOmitEmpty := !j.omitempty && strings.HasPrefix(typName, "*")
+
+	if isPointerAndNotOmitEmpty {
+		g.WriteString(fmt.Sprintf("if %s == nil {\n", access))
+		g.WriteString("l += 4\n") // 4 for null
+		g.WriteString("} else {\n")
+
+		typName = strings.TrimPrefix(typName, "*")
+		access = "*" + access
+	}
 
 	if j.len > 0 {
 		if typName == "string" {
@@ -238,8 +263,12 @@ func (g *Generator) GenerateJsonLenSingle(access string, typeExpr ast.Expr, j js
 		if intReg.MatchString(typName) {
 			g.WriteString(fmt.Sprintf("l += %d\n", getLenOfSimpleType(typName)))
 		} else {
-			g.WriteString(fmt.Sprintf("l += %s.JsonLen()\n", access))
+			g.WriteString(fmt.Sprintf("l += %s.JsonLen()\n", strings.TrimPrefix(access, "*")))
 		}
+	}
+
+	if isPointerAndNotOmitEmpty {
+		g.WriteString("}\n")
 	}
 }
 

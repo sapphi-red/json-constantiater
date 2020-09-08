@@ -66,10 +66,15 @@ func composeAppend(input string) []byte {
 	}
 
 	removedLineBreaks := bytes.Replace(
-		bytes.Replace(output.Bytes(), []byte("\n\n\tres"), []byte("\n\tres"), -1),
-		[]byte("\n\n\treturn res"),
-		[]byte("\n\treturn res"),
-	-1)
+		bytes.Replace(
+			bytes.Replace(output.Bytes(), []byte("\n\n\tres"), []byte("\n\tres"), -1),
+			[]byte("\n\n\treturn res"),
+			[]byte("\n\treturn res"),
+		-1),
+		[]byte("\n\n\tif"),
+		[]byte("\n\tif"),
+		-1,
+	)
 
 	return removedLineBreaks
 }
