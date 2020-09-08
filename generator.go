@@ -4,9 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"go/ast"
-	"go/format"
 	"go/types"
-	"log"
 	"regexp"
 	"strings"
 )
@@ -21,11 +19,8 @@ func (g *Generator) GenerateHead() {
 }
 
 func (g *Generator) FormatGetString() []byte {
-	src, err := format.Source(g.Bytes())
-	if err != nil {
-		log.Fatalln(err, string(g.Bytes()))
-	}
-	return src
+	composed := composeAppend(g.String())
+	return composed
 }
 
 func (g *Generator) DeclarePkgNameAndImports(name string) {
