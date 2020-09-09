@@ -33,7 +33,6 @@ func (g *Generator) GenerateNosplit() {
 }
 
 func (g *Generator) GenerateNewJsonMarshal(n string) {
-	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) NewJsonMarshal() []byte {\n", n))
 	g.WriteString("res := make([]byte, 0, t.JsonLen())\n")
 	g.WriteString("return t.AppendJsonString(res)\n")

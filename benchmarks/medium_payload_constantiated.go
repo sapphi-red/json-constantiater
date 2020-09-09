@@ -4,7 +4,6 @@ package benchmark
 
 import "github.com/sapphi-red/json-constantiater/lib"
 
-//go:nosplit
 func (t *CBAvatar) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -27,7 +26,6 @@ func (t *CBAvatar) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *Avatars) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -58,7 +56,6 @@ func (t *Avatars) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *CBGravatar) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -81,7 +78,6 @@ func (t *CBGravatar) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *CBGithub) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -104,7 +100,6 @@ func (t *CBGithub) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *CBName) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -127,7 +122,6 @@ func (t *CBName) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *CBPerson) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -182,7 +176,6 @@ func (t *CBPerson) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *MediumPayload) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -217,7 +210,6 @@ func (t *MediumPayload) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *CBAvatarNonOptimized) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -240,7 +232,6 @@ func (t *CBAvatarNonOptimized) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *AvatarsNonOptimized) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -271,7 +262,6 @@ func (t *AvatarsNonOptimized) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *CBGravatarNonOptimized) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -294,7 +284,6 @@ func (t *CBGravatarNonOptimized) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *CBGithubNonOptimized) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -317,7 +306,6 @@ func (t *CBGithubNonOptimized) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *CBNameNonOptimized) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -340,7 +328,6 @@ func (t *CBNameNonOptimized) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *CBPersonNonOptimized) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -395,7 +382,6 @@ func (t *CBPersonNonOptimized) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *MediumPayloadNonOptimized) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)

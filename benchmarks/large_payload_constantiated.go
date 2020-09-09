@@ -4,7 +4,6 @@ package benchmark
 
 import "github.com/sapphi-red/json-constantiater/lib"
 
-//go:nosplit
 func (t *DSUser) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -27,7 +26,6 @@ func (t *DSUser) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *DSTopic) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -54,7 +52,6 @@ func (t *DSTopic) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *DSTopics) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -85,7 +82,6 @@ func (t *DSTopics) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *DSTopicsList) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -112,7 +108,6 @@ func (t *DSTopicsList) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *DSUsers) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -143,7 +138,6 @@ func (t *DSUsers) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *LargePayload) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -178,7 +172,6 @@ func (t *LargePayload) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *DSUserNonOptimized) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -201,7 +194,6 @@ func (t *DSUserNonOptimized) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *DSTopicNonOptimized) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -228,7 +220,6 @@ func (t *DSTopicNonOptimized) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *DSTopicsNonOptimized) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -259,7 +250,6 @@ func (t *DSTopicsNonOptimized) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *DSTopicsListNonOptimized) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -286,7 +276,6 @@ func (t *DSTopicsListNonOptimized) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *DSUsersNonOptimized) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -317,7 +306,6 @@ func (t *DSUsersNonOptimized) JsonLen() uint64 {
 	return l - 1
 }
 
-//go:nosplit
 func (t *LargePayloadNonOptimized) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
