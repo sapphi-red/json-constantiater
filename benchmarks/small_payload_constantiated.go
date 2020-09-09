@@ -30,7 +30,9 @@ func (t *SmallPayload) AppendJsonString(res []byte) []byte {
 	res = lib.AppendInt(res, t.Tz)
 	res = append(res, ",\"v\":"...)
 	res = lib.AppendInt(res, t.V)
-	return append(res, '}')
+	res = append(res, ',')
+	res[len(res)-1] = '}'
+	return res
 }
 
 //go:nosplit
@@ -83,7 +85,9 @@ func (t *SmallPayloadNonOptimized) AppendJsonString(res []byte) []byte {
 	res = lib.AppendInt(res, t.Tz)
 	res = append(res, ",\"v\":"...)
 	res = lib.AppendInt(res, t.V)
-	return append(res, '}')
+	res = append(res, ',')
+	res[len(res)-1] = '}'
+	return res
 }
 
 //go:nosplit

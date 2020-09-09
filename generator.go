@@ -82,13 +82,11 @@ func (g *Generator) GenerateStructAppendJsonString(n string, s *ast.StructType) 
 	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) AppendJsonString(res []byte) []byte {\n", n))
 	g.WriteString("res = append(res, '{')\n")
-	for i, f := range s.Fields.List {
-		g.GenerateAppendJsonStringField(f)
-		if i != len(s.Fields.List)-1 {
-			g.WriteString("res = append(res, ',')\n")
-		}
+	for _, f := range s.Fields.List {
+		g.GenerateAppendJsonStringField(f) // `,` included
 	}
-	g.WriteString("return append(res, '}')\n")
+	g.WriteString("res[len(res)-1] = '}'\n")
+	g.WriteString("return res\n")
 	g.WriteString("}\n\n")
 }
 
@@ -124,6 +122,7 @@ func (g *Generator) GenerateArrayAppendJsonString(n string, s *ast.ArrayType) {
 	g.WriteString("}\n\n")
 }
 
+// includes tail `,`
 func (g *Generator) GenerateAppendJsonStringField(f *ast.Field) {
 	if len(f.Names) > 1 {
 		panic("doesnt support several names")
@@ -142,6 +141,8 @@ func (g *Generator) GenerateAppendJsonStringField(f *ast.Field) {
 
 	g.WriteString(fmt.Sprintf("res = append(res, `\"%s\":`...)\n", j.name))
 	g.GenerateAppendJsonStringValue(access, f.Type, j)
+
+	g.WriteString("res = append(res, ',')\n")
 
 	if j.omitempty {
 		g.WriteString("}\n")
