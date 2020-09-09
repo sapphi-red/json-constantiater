@@ -7,7 +7,7 @@ import (
 //go:nosplit
 func appendSmall(dest []byte, i int64) []byte {
 	if i < 10 {
-		return append(dest, digits[i : i+1]...)
+		return append(dest, digits[i])
 	}
 	if i < 100 {
 		return append(dest, smallsString[i*2 : i*2+2]...)
@@ -18,7 +18,7 @@ func appendSmall(dest []byte, i int64) []byte {
 //go:nosplit
 func appendSmallU(dest []byte, i uint64) []byte {
 	if i < 10 {
-		return append(dest, digits[i : i+1]...)
+		return append(dest, digits[i])
 	}
 	if i < 100 {
 		return append(dest, smallsString[i*2 : i*2+2]...)
