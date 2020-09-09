@@ -55,3 +55,24 @@ func main() {
   fmt.Println(string(b.NewJsonMarshal())) // normal
 }
 ```
+
+## Benchmarks
+
+|Name in graph|Description|
+|---|---|
+|EncodingJson|[doc](https://golang.org/pkg/encoding/json/)|
+|JsonIter|[GitHub](https://github.com/json-iterator/go) ConfigCompatibleWithStandardLibrary|
+|JsonIterFastest|[GitHub](https://github.com/json-iterator/go) ConfigFastest|
+|GoJay|[GitHub](https://github.com/francoispqt/gojay)|
+|GoJson|[GitHub](https://github.com/goccy/go-json)|
+|ConstantiateNonOptimized|This one. Not using Extended options.|
+|Constantiate|This one. Using Extended options.|
+
+### SmallStruct
+![Small](https://user-images.githubusercontent.com/49056869/92576330-6168ee80-f2c4-11ea-8636-40af0be47b59.png)
+
+### MediumStruct
+![Medium](https://user-images.githubusercontent.com/49056869/92576336-629a1b80-f2c4-11ea-978c-380cda97e407.png)
+
+### LargeStruct
+![Large](https://user-images.githubusercontent.com/49056869/92576335-62018500-f2c4-11ea-95aa-18c881ca669e.png)
