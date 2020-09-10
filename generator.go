@@ -7,6 +7,8 @@ import (
 	"go/types"
 	"regexp"
 	"strings"
+
+	"github.com/sapphi-red/json-constantiater/lib"
 )
 
 type Generator struct {
@@ -235,7 +237,7 @@ func (g *Generator) GenerateJsonLenField(f *ast.Field) {
 		g.GenerateOmitEmptyIfNot(access, f.Type)
 	}
 	g.GenerateJsonLenSingle(access, f.Type, j)
-	g.WriteString(fmt.Sprintf("l += 2 + %d + 1 + 1\n", len(fd.tag.name))) // 2 for `"`, 1 for `:`, 1 for tail `,`
+	g.WriteString(fmt.Sprintf("l += 2 + %d + 1 + 1\n", lib.GetEscapedLen(fd.tag.name))) // 2 for `"`, 1 for `:`, 1 for tail `,`
 	if j.omitempty {
 		g.WriteString("}\n")
 	}
