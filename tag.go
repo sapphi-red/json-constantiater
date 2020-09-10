@@ -43,7 +43,11 @@ func parseJsonTag(tag string) (j jsonTag) {
 	}
 	parsed := reflect.StructTag(tag)
 	json := parsed.Get("json")
-	strs := strings.Split(json, ",")
+	return parseJsonTagInner(json)
+}
+
+func parseJsonTagInner(tag string) (j jsonTag) {
+	strs := strings.Split(tag, ",")
 	if len(strs) > 0 && strs[0] != "" {
 		j.name = strs[0]
 	}
@@ -65,5 +69,5 @@ func parseJsonTag(tag string) (j jsonTag) {
 			}
 		}
 	}
-	return j
+	return
 }

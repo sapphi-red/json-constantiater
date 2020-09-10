@@ -50,27 +50,29 @@ func (g *Generator) GenerateStructJsonLen(n string, s *ast.StructType) {
 	g.WriteString("}\n\n")
 }
 
-func (g *Generator) GenerateArrayJsonLen(n string, s *ast.ArrayType) {
+func (g *Generator) GenerateArrayJsonLen(n string, s *ast.ArrayType, c comment) {
 	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) JsonLen() uint64 {\n", n))
 	g.WriteString("var l uint64 = 2\n") // head `[` and tail `]`
 
 	g.WriteString("for _, e := range *t {\n")
-	g.WriteString("l += e.JsonLen() + 1\n") // 1 for `,`
+	g.GenerateJsonLenSingle("e", s.Elt, c.value)
+	g.WriteString("l += 1\n") // 1 for `,`
 	g.WriteString("}\n")
 
 	g.WriteString("return l - 1\n") // 1 for tail `,`
 	g.WriteString("}\n\n")
 }
 
-func (g *Generator) GenerateMapJsonLen(n string, s *ast.MapType) {
+func (g *Generator) GenerateMapJsonLen(n string, s *ast.MapType, c comment) {
 	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) JsonLen() uint64 {\n", n))
 	g.WriteString("var l uint64 = 2\n") // head `{` and tail `}`
 
 	g.WriteString("for k, v := range *t {\n")
-	g.WriteString("l += lib.GetEscapedLen(k) + 2 + 1\n") // 2 for `"`, 1 for `:`
-	g.WriteString("l += v.JsonLen() + 1\n")              // 1 for `,`
+	g.GenerateJsonLenSingle("k", s.Key, c.key)
+	g.GenerateJsonLenSingle("v", s.Value, c.value)
+	g.WriteString("l += 1 + 1\n") // 1 for `:`, 1 for `,`
 	g.WriteString("}\n")
 
 	g.WriteString("return l - 1\n") // 1 for tail `,`
@@ -103,15 +105,15 @@ func (g *Generator) GenerateStructAppendJsonString(n string, s *ast.StructType) 
 	g.WriteString("}\n\n")
 }
 
-func (g *Generator) GenerateMapAppendJsonString(n string, s *ast.MapType) {
+func (g *Generator) GenerateMapAppendJsonString(n string, s *ast.MapType, c comment) {
 	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) AppendJsonString(res []byte) []byte {\n", n))
 	g.WriteString("res = append(res, '{')\n")
 
 	g.WriteString("for k, v := range *t {\n")
-	g.GenerateAppendJsonStringValue("k", s.Key, jsonTag{})
+	g.GenerateAppendJsonStringValue("k", s.Key, c.key)
 	g.WriteString("res = append(res, ':')\n")
-	g.GenerateAppendJsonStringValue("v", s.Value, jsonTag{})
+	g.GenerateAppendJsonStringValue("v", s.Value, c.value)
 	g.WriteString("res = append(res, ',')\n")
 	g.WriteString("}\n")
 
@@ -120,13 +122,13 @@ func (g *Generator) GenerateMapAppendJsonString(n string, s *ast.MapType) {
 	g.WriteString("}\n\n")
 }
 
-func (g *Generator) GenerateArrayAppendJsonString(n string, s *ast.ArrayType) {
+func (g *Generator) GenerateArrayAppendJsonString(n string, s *ast.ArrayType, c comment) {
 	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) AppendJsonString(res []byte) []byte {\n", n))
 	g.WriteString("res = append(res, '[')\n")
 
 	g.WriteString("for _, e := range *t {\n")
-	g.GenerateAppendJsonStringValue("e", s.Elt, jsonTag{})
+	g.GenerateAppendJsonStringValue("e", s.Elt, c.value)
 	g.WriteString("res = append(res, ',')\n")
 	g.WriteString("}\n")
 

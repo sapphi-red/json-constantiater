@@ -51,7 +51,12 @@ func (t *Avatars) AppendJsonString(res []byte) []byte {
 func (t *Avatars) JsonLen() uint64 {
 	var l uint64 = 2
 	for _, e := range *t {
-		l += e.JsonLen() + 1
+		if e == nil {
+			l += 4
+		} else {
+			l += e.JsonLen()
+		}
+		l += 1
 	}
 	return l - 1
 }
@@ -262,7 +267,12 @@ func (t *AvatarsNonOptimized) AppendJsonString(res []byte) []byte {
 func (t *AvatarsNonOptimized) JsonLen() uint64 {
 	var l uint64 = 2
 	for _, e := range *t {
-		l += e.JsonLen() + 1
+		if e == nil {
+			l += 4
+		} else {
+			l += e.JsonLen()
+		}
+		l += 1
 	}
 	return l - 1
 }

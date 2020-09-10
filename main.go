@@ -19,7 +19,7 @@ func main() {
 	flag.Parse()
 
 	fs := token.NewFileSet()
-	f, err := parser.ParseFile(fs, *input, nil, 0)
+	f, err := parser.ParseFile(fs, *input, nil, parser.ParseComments)
 	if err != nil {
 		panic(err)
 	}
@@ -29,26 +29,32 @@ func main() {
 	g.DeclarePkgNameAndImports(f.Name.Name)
 
 	inspect := inspector.New([]*ast.File{f})
-	filter := []ast.Node{new(ast.TypeSpec)}
+	filter := []ast.Node{new(ast.GenDecl)}
 	inspect.Preorder(filter, func(n ast.Node) {
-		typ := n.(*ast.TypeSpec)
-		name := typ.Name.Name
+		genDecl := n.(*ast.GenDecl)
+		if genDecl.Tok != token.TYPE || len(genDecl.Specs) > 1 {
+			return
+		}
 
-		switch typ := typ.Type.(type) {
+		typDef := genDecl.Specs[0].(*ast.TypeSpec)
+		name := typDef.Name.Name
+		comment := parseComments(genDecl.Doc)
+
+		switch typ := typDef.Type.(type) {
 		case *ast.StructType:
 			g.GenerateNewJsonMarshal(name)
 			g.GenerateStructAppendJsonString(name, typ)
 			g.GenerateStructJsonLen(name, typ)
 		case *ast.ArrayType:
 			g.GenerateNewJsonMarshal(name)
-			g.GenerateArrayAppendJsonString(name, typ)
-			g.GenerateArrayJsonLen(name, typ)
+			g.GenerateArrayAppendJsonString(name, typ, comment)
+			g.GenerateArrayJsonLen(name, typ, comment)
 			g.GenerateArrayIsEmpty(name)
 		case *ast.MapType:
 			if types.ExprString(typ.Key) == "string" {
 				g.GenerateNewJsonMarshal(name)
-				g.GenerateMapAppendJsonString(name, typ)
-				g.GenerateMapJsonLen(name, typ)
+				g.GenerateMapAppendJsonString(name, typ, comment)
+				g.GenerateMapJsonLen(name, typ, comment)
 				g.GenerateMapIsEmpty(name)
 			}
 		}

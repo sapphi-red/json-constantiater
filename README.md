@@ -56,6 +56,16 @@ func main() {
 }
 ```
 
+## options for array/map types
+```go
+// value:",noescape"
+type A []string
+
+// key:",noescape"
+// value:",noescape"
+type M map[string]string
+```
+
 ## Benchmarks
 
 |Name in graph|Description|
