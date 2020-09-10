@@ -43,11 +43,13 @@ func main() {
 			g.GenerateNewJsonMarshal(name)
 			g.GenerateArrayAppendJsonString(name, typ)
 			g.GenerateArrayJsonLen(name, typ)
+			g.GenerateArrayIsEmpty(name)
 		case *ast.MapType:
 			if types.ExprString(typ.Key) == "string" {
 				g.GenerateNewJsonMarshal(name)
 				g.GenerateMapAppendJsonString(name, typ)
 				g.GenerateMapJsonLen(name, typ)
+				g.GenerateMapIsEmpty(name)
 			}
 		}
 	})

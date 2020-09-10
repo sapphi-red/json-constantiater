@@ -77,6 +77,20 @@ func (g *Generator) GenerateMapJsonLen(n string, s *ast.MapType) {
 	g.WriteString("}\n\n")
 }
 
+func (g *Generator) GenerateArrayIsEmpty(n string) {
+	g.GenerateNosplit()
+	g.WriteString(fmt.Sprintf("func (t *%s) IsEmpty() bool {\n", n))
+	g.WriteString("return len(*t) == 0")
+	g.WriteString("}\n\n")
+}
+
+func (g *Generator) GenerateMapIsEmpty(n string) {
+	g.GenerateNosplit()
+	g.WriteString(fmt.Sprintf("func (t *%s) IsEmpty() bool {\n", n))
+	g.WriteString("return len(*t) == 0")
+	g.WriteString("}\n\n")
+}
+
 func (g *Generator) GenerateStructAppendJsonString(n string, s *ast.StructType) {
 	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) AppendJsonString(res []byte) []byte {\n", n))
