@@ -152,7 +152,7 @@ func (g *Generator) GenerateAppendJsonStringField(f *ast.Field) {
 		g.GenerateOmitEmptyIfNot(access, f.Type)
 	}
 
-	g.WriteString(fmt.Sprintf("res = append(res, `\"%s\":`...)\n", j.name))
+	g.WriteString(fmt.Sprintf("res = append(res, `\"%s\":`...)\n", escapeString(j.name)))
 	g.GenerateAppendJsonStringValue(access, f.Type, j)
 
 	g.WriteString("res = append(res, ',')\n")
