@@ -48,9 +48,17 @@ func AppendInt32(dest []byte, src int32) []byte {
 
 //go:nosplit
 func AppendInt64(dest []byte, src int64) []byte {
-	if 0 <= src && src < nSmalls {
-		return appendSmall(dest, src)
+	if 0 <= src {
+		if src < nSmalls {
+			return appendSmall(dest, src)
+		}
+	} else {
+		if -nSmalls < src {
+			dest = append(dest, '-')
+			return appendSmall(dest, -src)
+		}
 	}
+
 	return formatBits(dest, uint64(src), src < 0)
 }
 
