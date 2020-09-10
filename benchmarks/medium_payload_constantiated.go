@@ -56,6 +56,11 @@ func (t *Avatars) JsonLen() uint64 {
 	return l - 1
 }
 
+//go:nosplit
+func (t *Avatars) IsEmpty() bool {
+	return len(*t) == 0
+}
+
 func (t *CBGravatar) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -260,6 +265,11 @@ func (t *AvatarsNonOptimized) JsonLen() uint64 {
 		l += e.JsonLen() + 1
 	}
 	return l - 1
+}
+
+//go:nosplit
+func (t *AvatarsNonOptimized) IsEmpty() bool {
+	return len(*t) == 0
 }
 
 func (t *CBGravatarNonOptimized) NewJsonMarshal() []byte {

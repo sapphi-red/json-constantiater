@@ -82,6 +82,11 @@ func (t *DSTopics) JsonLen() uint64 {
 	return l - 1
 }
 
+//go:nosplit
+func (t *DSTopics) IsEmpty() bool {
+	return len(*t) == 0
+}
+
 func (t *DSTopicsList) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -136,6 +141,11 @@ func (t *DSUsers) JsonLen() uint64 {
 		l += e.JsonLen() + 1
 	}
 	return l - 1
+}
+
+//go:nosplit
+func (t *DSUsers) IsEmpty() bool {
+	return len(*t) == 0
 }
 
 func (t *LargePayload) NewJsonMarshal() []byte {
@@ -250,6 +260,11 @@ func (t *DSTopicsNonOptimized) JsonLen() uint64 {
 	return l - 1
 }
 
+//go:nosplit
+func (t *DSTopicsNonOptimized) IsEmpty() bool {
+	return len(*t) == 0
+}
+
 func (t *DSTopicsListNonOptimized) NewJsonMarshal() []byte {
 	res := make([]byte, 0, t.JsonLen())
 	return t.AppendJsonString(res)
@@ -304,6 +319,11 @@ func (t *DSUsersNonOptimized) JsonLen() uint64 {
 		l += e.JsonLen() + 1
 	}
 	return l - 1
+}
+
+//go:nosplit
+func (t *DSUsersNonOptimized) IsEmpty() bool {
+	return len(*t) == 0
 }
 
 func (t *LargePayloadNonOptimized) NewJsonMarshal() []byte {
