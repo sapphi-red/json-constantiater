@@ -66,20 +66,20 @@ type M map[string]string
 |Name in graph|Description|
 |---|---|
 |EncodingJson|[doc](https://golang.org/pkg/encoding/json/)|
-|JsonIter|[GitHub](https://github.com/json-iterator/go) ConfigCompatibleWithStandardLibrary|
-|JsonIterFastest|[GitHub](https://github.com/json-iterator/go) ConfigFastest|
+|JsonIterFastest|[GitHub](https://github.com/json-iterator/go) ConfigCompatibleWithStandardLibrary|
 |Jettison|[GitHub](https://github.com/wI2L/jettison) NoHTMLEscaping,NoUTF8Coercion,UnsortedMap,NoCompact|
 |EasyJson|[GitHub](https://github.com/mailru/easyjson)|
 |GoJay|[GitHub](https://github.com/francoispqt/gojay)|
+|SegmentJson|[GitHub](https://github.com/segmentio/encoding/blob/master/json/README.md)|
 |GoJson|[GitHub](https://github.com/goccy/go-json)|
 |ConstantiateNonOptimized|This one. Not using Extended options.|
 |Constantiate|This one. Using Extended options.|
 
 ### SmallStruct
-![Small](https://user-images.githubusercontent.com/49056869/92929434-7dfb5700-f47b-11ea-9890-999ed4256337.png)
+![Small](https://user-images.githubusercontent.com/49056869/92930893-a421f680-f47d-11ea-9bf9-4b8657a9b803.png)
 
 ### MediumStruct
-![Medium](https://user-images.githubusercontent.com/49056869/92929432-7dfb5700-f47b-11ea-8d09-4caed65569bc.png)
+![Medium](https://user-images.githubusercontent.com/49056869/92930900-a5532380-f47d-11ea-9114-744fd514a704.png)
 
 ### LargeStruct
-![Large](https://user-images.githubusercontent.com/49056869/92929429-7cca2a00-f47b-11ea-90ac-a47f64562441.png)
+![Large](https://user-images.githubusercontent.com/49056869/92930896-a5532380-f47d-11ea-8aef-07db44175bc4.png)
