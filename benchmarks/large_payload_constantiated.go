@@ -37,7 +37,19 @@ func (t *DSTopic) NewJsonMarshal() []byte {
 //go:nosplit
 func (t *DSTopic) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"id\":"...)
-	res = lib.AppendInt(res, t.Id)
+	if 0 <= t.Id {
+		if t.Id < lib.NSmalls {
+			res = lib.AppendSmallInt(res, t.Id)
+		} else {
+			res = lib.AppendInt(res, t.Id)
+		}
+	} else {
+		if -lib.NSmalls < t.Id {
+			res = lib.AppendSmallMinusInt(res, t.Id)
+		} else {
+			res = lib.AppendInt(res, t.Id)
+		}
+	}
 	res = append(res, ",\"slug\":\""...)
 	res = append(res, t.Slug...)
 	res = append(res, "\"}"...)
@@ -187,7 +199,19 @@ func (t *DSTopicNonOptimized) NewJsonMarshal() []byte {
 //go:nosplit
 func (t *DSTopicNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"id\":"...)
-	res = lib.AppendInt(res, t.Id)
+	if 0 <= t.Id {
+		if t.Id < lib.NSmalls {
+			res = lib.AppendSmallInt(res, t.Id)
+		} else {
+			res = lib.AppendInt(res, t.Id)
+		}
+	} else {
+		if -lib.NSmalls < t.Id {
+			res = lib.AppendSmallMinusInt(res, t.Id)
+		} else {
+			res = lib.AppendInt(res, t.Id)
+		}
+	}
 	res = append(res, ",\"slug\":\""...)
 	res = lib.AppendByteWithEscape(res, t.Slug)
 	res = append(res, "\"}"...)

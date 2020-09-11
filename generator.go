@@ -155,61 +155,25 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 	case "bool":
 		g.WriteString(fmt.Sprintf("res = lib.AppendBool(res, %s)\n", access))
 	case "int":
-		if j.small {
-			g.WriteString(fmt.Sprintf("res = lib.AppendSmallInt(res, int64(%s))\n", access))
-		} else {
-			g.WriteString(fmt.Sprintf("res = lib.AppendInt(res, %s)\n", access))
-		}
+		g.GenerateAppendInlinedInt("", access, j)
 	case "int8":
-		if j.small {
-			g.WriteString(fmt.Sprintf("res = lib.AppendSmallInt(res, int64(%s))\n", access))
-		} else {
-			g.WriteString(fmt.Sprintf("res = lib.AppendInt8(res, %s)\n", access))
-		}
+		g.WriteString(fmt.Sprintf("res = lib.AppendSmallInt8(res, %s)\n", access))
 	case "int16":
-		if j.small {
-			g.WriteString(fmt.Sprintf("res = lib.AppendSmallInt(res, int64(%s))\n", access))
-		} else {
-			g.WriteString(fmt.Sprintf("res = lib.AppendInt16(res, %s)\n", access))
-		}
+		g.GenerateAppendInlinedInt("16", access, j)
 	case "int32":
-		if j.small {
-			g.WriteString(fmt.Sprintf("res = lib.AppendSmallInt(res, int64(%s))\n", access))
-		} else {
-			g.WriteString(fmt.Sprintf("res = lib.AppendInt32(res, %s)\n", access))
-		}
+		g.GenerateAppendInlinedInt("32", access, j)
 	case "int64":
-		if j.small {
-			g.WriteString(fmt.Sprintf("res = lib.AppendSmallInt(res, %s)\n", access))
-		} else {
-			g.WriteString(fmt.Sprintf("res = lib.AppendInt64(res, %s)\n", access))
-		}
+		g.GenerateAppendInlinedInt("64", access, j)
 	case "uint":
-		if j.small {
-			g.WriteString(fmt.Sprintf("res = lib.AppendSmallUint(res, uint64(%s))\n", access))
-		} else {
-			g.WriteString(fmt.Sprintf("res = lib.AppendUint(res, %s)\n", access))
-		}
+		g.GenerateAppendInlinedUint("Uint", access, j)
 	case "uint8":
-		g.WriteString(fmt.Sprintf("res = lib.AppendUint8(res, %s)\n", access))
+		g.WriteString(fmt.Sprintf("res = lib.AppendSmallUint8(res, %s)\n", access))
 	case "uint16":
-		if j.small {
-			g.WriteString(fmt.Sprintf("res = lib.AppendSmallUint(res, uint64(%s))\n", access))
-		} else {
-			g.WriteString(fmt.Sprintf("res = lib.AppendUint16(res, %s)\n", access))
-		}
+		g.GenerateAppendInlinedUint("16", access, j)
 	case "uint32":
-		if j.small {
-			g.WriteString(fmt.Sprintf("res = lib.AppendSmallUint(res, uint64(%s))\n", access))
-		} else {
-			g.WriteString(fmt.Sprintf("res = lib.AppendUint32(res, %s)\n", access))
-		}
+		g.GenerateAppendInlinedUint("32", access, j)
 	case "uint64":
-		if j.small {
-			g.WriteString(fmt.Sprintf("res = lib.AppendSmallUint(res, %s)\n", access))
-		} else {
-			g.WriteString(fmt.Sprintf("res = lib.AppendUint64(res, %s)\n", access))
-		}
+		g.GenerateAppendInlinedUint("64", access, j)
 	case "float32":
 		g.WriteString(fmt.Sprintf("res = lib.AppendFloat32(res, %s, -1)\n", access))
 	case "float64":
@@ -231,6 +195,44 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 	if isPointerAndNotOmitEmpty {
 		g.WriteString("}\n")
 	}
+}
+
+func (g *Generator) GenerateAppendInlinedInt(size, access string, j jsonTag) {
+	if j.small {
+		g.WriteString(fmt.Sprintf("res = lib.AppendSmallInt%s(res, %s)\n", size, access))
+		return
+	}
+
+	g.WriteString(fmt.Sprintf("if 0 <= %s {\n", access))
+
+	g.WriteString(fmt.Sprintf("if %s < lib.NSmalls {\n", access))
+	g.WriteString(fmt.Sprintf("res = lib.AppendSmallInt%s(res, %s)\n", size, access))
+	g.WriteString("} else {\n")
+	g.WriteString(fmt.Sprintf("res = lib.AppendInt%s(res, %s)\n", size, access))
+	g.WriteString("}\n")
+
+	g.WriteString("} else {\n")
+
+	g.WriteString(fmt.Sprintf("if -lib.NSmalls < %s {\n", access))
+	g.WriteString(fmt.Sprintf("res = lib.AppendSmallMinusInt%s(res, %s)\n", size, access))
+	g.WriteString("} else {\n")
+	g.WriteString(fmt.Sprintf("res = lib.AppendInt%s(res, %s)\n", size, access))
+	g.WriteString("}\n")
+
+	g.WriteString("}\n")
+}
+
+func (g *Generator) GenerateAppendInlinedUint(size, access string, j jsonTag) {
+	if j.small {
+		g.WriteString(fmt.Sprintf("res = lib.AppendSmallUint%s(res, %s)\n", size, access))
+		return
+	}
+
+	g.WriteString(fmt.Sprintf("if %s < lib.NSmalls {\n", access))
+	g.WriteString(fmt.Sprintf("res = lib.AppendSmallUint%s(res, %s)\n", size, access))
+	g.WriteString("} else {\n")
+	g.WriteString(fmt.Sprintf("res = lib.AppendUint%s(res, %s)\n", size, access))
+	g.WriteString("}\n")
 }
 
 var numReg = regexp.MustCompile("^u?int(?:8|16|32|64)?|float(?:32|64)$")

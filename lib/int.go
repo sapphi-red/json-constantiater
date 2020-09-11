@@ -5,40 +5,8 @@ import (
 )
 
 //go:nosplit
-func AppendSmallInt(dest []byte, i int64) []byte {
-	if i < 10 {
-		return append(dest, digits[i])
-	}
-	if i < 100 {
-		return append(dest, smallsString[i*2 : i*2+2]...)
-	}
-	return append(dest, smallsString2[i*3 : i*3+3]...)
-}
-
-//go:nosplit
-func AppendSmallUint(dest []byte, i uint64) []byte {
-	if i < 10 {
-		return append(dest, digits[i])
-	}
-	if i < 100 {
-		return append(dest, smallsString[i*2 : i*2+2]...)
-	}
-	return append(dest, smallsString2[i*3 : i*3+3]...)
-}
-
-//go:nosplit
 func AppendInt(dest []byte, src int) []byte {
 	return AppendInt64(dest, int64(src))
-}
-
-//go:nosplit
-func AppendInt8(dest []byte, src int8) []byte {
-	if 0 <= src {
-		return AppendSmallInt(dest, int64(src))
-	} else {
-		dest = append(dest, '-')
-		return AppendSmallInt(dest, int64(-src))
-	}
 }
 
 //go:nosplit
@@ -53,28 +21,12 @@ func AppendInt32(dest []byte, src int32) []byte {
 
 //go:nosplit
 func AppendInt64(dest []byte, src int64) []byte {
-	if 0 <= src {
-		if src < nSmalls {
-			return AppendSmallInt(dest, src)
-		}
-	} else {
-		if -nSmalls < src {
-			dest = append(dest, '-')
-			return AppendSmallInt(dest, -src)
-		}
-	}
-
 	return formatBits(dest, uint64(src), src < 0)
 }
 
 //go:nosplit
 func AppendUint(dest []byte, src uint) []byte {
 	return AppendUint64(dest, uint64(src))
-}
-
-//go:nosplit
-func AppendUint8(dest []byte, src uint8) []byte {
-	return AppendSmallUint(dest, uint64(src))
 }
 
 //go:nosplit
@@ -89,9 +41,6 @@ func AppendUint32(dest []byte, src uint32) []byte {
 
 //go:nosplit
 func AppendUint64(dest []byte, src uint64) []byte {
-	if src < nSmalls {
-		return AppendSmallUint(dest, src)
-	}
 	return formatBits(dest, src, true)
 }
 

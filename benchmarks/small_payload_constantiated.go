@@ -18,13 +18,49 @@ func (t *SmallPayload) NewJsonMarshal() []byte {
 //go:nosplit
 func (t *SmallPayload) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"st\":"...)
-	res = lib.AppendInt(res, t.St)
+	if 0 <= t.St {
+		if t.St < lib.NSmalls {
+			res = lib.AppendSmallInt(res, t.St)
+		} else {
+			res = lib.AppendInt(res, t.St)
+		}
+	} else {
+		if -lib.NSmalls < t.St {
+			res = lib.AppendSmallMinusInt(res, t.St)
+		} else {
+			res = lib.AppendInt(res, t.St)
+		}
+	}
 	res = append(res, ",\"sid\":"...)
-	res = lib.AppendInt(res, t.Sid)
+	if 0 <= t.Sid {
+		if t.Sid < lib.NSmalls {
+			res = lib.AppendSmallInt(res, t.Sid)
+		} else {
+			res = lib.AppendInt(res, t.Sid)
+		}
+	} else {
+		if -lib.NSmalls < t.Sid {
+			res = lib.AppendSmallMinusInt(res, t.Sid)
+		} else {
+			res = lib.AppendInt(res, t.Sid)
+		}
+	}
 	res = append(res, ",\"tt\":\""...)
 	res = lib.AppendByteWithEscape(res, t.Tt)
 	res = append(res, "\",\"gr\":"...)
-	res = lib.AppendInt(res, t.Gr)
+	if 0 <= t.Gr {
+		if t.Gr < lib.NSmalls {
+			res = lib.AppendSmallInt(res, t.Gr)
+		} else {
+			res = lib.AppendInt(res, t.Gr)
+		}
+	} else {
+		if -lib.NSmalls < t.Gr {
+			res = lib.AppendSmallMinusInt(res, t.Gr)
+		} else {
+			res = lib.AppendInt(res, t.Gr)
+		}
+	}
 	res = append(res, ",\"uuid\":\""...)
 	res = append(res, t.Uuid...)
 	res = append(res, "\",\"ip\":\""...)
@@ -32,9 +68,9 @@ func (t *SmallPayload) AppendJsonString(res []byte) []byte {
 	res = append(res, "\",\"ua\":\""...)
 	res = lib.AppendByteWithEscape(res, t.Ua)
 	res = append(res, "\",\"tz\":"...)
-	res = lib.AppendSmallInt(res, int64(t.Tz))
+	res = lib.AppendSmallInt(res, t.Tz)
 	res = append(res, ",\"v\":"...)
-	res = lib.AppendSmallInt(res, int64(t.V))
+	res = lib.AppendSmallInt(res, t.V)
 	res = append(res, '}')
 	return res
 }
@@ -53,13 +89,49 @@ func (t *SmallPayloadNonOptimized) NewJsonMarshal() []byte {
 //go:nosplit
 func (t *SmallPayloadNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"st\":"...)
-	res = lib.AppendInt(res, t.St)
+	if 0 <= t.St {
+		if t.St < lib.NSmalls {
+			res = lib.AppendSmallInt(res, t.St)
+		} else {
+			res = lib.AppendInt(res, t.St)
+		}
+	} else {
+		if -lib.NSmalls < t.St {
+			res = lib.AppendSmallMinusInt(res, t.St)
+		} else {
+			res = lib.AppendInt(res, t.St)
+		}
+	}
 	res = append(res, ",\"sid\":"...)
-	res = lib.AppendInt(res, t.Sid)
+	if 0 <= t.Sid {
+		if t.Sid < lib.NSmalls {
+			res = lib.AppendSmallInt(res, t.Sid)
+		} else {
+			res = lib.AppendInt(res, t.Sid)
+		}
+	} else {
+		if -lib.NSmalls < t.Sid {
+			res = lib.AppendSmallMinusInt(res, t.Sid)
+		} else {
+			res = lib.AppendInt(res, t.Sid)
+		}
+	}
 	res = append(res, ",\"tt\":\""...)
 	res = lib.AppendByteWithEscape(res, t.Tt)
 	res = append(res, "\",\"gr\":"...)
-	res = lib.AppendInt(res, t.Gr)
+	if 0 <= t.Gr {
+		if t.Gr < lib.NSmalls {
+			res = lib.AppendSmallInt(res, t.Gr)
+		} else {
+			res = lib.AppendInt(res, t.Gr)
+		}
+	} else {
+		if -lib.NSmalls < t.Gr {
+			res = lib.AppendSmallMinusInt(res, t.Gr)
+		} else {
+			res = lib.AppendInt(res, t.Gr)
+		}
+	}
 	res = append(res, ",\"uuid\":\""...)
 	res = lib.AppendByteWithEscape(res, t.Uuid)
 	res = append(res, "\",\"ip\":\""...)
@@ -67,9 +139,33 @@ func (t *SmallPayloadNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, "\",\"ua\":\""...)
 	res = lib.AppendByteWithEscape(res, t.Ua)
 	res = append(res, "\",\"tz\":"...)
-	res = lib.AppendInt(res, t.Tz)
+	if 0 <= t.Tz {
+		if t.Tz < lib.NSmalls {
+			res = lib.AppendSmallInt(res, t.Tz)
+		} else {
+			res = lib.AppendInt(res, t.Tz)
+		}
+	} else {
+		if -lib.NSmalls < t.Tz {
+			res = lib.AppendSmallMinusInt(res, t.Tz)
+		} else {
+			res = lib.AppendInt(res, t.Tz)
+		}
+	}
 	res = append(res, ",\"v\":"...)
-	res = lib.AppendInt(res, t.V)
+	if 0 <= t.V {
+		if t.V < lib.NSmalls {
+			res = lib.AppendSmallInt(res, t.V)
+		} else {
+			res = lib.AppendInt(res, t.V)
+		}
+	} else {
+		if -lib.NSmalls < t.V {
+			res = lib.AppendSmallMinusInt(res, t.V)
+		} else {
+			res = lib.AppendInt(res, t.V)
+		}
+	}
 	res = append(res, '}')
 	return res
 }

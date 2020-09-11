@@ -88,7 +88,19 @@ func (t *CBGithub) NewJsonMarshal() []byte {
 //go:nosplit
 func (t *CBGithub) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"followers\":"...)
-	res = lib.AppendInt(res, t.Followers)
+	if 0 <= t.Followers {
+		if t.Followers < lib.NSmalls {
+			res = lib.AppendSmallInt(res, t.Followers)
+		} else {
+			res = lib.AppendInt(res, t.Followers)
+		}
+	} else {
+		if -lib.NSmalls < t.Followers {
+			res = lib.AppendSmallMinusInt(res, t.Followers)
+		} else {
+			res = lib.AppendInt(res, t.Followers)
+		}
+	}
 	res = append(res, '}')
 	return res
 }
@@ -256,7 +268,19 @@ func (t *CBGithubNonOptimized) NewJsonMarshal() []byte {
 //go:nosplit
 func (t *CBGithubNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"followers\":"...)
-	res = lib.AppendInt(res, t.Followers)
+	if 0 <= t.Followers {
+		if t.Followers < lib.NSmalls {
+			res = lib.AppendSmallInt(res, t.Followers)
+		} else {
+			res = lib.AppendInt(res, t.Followers)
+		}
+	} else {
+		if -lib.NSmalls < t.Followers {
+			res = lib.AppendSmallMinusInt(res, t.Followers)
+		} else {
+			res = lib.AppendInt(res, t.Followers)
+		}
+	}
 	res = append(res, '}')
 	return res
 }
