@@ -12,6 +12,7 @@ import (
 	segmentjson "github.com/segmentio/encoding/json"
 )
 
+var jsoniterFastest = jsoniter.ConfigFastest
 var jettisonOptions = []jettison.Option{jettison.NoHTMLEscaping(), jettison.NoUTF8Coercion(), jettison.UnsortedMap(), jettison.NoCompact()}
 
 func Benchmark_Encode_SmallStruct_EncodingJson(b *testing.B) {
@@ -26,21 +27,9 @@ func Benchmark_Encode_SmallStruct_EncodingJson(b *testing.B) {
 
 func Benchmark_Encode_SmallStruct_JsonIter(b *testing.B) {
 	s := NewSmallPayload()
-	var json = jsoniter.ConfigCompatibleWithStandardLibrary
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		if _, err := json.Marshal(s); err != nil {
-			b.Fatal(err)
-		}
-	}
-}
-
-func Benchmark_Encode_SmallStruct_JsonIterFastest(b *testing.B) {
-	s := NewSmallPayload()
-	var json = jsoniter.ConfigFastest
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		if _, err := json.Marshal(s); err != nil {
+		if _, err := jsoniterFastest.Marshal(s); err != nil {
 			b.Fatal(err)
 		}
 	}
@@ -127,21 +116,9 @@ func Benchmark_Encode_MediumStruct_EncodingJson(b *testing.B) {
 
 func Benchmark_Encode_MediumStruct_JsonIter(b *testing.B) {
 	m := NewMediumPayload()
-	var json = jsoniter.ConfigCompatibleWithStandardLibrary
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		if _, err := json.Marshal(m); err != nil {
-			b.Fatal(err)
-		}
-	}
-}
-
-func Benchmark_Encode_MediumStruct_JsonIterFastest(b *testing.B) {
-	m := NewMediumPayload()
-	var json = jsoniter.ConfigFastest
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		if _, err := json.Marshal(m); err != nil {
+		if _, err := jsoniterFastest.Marshal(m); err != nil {
 			b.Fatal(err)
 		}
 	}
@@ -227,21 +204,9 @@ func Benchmark_Encode_LargeStruct_EncodingJson(b *testing.B) {
 
 func Benchmark_Encode_LargeStruct_JsonIter(b *testing.B) {
 	l := NewLargePayload()
-	var json = jsoniter.ConfigCompatibleWithStandardLibrary
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		if _, err := json.Marshal(l); err != nil {
-			b.Fatal(err)
-		}
-	}
-}
-
-func Benchmark_Encode_LargeStruct_JsonIterFastest(b *testing.B) {
-	l := NewLargePayload()
-	var json = jsoniter.ConfigFastest
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		if _, err := json.Marshal(l); err != nil {
+		if _, err := jsoniterFastest.Marshal(l); err != nil {
 			b.Fatal(err)
 		}
 	}
