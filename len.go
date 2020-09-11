@@ -34,6 +34,10 @@ func getLenOfSimpleType(typeName string) uint {
 		return 10
 	case "uint64":
 		return 19
+	case "float32":
+		return 22
+	case "float64":
+		return 24
 	}
 	return 0
 }

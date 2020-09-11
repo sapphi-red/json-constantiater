@@ -216,6 +216,10 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 		g.WriteString(fmt.Sprintf("res = lib.AppendUint32(res, %s)\n", access))
 	case "uint64":
 		g.WriteString(fmt.Sprintf("res = lib.AppendUint64(res, %s)\n", access))
+	case "float32":
+		g.WriteString(fmt.Sprintf("res = lib.AppendFloat32(res, %s, -1)\n", access))
+	case "float64":
+		g.WriteString(fmt.Sprintf("res = lib.AppendFloat64(res, %s, -1)\n", access))
 	default:
 		g.WriteString(fmt.Sprintf("res = %s.AppendJsonString(res)\n", strings.TrimPrefix(access, "*")))
 	}
@@ -249,7 +253,7 @@ func (g *Generator) GenerateJsonLenField(f *ast.Field) {
 	}
 }
 
-var intReg = regexp.MustCompile("^u?int(?:8|16|32|64)?$")
+var numReg = regexp.MustCompile("^u?int(?:8|16|32|64)?|float(?:32|64)$")
 
 func (g *Generator) GenerateJsonLenSingle(access string, typeExpr ast.Expr, j jsonTag) {
 	typName := types.ExprString(typeExpr)
@@ -284,7 +288,7 @@ func (g *Generator) GenerateJsonLenSingle(access string, typeExpr ast.Expr, j js
 	case "bool":
 		g.WriteString(fmt.Sprintf("l += %d\n", getLenOfSimpleType(typName)))
 	default:
-		if intReg.MatchString(typName) {
+		if numReg.MatchString(typName) {
 			g.WriteString(fmt.Sprintf("l += %d\n", getLenOfSimpleType(typName)))
 		} else {
 			g.WriteString(fmt.Sprintf("l += %s.JsonLen()\n", strings.TrimPrefix(access, "*")))
@@ -304,7 +308,7 @@ func (g *Generator) GenerateOmitEmptyIfNot(access string, typeExpr ast.Expr) {
 	case "bool":
 		g.WriteString(fmt.Sprintf("if %s {\n", access))
 	default:
-		if intReg.MatchString(typName) {
+		if numReg.MatchString(typName) {
 			g.WriteString(fmt.Sprintf("if %s != 0 {\n", access))
 		} else if strings.HasPrefix(typName, "[]") || strings.HasPrefix(typName, "map") {
 			g.WriteString(fmt.Sprintf("if len(%s) > 0 {\n", access))
