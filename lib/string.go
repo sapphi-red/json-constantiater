@@ -1,13 +1,20 @@
 package lib
 
+import "unsafe"
+
 //go:nosplit
 func AppendByteWithEscape(dest []byte, src string) []byte {
-	for _, c := range []byte(src) {
-		switch sizeTable[c] {
-		case 0:
-			dest = append(dest, c)
+	srcb := *(*[]byte)(unsafe.Pointer(&src))
+
+	start := 0
+	// avoid `i, c :=` for not copying `c`
+	for i := range srcb {
+		switch sizeTable[srcb[i]] {
 		case 1:
-			switch c {
+			dest = append(dest, src[start:i]...)
+			start = i+1
+
+			switch srcb[i] {
 			case '"':
 				dest = append(dest, "\\\""...)
 			case '\\':
@@ -20,17 +27,27 @@ func AppendByteWithEscape(dest []byte, src string) []byte {
 				dest = append(dest, "\\t"...)
 			}
 		case 4:
-			dest = append(dest, 'u', '0', '0', hextable[c>>4], hextable[c&0x0f])
+			dest = append(dest, src[start:i]...)
+			start = i+1
+
+			dest = append(dest, 'u', '0', '0', hextable[srcb[i]>>4], hextable[srcb[i]&0x0f])
 		}
+	}
+
+	if start < len(src) {
+		dest = append(dest, src[start:]...)
 	}
 	return dest
 }
 
 //go:nosplit
 func GetEscapedLen(src string) uint64 {
-	var l uint64 = uint64(len(src))
-	for _, c := range []byte(src) {
-		l += uint64(sizeTable[c])
+	srcb := *(*[]byte)(unsafe.Pointer(&src))
+	l := uint64(len(src))
+
+	// avoid `i, c :=` for not copying `c`
+	for i := range srcb {
+		l += uint64(sizeTable[srcb[i]])
 	}
 	return l
 }
