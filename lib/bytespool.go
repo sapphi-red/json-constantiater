@@ -6,7 +6,7 @@ const defaultCap = 1024
 
 var p = sync.Pool{
 	New: func() interface{} {
-		tmp := make([]byte, defaultCap)
+		tmp := make([]byte, 0, defaultCap)
 		return &tmp
 	},
 }
