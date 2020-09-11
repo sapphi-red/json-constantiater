@@ -35,8 +35,8 @@ func (t *SmallPayload) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *SmallPayload) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *SmallPayload) JsonLen() int {
+	l := 2
 	l += 20
 	l += 2 + 2 + 1 + 1
 	l += 20
@@ -89,8 +89,8 @@ func (t *SmallPayloadNonOptimized) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *SmallPayloadNonOptimized) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *SmallPayloadNonOptimized) JsonLen() int {
+	l := 2
 	l += 20
 	l += 2 + 2 + 1 + 1
 	l += 20

@@ -19,9 +19,9 @@ func (t *CBAvatar) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *CBAvatar) JsonLen() uint64 {
-	var l uint64 = 2
-	l += 2 + uint64(len(t.Url))
+func (t *CBAvatar) JsonLen() int {
+	l := 2
+	l += 2 + len(t.Url)
 	l += 2 + 3 + 1 + 1
 	return l - 1
 }
@@ -48,8 +48,8 @@ func (t *Avatars) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *Avatars) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *Avatars) JsonLen() int {
+	l := 2
 	for _, e := range *t {
 		if e == nil {
 			l += 4
@@ -81,8 +81,8 @@ func (t *CBGravatar) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *CBGravatar) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *CBGravatar) JsonLen() int {
+	l := 2
 	l += t.Avatars.JsonLen()
 	l += 2 + 7 + 1 + 1
 	return l - 1
@@ -103,8 +103,8 @@ func (t *CBGithub) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *CBGithub) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *CBGithub) JsonLen() int {
+	l := 2
 	l += 20
 	l += 2 + 9 + 1 + 1
 	return l - 1
@@ -125,9 +125,9 @@ func (t *CBName) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *CBName) JsonLen() uint64 {
-	var l uint64 = 2
-	l += 2 + uint64(len(t.FullName))
+func (t *CBName) JsonLen() int {
+	l := 2
+	l += 2 + len(t.FullName)
 	l += 2 + 8 + 1 + 1
 	return l - 1
 }
@@ -163,8 +163,8 @@ func (t *CBPerson) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *CBPerson) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *CBPerson) JsonLen() int {
+	l := 2
 	if t.Name == nil {
 		l += 4
 	} else {
@@ -207,8 +207,8 @@ func (t *MediumPayload) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *MediumPayload) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *MediumPayload) JsonLen() int {
+	l := 2
 	if t.Person == nil {
 		l += 4
 	} else {
@@ -235,8 +235,8 @@ func (t *CBAvatarNonOptimized) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *CBAvatarNonOptimized) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *CBAvatarNonOptimized) JsonLen() int {
+	l := 2
 	l += 2 + lib.GetEscapedLen(t.Url)
 	l += 2 + 3 + 1 + 1
 	return l - 1
@@ -264,8 +264,8 @@ func (t *AvatarsNonOptimized) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *AvatarsNonOptimized) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *AvatarsNonOptimized) JsonLen() int {
+	l := 2
 	for _, e := range *t {
 		if e == nil {
 			l += 4
@@ -297,8 +297,8 @@ func (t *CBGravatarNonOptimized) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *CBGravatarNonOptimized) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *CBGravatarNonOptimized) JsonLen() int {
+	l := 2
 	l += t.Avatars.JsonLen()
 	l += 2 + 7 + 1 + 1
 	return l - 1
@@ -319,8 +319,8 @@ func (t *CBGithubNonOptimized) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *CBGithubNonOptimized) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *CBGithubNonOptimized) JsonLen() int {
+	l := 2
 	l += 20
 	l += 2 + 9 + 1 + 1
 	return l - 1
@@ -341,8 +341,8 @@ func (t *CBNameNonOptimized) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *CBNameNonOptimized) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *CBNameNonOptimized) JsonLen() int {
+	l := 2
 	l += 2 + lib.GetEscapedLen(t.FullName)
 	l += 2 + 8 + 1 + 1
 	return l - 1
@@ -379,8 +379,8 @@ func (t *CBPersonNonOptimized) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *CBPersonNonOptimized) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *CBPersonNonOptimized) JsonLen() int {
+	l := 2
 	if t.Name == nil {
 		l += 4
 	} else {
@@ -423,8 +423,8 @@ func (t *MediumPayloadNonOptimized) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *MediumPayloadNonOptimized) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *MediumPayloadNonOptimized) JsonLen() int {
+	l := 2
 	if t.Person == nil {
 		l += 4
 	} else {

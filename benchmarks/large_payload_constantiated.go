@@ -19,9 +19,9 @@ func (t *DSUser) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *DSUser) JsonLen() uint64 {
-	var l uint64 = 2
-	l += 2 + uint64(len(t.Username))
+func (t *DSUser) JsonLen() int {
+	l := 2
+	l += 2 + len(t.Username)
 	l += 2 + 8 + 1 + 1
 	return l - 1
 }
@@ -43,11 +43,11 @@ func (t *DSTopic) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *DSTopic) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *DSTopic) JsonLen() int {
+	l := 2
 	l += 20
 	l += 2 + 2 + 1 + 1
-	l += 2 + uint64(len(t.Slug))
+	l += 2 + len(t.Slug)
 	l += 2 + 4 + 1 + 1
 	return l - 1
 }
@@ -74,8 +74,8 @@ func (t *DSTopics) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *DSTopics) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *DSTopics) JsonLen() int {
+	l := 2
 	for _, e := range *t {
 		if e == nil {
 			l += 4
@@ -109,11 +109,11 @@ func (t *DSTopicsList) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *DSTopicsList) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *DSTopicsList) JsonLen() int {
+	l := 2
 	l += t.Topics.JsonLen()
 	l += 2 + 6 + 1 + 1
-	l += 2 + uint64(len(t.MoreTopicsUrl))
+	l += 2 + len(t.MoreTopicsUrl)
 	l += 2 + 15 + 1 + 1
 	return l - 1
 }
@@ -140,8 +140,8 @@ func (t *DSUsers) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *DSUsers) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *DSUsers) JsonLen() int {
+	l := 2
 	for _, e := range *t {
 		if e == nil {
 			l += 4
@@ -179,8 +179,8 @@ func (t *LargePayload) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *LargePayload) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *LargePayload) JsonLen() int {
+	l := 2
 	l += t.Users.JsonLen()
 	l += 2 + 5 + 1 + 1
 	if t.Topics == nil {
@@ -207,8 +207,8 @@ func (t *DSUserNonOptimized) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *DSUserNonOptimized) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *DSUserNonOptimized) JsonLen() int {
+	l := 2
 	l += 2 + lib.GetEscapedLen(t.Username)
 	l += 2 + 8 + 1 + 1
 	return l - 1
@@ -231,8 +231,8 @@ func (t *DSTopicNonOptimized) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *DSTopicNonOptimized) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *DSTopicNonOptimized) JsonLen() int {
+	l := 2
 	l += 20
 	l += 2 + 2 + 1 + 1
 	l += 2 + lib.GetEscapedLen(t.Slug)
@@ -262,8 +262,8 @@ func (t *DSTopicsNonOptimized) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *DSTopicsNonOptimized) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *DSTopicsNonOptimized) JsonLen() int {
+	l := 2
 	for _, e := range *t {
 		if e == nil {
 			l += 4
@@ -297,8 +297,8 @@ func (t *DSTopicsListNonOptimized) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *DSTopicsListNonOptimized) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *DSTopicsListNonOptimized) JsonLen() int {
+	l := 2
 	l += t.Topics.JsonLen()
 	l += 2 + 6 + 1 + 1
 	l += 2 + lib.GetEscapedLen(t.MoreTopicsUrl)
@@ -328,8 +328,8 @@ func (t *DSUsersNonOptimized) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *DSUsersNonOptimized) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *DSUsersNonOptimized) JsonLen() int {
+	l := 2
 	for _, e := range *t {
 		if e == nil {
 			l += 4
@@ -367,8 +367,8 @@ func (t *LargePayloadNonOptimized) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *LargePayloadNonOptimized) JsonLen() uint64 {
-	var l uint64 = 2
+func (t *LargePayloadNonOptimized) JsonLen() int {
+	l := 2
 	l += t.Users.JsonLen()
 	l += 2 + 5 + 1 + 1
 	if t.Topics == nil {

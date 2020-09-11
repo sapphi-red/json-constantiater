@@ -41,13 +41,13 @@ func AppendByteWithEscape(dest []byte, src string) []byte {
 }
 
 //go:nosplit
-func GetEscapedLen(src string) uint64 {
+func GetEscapedLen(src string) int {
 	srcb := *(*[]byte)(unsafe.Pointer(&src))
-	l := uint64(len(src))
+	l := len(src)
 
 	// avoid `i, c :=` for not copying `c`
 	for i := range srcb {
-		l += uint64(sizeTable[srcb[i]])
+		l += int(sizeTable[srcb[i]])
 	}
 	return l
 }
