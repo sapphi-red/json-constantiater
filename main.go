@@ -44,17 +44,14 @@ func main() {
 		case *ast.StructType:
 			g.GenerateNewJsonMarshal(name)
 			g.GenerateStructAppendJsonString(name, typ)
-			g.GenerateStructJsonLen(name, typ)
 		case *ast.ArrayType:
 			g.GenerateNewJsonMarshal(name)
 			g.GenerateArrayAppendJsonString(name, typ, comment)
-			g.GenerateArrayJsonLen(name, typ, comment)
 			g.GenerateArrayIsEmpty(name)
 		case *ast.MapType:
 			if types.ExprString(typ.Key) == "string" {
 				g.GenerateNewJsonMarshal(name)
 				g.GenerateMapAppendJsonString(name, typ, comment)
-				g.GenerateMapJsonLen(name, typ, comment)
 				g.GenerateMapIsEmpty(name)
 			}
 		}

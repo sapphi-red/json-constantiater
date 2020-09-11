@@ -39,30 +39,6 @@ func (t *SmallPayload) AppendJsonString(res []byte) []byte {
 	return res
 }
 
-//go:nosplit
-func (t *SmallPayload) JsonLen() int {
-	l := 2
-	l += 20
-	l += 2 + 2 + 1 + 1
-	l += 20
-	l += 2 + 3 + 1 + 1
-	l += 2 + lib.GetEscapedLen(t.Tt)
-	l += 2 + 2 + 1 + 1
-	l += 20
-	l += 2 + 2 + 1 + 1
-	l += 38
-	l += 2 + 4 + 1 + 1
-	l += 17
-	l += 2 + 2 + 1 + 1
-	l += 2 + lib.GetEscapedLen(t.Ua)
-	l += 2 + 2 + 1 + 1
-	l += 20
-	l += 2 + 2 + 1 + 1
-	l += 2
-	l += 2 + 1 + 1 + 1
-	return l - 1
-}
-
 func (t *SmallPayloadNonOptimized) NewJsonMarshal() []byte {
 	tmpPtr := lib.GetFromPool()
 	tmp := *tmpPtr
@@ -96,28 +72,4 @@ func (t *SmallPayloadNonOptimized) AppendJsonString(res []byte) []byte {
 	res = lib.AppendInt(res, t.V)
 	res = append(res, '}')
 	return res
-}
-
-//go:nosplit
-func (t *SmallPayloadNonOptimized) JsonLen() int {
-	l := 2
-	l += 20
-	l += 2 + 2 + 1 + 1
-	l += 20
-	l += 2 + 3 + 1 + 1
-	l += 2 + lib.GetEscapedLen(t.Tt)
-	l += 2 + 2 + 1 + 1
-	l += 20
-	l += 2 + 2 + 1 + 1
-	l += 2 + lib.GetEscapedLen(t.Uuid)
-	l += 2 + 4 + 1 + 1
-	l += 2 + lib.GetEscapedLen(t.Ip)
-	l += 2 + 2 + 1 + 1
-	l += 2 + lib.GetEscapedLen(t.Ua)
-	l += 2 + 2 + 1 + 1
-	l += 20
-	l += 2 + 2 + 1 + 1
-	l += 20
-	l += 2 + 1 + 1 + 1
-	return l - 1
 }

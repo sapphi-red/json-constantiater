@@ -27,35 +27,6 @@ func main() {
 }
 ```
 
-### `len*`
-This option sets max string length of the field.
-
-```go
-type A struct {
-  name string `json:"name,len4"`
-}
-type B struct {
-  name string `json:"name"`
-}
-
-func main() {
-  a1 := A {
-    name: "john"
-  }
-  fmt.Println(string(a1.NewJsonMarshal())) // fastest
-
-  a2 := A {
-    name: "john titor"
-  }
-  fmt.Println(string(a2.NewJsonMarshal())) // slowest
-
-  b := B {
-    name: "john"
-  }
-  fmt.Println(string(b.NewJsonMarshal())) // normal
-}
-```
-
 ### `omitnano`
 This options omit nanoseconds of time.Time.
 

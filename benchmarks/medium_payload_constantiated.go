@@ -23,14 +23,6 @@ func (t *CBAvatar) AppendJsonString(res []byte) []byte {
 	return res
 }
 
-//go:nosplit
-func (t *CBAvatar) JsonLen() int {
-	l := 2
-	l += 2 + len(t.Url)
-	l += 2 + 3 + 1 + 1
-	return l - 1
-}
-
 func (t *Avatars) NewJsonMarshal() []byte {
 	tmpPtr := lib.GetFromPool()
 	tmp := *tmpPtr
@@ -59,20 +51,6 @@ func (t *Avatars) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *Avatars) JsonLen() int {
-	l := 2
-	for _, e := range *t {
-		if e == nil {
-			l += 4
-		} else {
-			l += e.JsonLen()
-		}
-		l += 1
-	}
-	return l - 1
-}
-
-//go:nosplit
 func (t *Avatars) IsEmpty() bool {
 	return len(*t) == 0
 }
@@ -96,14 +74,6 @@ func (t *CBGravatar) AppendJsonString(res []byte) []byte {
 	return res
 }
 
-//go:nosplit
-func (t *CBGravatar) JsonLen() int {
-	l := 2
-	l += t.Avatars.JsonLen()
-	l += 2 + 7 + 1 + 1
-	return l - 1
-}
-
 func (t *CBGithub) NewJsonMarshal() []byte {
 	tmpPtr := lib.GetFromPool()
 	tmp := *tmpPtr
@@ -123,14 +93,6 @@ func (t *CBGithub) AppendJsonString(res []byte) []byte {
 	return res
 }
 
-//go:nosplit
-func (t *CBGithub) JsonLen() int {
-	l := 2
-	l += 20
-	l += 2 + 9 + 1 + 1
-	return l - 1
-}
-
 func (t *CBName) NewJsonMarshal() []byte {
 	tmpPtr := lib.GetFromPool()
 	tmp := *tmpPtr
@@ -148,14 +110,6 @@ func (t *CBName) AppendJsonString(res []byte) []byte {
 	res = append(res, t.FullName...)
 	res = append(res, "\"}"...)
 	return res
-}
-
-//go:nosplit
-func (t *CBName) JsonLen() int {
-	l := 2
-	l += 2 + len(t.FullName)
-	l += 2 + 8 + 1 + 1
-	return l - 1
 }
 
 func (t *CBPerson) NewJsonMarshal() []byte {
@@ -193,30 +147,6 @@ func (t *CBPerson) AppendJsonString(res []byte) []byte {
 	return res
 }
 
-//go:nosplit
-func (t *CBPerson) JsonLen() int {
-	l := 2
-	if t.Name == nil {
-		l += 4
-	} else {
-		l += t.Name.JsonLen()
-	}
-	l += 2 + 4 + 1 + 1
-	if t.Github == nil {
-		l += 4
-	} else {
-		l += t.Github.JsonLen()
-	}
-	l += 2 + 6 + 1 + 1
-	if t.Gravatar == nil {
-		l += 4
-	} else {
-		l += t.Gravatar.JsonLen()
-	}
-	l += 2 + 8 + 1 + 1
-	return l - 1
-}
-
 func (t *MediumPayload) NewJsonMarshal() []byte {
 	tmpPtr := lib.GetFromPool()
 	tmp := *tmpPtr
@@ -242,20 +172,6 @@ func (t *MediumPayload) AppendJsonString(res []byte) []byte {
 	return res
 }
 
-//go:nosplit
-func (t *MediumPayload) JsonLen() int {
-	l := 2
-	if t.Person == nil {
-		l += 4
-	} else {
-		l += t.Person.JsonLen()
-	}
-	l += 2 + 6 + 1 + 1
-	l += 2 + lib.GetEscapedLen(t.Company)
-	l += 2 + 7 + 1 + 1
-	return l - 1
-}
-
 func (t *CBAvatarNonOptimized) NewJsonMarshal() []byte {
 	tmpPtr := lib.GetFromPool()
 	tmp := *tmpPtr
@@ -273,14 +189,6 @@ func (t *CBAvatarNonOptimized) AppendJsonString(res []byte) []byte {
 	res = lib.AppendByteWithEscape(res, t.Url)
 	res = append(res, "\"}"...)
 	return res
-}
-
-//go:nosplit
-func (t *CBAvatarNonOptimized) JsonLen() int {
-	l := 2
-	l += 2 + lib.GetEscapedLen(t.Url)
-	l += 2 + 3 + 1 + 1
-	return l - 1
 }
 
 func (t *AvatarsNonOptimized) NewJsonMarshal() []byte {
@@ -311,20 +219,6 @@ func (t *AvatarsNonOptimized) AppendJsonString(res []byte) []byte {
 }
 
 //go:nosplit
-func (t *AvatarsNonOptimized) JsonLen() int {
-	l := 2
-	for _, e := range *t {
-		if e == nil {
-			l += 4
-		} else {
-			l += e.JsonLen()
-		}
-		l += 1
-	}
-	return l - 1
-}
-
-//go:nosplit
 func (t *AvatarsNonOptimized) IsEmpty() bool {
 	return len(*t) == 0
 }
@@ -348,14 +242,6 @@ func (t *CBGravatarNonOptimized) AppendJsonString(res []byte) []byte {
 	return res
 }
 
-//go:nosplit
-func (t *CBGravatarNonOptimized) JsonLen() int {
-	l := 2
-	l += t.Avatars.JsonLen()
-	l += 2 + 7 + 1 + 1
-	return l - 1
-}
-
 func (t *CBGithubNonOptimized) NewJsonMarshal() []byte {
 	tmpPtr := lib.GetFromPool()
 	tmp := *tmpPtr
@@ -375,14 +261,6 @@ func (t *CBGithubNonOptimized) AppendJsonString(res []byte) []byte {
 	return res
 }
 
-//go:nosplit
-func (t *CBGithubNonOptimized) JsonLen() int {
-	l := 2
-	l += 20
-	l += 2 + 9 + 1 + 1
-	return l - 1
-}
-
 func (t *CBNameNonOptimized) NewJsonMarshal() []byte {
 	tmpPtr := lib.GetFromPool()
 	tmp := *tmpPtr
@@ -400,14 +278,6 @@ func (t *CBNameNonOptimized) AppendJsonString(res []byte) []byte {
 	res = lib.AppendByteWithEscape(res, t.FullName)
 	res = append(res, "\"}"...)
 	return res
-}
-
-//go:nosplit
-func (t *CBNameNonOptimized) JsonLen() int {
-	l := 2
-	l += 2 + lib.GetEscapedLen(t.FullName)
-	l += 2 + 8 + 1 + 1
-	return l - 1
 }
 
 func (t *CBPersonNonOptimized) NewJsonMarshal() []byte {
@@ -445,30 +315,6 @@ func (t *CBPersonNonOptimized) AppendJsonString(res []byte) []byte {
 	return res
 }
 
-//go:nosplit
-func (t *CBPersonNonOptimized) JsonLen() int {
-	l := 2
-	if t.Name == nil {
-		l += 4
-	} else {
-		l += t.Name.JsonLen()
-	}
-	l += 2 + 4 + 1 + 1
-	if t.Github == nil {
-		l += 4
-	} else {
-		l += t.Github.JsonLen()
-	}
-	l += 2 + 6 + 1 + 1
-	if t.Gravatar == nil {
-		l += 4
-	} else {
-		l += t.Gravatar.JsonLen()
-	}
-	l += 2 + 8 + 1 + 1
-	return l - 1
-}
-
 func (t *MediumPayloadNonOptimized) NewJsonMarshal() []byte {
 	tmpPtr := lib.GetFromPool()
 	tmp := *tmpPtr
@@ -492,18 +338,4 @@ func (t *MediumPayloadNonOptimized) AppendJsonString(res []byte) []byte {
 	res = lib.AppendByteWithEscape(res, t.Company)
 	res = append(res, "\"}"...)
 	return res
-}
-
-//go:nosplit
-func (t *MediumPayloadNonOptimized) JsonLen() int {
-	l := 2
-	if t.Person == nil {
-		l += 4
-	} else {
-		l += t.Person.JsonLen()
-	}
-	l += 2 + 6 + 1 + 1
-	l += 2 + lib.GetEscapedLen(t.Company)
-	l += 2 + 7 + 1 + 1
-	return l - 1
 }
