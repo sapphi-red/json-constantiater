@@ -18,32 +18,16 @@ func (t *SmallPayload) NewJsonMarshal() []byte {
 //go:nosplit
 func (t *SmallPayload) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"st\":"...)
-	if 0 <= t.St {
-		if t.St < lib.NSmalls {
-			res = lib.AppendSmallInt(res, t.St)
-		} else {
-			res = lib.AppendInt(res, t.St)
-		}
+	if t.St < lib.NSmalls {
+		res = lib.AppendSmallInt(res, t.St)
 	} else {
-		if -lib.NSmalls < t.St {
-			res = lib.AppendSmallMinusInt(res, t.St)
-		} else {
-			res = lib.AppendInt(res, t.St)
-		}
+		res = lib.AppendInt(res, t.St)
 	}
 	res = append(res, ",\"sid\":"...)
-	if 0 <= t.Sid {
-		if t.Sid < lib.NSmalls {
-			res = lib.AppendSmallInt(res, t.Sid)
-		} else {
-			res = lib.AppendInt(res, t.Sid)
-		}
+	if t.Sid < lib.NSmalls {
+		res = lib.AppendSmallInt(res, t.Sid)
 	} else {
-		if -lib.NSmalls < t.Sid {
-			res = lib.AppendSmallMinusInt(res, t.Sid)
-		} else {
-			res = lib.AppendInt(res, t.Sid)
-		}
+		res = lib.AppendInt(res, t.Sid)
 	}
 	res = append(res, ",\"tt\":\""...)
 	res = lib.AppendByteWithEscape(res, t.Tt)
@@ -68,7 +52,11 @@ func (t *SmallPayload) AppendJsonString(res []byte) []byte {
 	res = append(res, "\",\"ua\":\""...)
 	res = lib.AppendByteWithEscape(res, t.Ua)
 	res = append(res, "\",\"tz\":"...)
-	res = lib.AppendSmallInt(res, t.Tz)
+	if 0 <= t.Tz {
+		res = lib.AppendSmallInt(res, t.Tz)
+	} else {
+		res = lib.AppendSmallMinusInt(res, t.Tz)
+	}
 	res = append(res, ",\"v\":"...)
 	res = lib.AppendSmallInt(res, t.V)
 	res = append(res, '}')

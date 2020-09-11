@@ -18,7 +18,7 @@ func (m *DSUser) IsNil() bool {
 }
 
 type DSTopic struct {
-	Id   int
+	Id   int    `json:",unsigned"`
 	Slug string `json:",noescape"`
 }
 

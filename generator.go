@@ -199,11 +199,21 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 
 func (g *Generator) GenerateAppendInlinedInt(size, access string, j jsonTag) {
 	if j.small {
+		if !j.unsigned {
+			g.WriteString(fmt.Sprintf("if 0 <= %s {\n", access))
+		}
 		g.WriteString(fmt.Sprintf("res = lib.AppendSmallInt%s(res, %s)\n", size, access))
+		if !j.unsigned {
+			g.WriteString("} else {\n")
+			g.WriteString(fmt.Sprintf("res = lib.AppendSmallMinusInt%s(res, %s)\n", size, access))
+			g.WriteString("}\n")
+		}
 		return
 	}
 
-	g.WriteString(fmt.Sprintf("if 0 <= %s {\n", access))
+	if !j.unsigned {
+		g.WriteString(fmt.Sprintf("if 0 <= %s {\n", access))
+	}
 
 	g.WriteString(fmt.Sprintf("if %s < lib.NSmalls {\n", access))
 	g.WriteString(fmt.Sprintf("res = lib.AppendSmallInt%s(res, %s)\n", size, access))
@@ -211,15 +221,17 @@ func (g *Generator) GenerateAppendInlinedInt(size, access string, j jsonTag) {
 	g.WriteString(fmt.Sprintf("res = lib.AppendInt%s(res, %s)\n", size, access))
 	g.WriteString("}\n")
 
-	g.WriteString("} else {\n")
+	if !j.unsigned {
+		g.WriteString("} else {\n")
 
-	g.WriteString(fmt.Sprintf("if -lib.NSmalls < %s {\n", access))
-	g.WriteString(fmt.Sprintf("res = lib.AppendSmallMinusInt%s(res, %s)\n", size, access))
-	g.WriteString("} else {\n")
-	g.WriteString(fmt.Sprintf("res = lib.AppendInt%s(res, %s)\n", size, access))
-	g.WriteString("}\n")
+		g.WriteString(fmt.Sprintf("if -lib.NSmalls < %s {\n", access))
+		g.WriteString(fmt.Sprintf("res = lib.AppendSmallMinusInt%s(res, %s)\n", size, access))
+		g.WriteString("} else {\n")
+		g.WriteString(fmt.Sprintf("res = lib.AppendInt%s(res, %s)\n", size, access))
+		g.WriteString("}\n")
 
-	g.WriteString("}\n")
+		g.WriteString("}\n")
+	}
 }
 
 func (g *Generator) GenerateAppendInlinedUint(size, access string, j jsonTag) {

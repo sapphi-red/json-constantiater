@@ -4,15 +4,15 @@ import "github.com/francoispqt/gojay"
 
 //easyjson:json
 type SmallPayload struct {
-	St   int
-	Sid  int
+	St   int `json:",unsigned"`
+	Sid  int `json:",unsigned"`
 	Tt   string
 	Gr   int
 	Uuid string `json:",noescape"`
 	Ip   string `json:",noescape"`
 	Ua   string
 	Tz   int `json:",small"`
-	V    int `json:",small"`
+	V    int `json:",unsigned,small"`
 }
 
 func (t *SmallPayload) MarshalJSONObject(enc *gojay.Encoder) {

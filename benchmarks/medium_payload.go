@@ -38,7 +38,7 @@ func (m *CBGravatar) IsNil() bool {
 }
 
 type CBGithub struct {
-	Followers int
+	Followers int `json:",unsigned"`
 }
 
 func (m *CBGithub) MarshalJSONObject(enc *gojay.Encoder) {
