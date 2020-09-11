@@ -1,8 +1,8 @@
 Name,Time
-EncodingJson,629
-JsonIter,660
-JsonIterFastest,634
-GoJay,428
-GoJson,329
-ConstantiateNonOptimized,151
-Constantiate,118
+EncodingJson,571
+JsonIter,604
+JsonIterFastest,574
+GoJay,367
+GoJson,343
+ConstantiateNonOptimized,148
+Constantiate,115

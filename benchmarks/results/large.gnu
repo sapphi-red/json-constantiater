@@ -7,7 +7,7 @@ set border lw 0.8
 set boxwidth 0.8
 
 set xtics nomirror rotate by 90 scale 0 right
-set ytics 10000 nomirror rotate by 90
+set ytics 4000 nomirror rotate by 90
 set yrange [0:]
 
 set xlabel "Large" rotate by 180
