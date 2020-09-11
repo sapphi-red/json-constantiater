@@ -25,6 +25,9 @@ import (
 
 	res = append(res, '{')
 	res = append(res, '"')
+
+	res = append(res, '"')
+	res[len(res)-1] = '}'
 	```
 
 	into
@@ -33,6 +36,7 @@ import (
 	res = append(res, `{"`...)
 	res = append(res, `"}`...)
 	res = append(res, `{"`...)
+	res = append(res, '}')
 	```
 */
 
@@ -70,7 +74,7 @@ func composeAppend(input string) []byte {
 			bytes.Replace(output.Bytes(), []byte("\n\n\tres"), []byte("\n\tres"), -1),
 			[]byte("\n\n\treturn res"),
 			[]byte("\n\treturn res"),
-		-1),
+			-1),
 		[]byte("\n\n\tif"),
 		[]byte("\n\tif"),
 		-1,
@@ -83,6 +87,7 @@ func composeAppendBody(body *ast.BlockStmt) *ast.BlockStmt {
 	newList := make([]ast.Stmt, 0, len(body.List))
 	lits := make([]ast.BasicLit, 0)
 
+	// `append` + `append`
 	for _, stmt := range body.List {
 		args := extractAppendFuncArg(stmt)
 		if args != nil && len(*args) == 1 {
@@ -101,7 +106,36 @@ func composeAppendBody(body *ast.BlockStmt) *ast.BlockStmt {
 		newList = append(newList, stmt)
 	}
 
-	body.List = newList
+	newerList := make([]ast.Stmt, 0, len(newList))
+	newerList = append(newerList, newList[0])
+
+	// `append` + `res[len(res)-1] =`
+	for i := 1; i < len(newList); i++ {
+		stmt := newList[i]
+
+		assignLastLit := extractAssignLastLit(stmt)
+		if assignLastLit == nil {
+			newerList = append(newerList, stmt)
+			continue
+		}
+
+		prevStmt := newList[i-1]
+		args := extractAppendFuncArg(prevStmt)
+		if args == nil || len(*args) != 1 {
+			newerList = append(newerList, stmt)
+			continue
+		}
+
+		arg := ifIsArgStringOrChar(*args)
+		if arg == nil {
+			newerList = append(newerList, stmt)
+			continue
+		}
+
+		newerList[len(newerList)-1] = createReplacedStmt(arg, assignLastLit)
+	}
+
+	body.List = newerList
 	return body
 }
 
@@ -114,7 +148,7 @@ func appendComposedStmt(list []ast.Stmt, lits []ast.BasicLit) []ast.Stmt {
 
 	var newLit *ast.BasicLit
 	var ellipsis token.Pos
-	if len(newStr) > 1{
+	if len(newStr) > 1 {
 		newLit = &ast.BasicLit{
 			Kind:  token.STRING,
 			Value: strconv.Quote(newStr),
@@ -141,6 +175,43 @@ func appendComposedStmt(list []ast.Stmt, lits []ast.BasicLit) []ast.Stmt {
 		}},
 	}
 	return append(list, &composed)
+}
+
+func createReplacedStmt(baseLit *ast.BasicLit, lastLit *ast.BasicLit) *ast.AssignStmt {
+	base, _ := strconv.Unquote(baseLit.Value)
+	last, _ := strconv.Unquote(lastLit.Value)
+
+	newBase := base[:len(base)-1] + last
+
+	var newLit *ast.BasicLit
+	var ellipsis token.Pos
+	if len(newBase) > 1 {
+		newLit = &ast.BasicLit{
+			Kind:  token.STRING,
+			Value: strconv.Quote(newBase),
+		}
+		ellipsis = 1
+	} else {
+		newLit = &ast.BasicLit{
+			Kind:  token.CHAR,
+			Value: strconv.QuoteRune(rune(newBase[0])),
+		}
+		ellipsis = 0
+	}
+
+	replaced := ast.AssignStmt{
+		Lhs: []ast.Expr{ast.NewIdent("res")},
+		Tok: token.ASSIGN,
+		Rhs: []ast.Expr{&ast.CallExpr{
+			Fun: ast.NewIdent("append"),
+			Args: []ast.Expr{
+				ast.NewIdent("res"),
+				newLit,
+			},
+			Ellipsis: ellipsis,
+		}},
+	}
+	return &replaced
 }
 
 func extractAppendFuncArg(stmt ast.Stmt) *[]ast.Expr {
@@ -174,6 +245,60 @@ func extractAppendFuncArg(stmt ast.Stmt) *[]ast.Expr {
 
 	args := rhCall.Args[1:]
 	return &args
+}
+
+func extractAssignLastLit(stmt ast.Stmt) *ast.BasicLit {
+	assignStmt, _ := stmt.(*ast.AssignStmt)
+	if assignStmt == nil {
+		return nil
+	}
+
+	lhs := assignStmt.Lhs
+	if len(lhs) != 1 {
+		return nil
+	}
+	lhIndex, _ := lhs[0].(*ast.IndexExpr)
+	if lhIndex == nil || !isLastIndexAccess(lhIndex) {
+		return nil
+	}
+
+	rhs := assignStmt.Rhs
+	if len(rhs) != 1 {
+		return nil
+	}
+
+	rh := rhs[0]
+	rhLit, _ := rh.(*ast.BasicLit)
+	if rhLit == nil {
+		return nil
+	}
+	if rhLit.Kind == token.CHAR {
+		return rhLit
+	}
+	return nil
+}
+
+func isLastIndexAccess(indexExpr *ast.IndexExpr) bool {
+	sliceId, _ := indexExpr.X.(*ast.Ident)
+	if sliceId == nil || sliceId.Name != "res" {
+		return false
+	}
+
+	lhIndexBinary, _ := indexExpr.Index.(*ast.BinaryExpr)
+	if lhIndexBinary == nil || lhIndexBinary.Op != token.SUB {
+		return false
+	}
+	lhIndexCall, _ := lhIndexBinary.X.(*ast.CallExpr)
+	lhIndexOne, _ := lhIndexBinary.Y.(*ast.BasicLit)
+	if lhIndexCall == nil || lhIndexOne == nil || lhIndexOne.Value != "1" {
+		return false
+	}
+	lhIndexCallFnId, _ := lhIndexCall.Fun.(*ast.Ident)
+	if lhIndexCallFnId == nil || lhIndexCallFnId.Name != "len" {
+		return false
+	}
+
+	return true
 }
 
 func ifIsArgStringOrChar(args []ast.Expr) *ast.BasicLit {

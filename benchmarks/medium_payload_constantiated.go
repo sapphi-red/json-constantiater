@@ -19,8 +19,7 @@ func (t *CBAvatar) NewJsonMarshal() []byte {
 func (t *CBAvatar) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"url\":\""...)
 	res = append(res, t.Url...)
-	res = append(res, "\","...)
-	res[len(res)-1] = '}'
+	res = append(res, "\"}"...)
 	return res
 }
 
@@ -93,8 +92,7 @@ func (t *CBGravatar) NewJsonMarshal() []byte {
 func (t *CBGravatar) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"avatars\":"...)
 	res = t.Avatars.AppendJsonString(res)
-	res = append(res, ',')
-	res[len(res)-1] = '}'
+	res = append(res, '}')
 	return res
 }
 
@@ -121,8 +119,7 @@ func (t *CBGithub) NewJsonMarshal() []byte {
 func (t *CBGithub) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"followers\":"...)
 	res = lib.AppendInt(res, t.Followers)
-	res = append(res, ',')
-	res[len(res)-1] = '}'
+	res = append(res, '}')
 	return res
 }
 
@@ -149,8 +146,7 @@ func (t *CBName) NewJsonMarshal() []byte {
 func (t *CBName) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"fullName\":\""...)
 	res = append(res, t.FullName...)
-	res = append(res, "\","...)
-	res[len(res)-1] = '}'
+	res = append(res, "\"}"...)
 	return res
 }
 
@@ -193,8 +189,7 @@ func (t *CBPerson) AppendJsonString(res []byte) []byte {
 	} else {
 		res = t.Gravatar.AppendJsonString(res)
 	}
-	res = append(res, ',')
-	res[len(res)-1] = '}'
+	res = append(res, '}')
 	return res
 }
 
@@ -243,8 +238,7 @@ func (t *MediumPayload) AppendJsonString(res []byte) []byte {
 	}
 	res = append(res, ",\"company\":\""...)
 	res = lib.AppendByteWithEscape(res, t.Company)
-	res = append(res, "\","...)
-	res[len(res)-1] = '}'
+	res = append(res, "\"}"...)
 	return res
 }
 
@@ -277,8 +271,7 @@ func (t *CBAvatarNonOptimized) NewJsonMarshal() []byte {
 func (t *CBAvatarNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"url\":\""...)
 	res = lib.AppendByteWithEscape(res, t.Url)
-	res = append(res, "\","...)
-	res[len(res)-1] = '}'
+	res = append(res, "\"}"...)
 	return res
 }
 
@@ -351,8 +344,7 @@ func (t *CBGravatarNonOptimized) NewJsonMarshal() []byte {
 func (t *CBGravatarNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"avatars\":"...)
 	res = t.Avatars.AppendJsonString(res)
-	res = append(res, ',')
-	res[len(res)-1] = '}'
+	res = append(res, '}')
 	return res
 }
 
@@ -379,8 +371,7 @@ func (t *CBGithubNonOptimized) NewJsonMarshal() []byte {
 func (t *CBGithubNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"followers\":"...)
 	res = lib.AppendInt(res, t.Followers)
-	res = append(res, ',')
-	res[len(res)-1] = '}'
+	res = append(res, '}')
 	return res
 }
 
@@ -407,8 +398,7 @@ func (t *CBNameNonOptimized) NewJsonMarshal() []byte {
 func (t *CBNameNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"fullName\":\""...)
 	res = lib.AppendByteWithEscape(res, t.FullName)
-	res = append(res, "\","...)
-	res[len(res)-1] = '}'
+	res = append(res, "\"}"...)
 	return res
 }
 
@@ -451,8 +441,7 @@ func (t *CBPersonNonOptimized) AppendJsonString(res []byte) []byte {
 	} else {
 		res = t.Gravatar.AppendJsonString(res)
 	}
-	res = append(res, ',')
-	res[len(res)-1] = '}'
+	res = append(res, '}')
 	return res
 }
 
@@ -501,8 +490,7 @@ func (t *MediumPayloadNonOptimized) AppendJsonString(res []byte) []byte {
 	}
 	res = append(res, ",\"company\":\""...)
 	res = lib.AppendByteWithEscape(res, t.Company)
-	res = append(res, "\","...)
-	res[len(res)-1] = '}'
+	res = append(res, "\"}"...)
 	return res
 }
 

@@ -19,8 +19,7 @@ func (t *DSUser) NewJsonMarshal() []byte {
 func (t *DSUser) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"username\":\""...)
 	res = append(res, t.Username...)
-	res = append(res, "\","...)
-	res[len(res)-1] = '}'
+	res = append(res, "\"}"...)
 	return res
 }
 
@@ -49,8 +48,7 @@ func (t *DSTopic) AppendJsonString(res []byte) []byte {
 	res = lib.AppendInt(res, t.Id)
 	res = append(res, ",\"slug\":\""...)
 	res = append(res, t.Slug...)
-	res = append(res, "\","...)
-	res[len(res)-1] = '}'
+	res = append(res, "\"}"...)
 	return res
 }
 
@@ -127,8 +125,7 @@ func (t *DSTopicsList) AppendJsonString(res []byte) []byte {
 	res = t.Topics.AppendJsonString(res)
 	res = append(res, ",\"more_topics_url\":\""...)
 	res = append(res, t.MoreTopicsUrl...)
-	res = append(res, "\","...)
-	res[len(res)-1] = '}'
+	res = append(res, "\"}"...)
 	return res
 }
 
@@ -209,8 +206,7 @@ func (t *LargePayload) AppendJsonString(res []byte) []byte {
 	} else {
 		res = t.Topics.AppendJsonString(res)
 	}
-	res = append(res, ',')
-	res[len(res)-1] = '}'
+	res = append(res, '}')
 	return res
 }
 
@@ -243,8 +239,7 @@ func (t *DSUserNonOptimized) NewJsonMarshal() []byte {
 func (t *DSUserNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"username\":\""...)
 	res = lib.AppendByteWithEscape(res, t.Username)
-	res = append(res, "\","...)
-	res[len(res)-1] = '}'
+	res = append(res, "\"}"...)
 	return res
 }
 
@@ -273,8 +268,7 @@ func (t *DSTopicNonOptimized) AppendJsonString(res []byte) []byte {
 	res = lib.AppendInt(res, t.Id)
 	res = append(res, ",\"slug\":\""...)
 	res = lib.AppendByteWithEscape(res, t.Slug)
-	res = append(res, "\","...)
-	res[len(res)-1] = '}'
+	res = append(res, "\"}"...)
 	return res
 }
 
@@ -351,8 +345,7 @@ func (t *DSTopicsListNonOptimized) AppendJsonString(res []byte) []byte {
 	res = t.Topics.AppendJsonString(res)
 	res = append(res, ",\"more_topics_url\":\""...)
 	res = lib.AppendByteWithEscape(res, t.MoreTopicsUrl)
-	res = append(res, "\","...)
-	res[len(res)-1] = '}'
+	res = append(res, "\"}"...)
 	return res
 }
 
@@ -433,8 +426,7 @@ func (t *LargePayloadNonOptimized) AppendJsonString(res []byte) []byte {
 	} else {
 		res = t.Topics.AppendJsonString(res)
 	}
-	res = append(res, ',')
-	res[len(res)-1] = '}'
+	res = append(res, '}')
 	return res
 }
 

@@ -35,8 +35,7 @@ func (t *SmallPayload) AppendJsonString(res []byte) []byte {
 	res = lib.AppendInt(res, t.Tz)
 	res = append(res, ",\"v\":"...)
 	res = lib.AppendInt(res, t.V)
-	res = append(res, ',')
-	res[len(res)-1] = '}'
+	res = append(res, '}')
 	return res
 }
 
@@ -95,8 +94,7 @@ func (t *SmallPayloadNonOptimized) AppendJsonString(res []byte) []byte {
 	res = lib.AppendInt(res, t.Tz)
 	res = append(res, ",\"v\":"...)
 	res = lib.AppendInt(res, t.V)
-	res = append(res, ',')
-	res[len(res)-1] = '}'
+	res = append(res, '}')
 	return res
 }
 
