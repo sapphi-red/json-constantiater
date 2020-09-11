@@ -9,6 +9,7 @@ import (
 	jsoniter "github.com/json-iterator/go"
 	"github.com/mailru/easyjson/jwriter"
 	"github.com/wI2L/jettison"
+	segmentjson "github.com/segmentio/encoding/json"
 )
 
 var jettisonOptions = []jettison.Option{jettison.NoHTMLEscaping(), jettison.NoUTF8Coercion(), jettison.UnsortedMap(), jettison.NoCompact()}
@@ -73,6 +74,16 @@ func Benchmark_Encode_SmallStruct_GoJay(b *testing.B) {
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
 		if _, err := gojay.MarshalJSONObject(s); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+func Benchmark_Encode_SmallStruct_SegmentJson(b *testing.B) {
+	s := NewSmallPayload()
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		if _, err := segmentjson.Marshal(s); err != nil {
 			b.Fatal(err)
 		}
 	}
@@ -168,6 +179,16 @@ func Benchmark_Encode_MediumStruct_GoJay(b *testing.B) {
 	}
 }
 
+func Benchmark_Encode_MediumStruct_SegmentJson(b *testing.B) {
+	m := NewMediumPayload()
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		if _, err := segmentjson.Marshal(m); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
 func Benchmark_Encode_MediumStruct_GoJson(b *testing.B) {
 	m := NewMediumPayload()
 	b.ReportAllocs()
@@ -254,6 +275,16 @@ func Benchmark_Encode_LargeStruct_GoJay(b *testing.B) {
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
 		if _, err := gojay.MarshalJSONObject(l); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+func Benchmark_Encode_LargeStruct_SegmentJson(b *testing.B) {
+	l := NewLargePayload()
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		if _, err := segmentjson.Marshal(l); err != nil {
 			b.Fatal(err)
 		}
 	}
