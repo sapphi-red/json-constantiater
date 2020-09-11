@@ -1,9 +1,6 @@
 package lib
 
-import (
-	"sync"
-	"unsafe"
-)
+import "sync"
 
 const defaultCap = 1024
 
@@ -14,16 +11,9 @@ var p = sync.Pool{
 	},
 }
 
-// https://golang.org/src/reflect/value.go#L193
-type emptyInterface struct {
-	typ *struct{}
-	ptr unsafe.Pointer
-}
-
 //go:nosplit
 func GetFromPool() *[]byte {
-	tmp := p.Get()
-	return (*[]byte)(((*emptyInterface)(unsafe.Pointer(&tmp))).ptr)
+	return p.Get().(*[]byte)
 }
 
 //go:nosplit
