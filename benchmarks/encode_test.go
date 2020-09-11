@@ -4,10 +4,14 @@ import (
 	"encoding/json"
 	"testing"
 
-	jsoniter "github.com/json-iterator/go"
 	gojay "github.com/francoispqt/gojay"
 	gojson "github.com/goccy/go-json"
+	jsoniter "github.com/json-iterator/go"
+	"github.com/mailru/easyjson/jwriter"
+	"github.com/wI2L/jettison"
 )
+
+var jettisonOptions = []jettison.Option{jettison.NoHTMLEscaping(), jettison.NoUTF8Coercion(), jettison.UnsortedMap(), jettison.NoCompact()}
 
 func Benchmark_Encode_SmallStruct_EncodingJson(b *testing.B) {
 	s := NewSmallPayload()
@@ -38,6 +42,29 @@ func Benchmark_Encode_SmallStruct_JsonIterFastest(b *testing.B) {
 		if _, err := json.Marshal(s); err != nil {
 			b.Fatal(err)
 		}
+	}
+}
+
+func Benchmark_Encode_SmallStruct_Jettison(b *testing.B) {
+	s := NewSmallPayload()
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		if _, err := jettison.MarshalOpts(s, jettisonOptions...); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+func Benchmark_Encode_SmallStruct_EasyJson(b *testing.B) {
+	s := NewSmallPayload()
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		w := jwriter.Writer{}
+		s.MarshalEasyJSON(&w)
+		if w.Error != nil {
+			b.Fatal(w.Error)
+		}
+		_ = w.Buffer.BuildBytes()
 	}
 }
 
@@ -109,6 +136,28 @@ func Benchmark_Encode_MediumStruct_JsonIterFastest(b *testing.B) {
 	}
 }
 
+func Benchmark_Encode_MediumStruct_Jettison(b *testing.B) {
+	m := NewMediumPayload()
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		if _, err := jettison.MarshalOpts(m, jettisonOptions...); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+func Benchmark_Encode_MediumStruct_EasyJson(b *testing.B) {
+	m := NewMediumPayload()
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		w := jwriter.Writer{}
+		m.MarshalEasyJSON(&w)
+		if w.Error != nil {
+			b.Fatal(w.Error)
+		}
+		_ = w.Buffer.BuildBytes()
+	}
+}
 func Benchmark_Encode_MediumStruct_GoJay(b *testing.B) {
 	m := NewMediumPayload()
 	b.ReportAllocs()
@@ -174,6 +223,29 @@ func Benchmark_Encode_LargeStruct_JsonIterFastest(b *testing.B) {
 		if _, err := json.Marshal(l); err != nil {
 			b.Fatal(err)
 		}
+	}
+}
+
+func Benchmark_Encode_LargeStruct_Jettison(b *testing.B) {
+	l := NewLargePayload()
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		if _, err := jettison.MarshalOpts(l, jettisonOptions...); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+func Benchmark_Encode_LargeStruct_EasyJson(b *testing.B) {
+	l := NewLargePayload()
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		w := jwriter.Writer{}
+		l.MarshalEasyJSON(&w)
+		if w.Error != nil {
+			b.Fatal(w.Error)
+		}
+		_ = w.Buffer.BuildBytes()
 	}
 }
 

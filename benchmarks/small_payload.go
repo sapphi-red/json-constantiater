@@ -2,6 +2,7 @@ package benchmark
 
 import "github.com/francoispqt/gojay"
 
+//easyjson:json
 type SmallPayload struct {
 	St   int
 	Sid  int

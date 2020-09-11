@@ -65,6 +65,7 @@ func (m *DSUsers) IsNil() bool {
 	return m == nil
 }
 
+//easyjson:json
 type LargePayload struct {
 	Users  DSUsers
 	Topics *DSTopicsList

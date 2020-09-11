@@ -77,6 +77,7 @@ func (m *CBPerson) IsNil() bool {
 	return m == nil
 }
 
+//easyjson:json
 type MediumPayload struct {
 	Person  *CBPerson `json:"person"`
 	Company string    `json:"company"`
