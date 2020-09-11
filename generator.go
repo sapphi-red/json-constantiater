@@ -155,25 +155,61 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 	case "bool":
 		g.WriteString(fmt.Sprintf("res = lib.AppendBool(res, %s)\n", access))
 	case "int":
-		g.WriteString(fmt.Sprintf("res = lib.AppendInt(res, %s)\n", access))
+		if j.small {
+			g.WriteString(fmt.Sprintf("res = lib.AppendSmallInt(res, int64(%s))\n", access))
+		} else {
+			g.WriteString(fmt.Sprintf("res = lib.AppendInt(res, %s)\n", access))
+		}
 	case "int8":
-		g.WriteString(fmt.Sprintf("res = lib.AppendInt8(res, %s)\n", access))
+		if j.small {
+			g.WriteString(fmt.Sprintf("res = lib.AppendSmallInt(res, int64(%s))\n", access))
+		} else {
+			g.WriteString(fmt.Sprintf("res = lib.AppendInt8(res, %s)\n", access))
+		}
 	case "int16":
-		g.WriteString(fmt.Sprintf("res = lib.AppendInt16(res, %s)\n", access))
+		if j.small {
+			g.WriteString(fmt.Sprintf("res = lib.AppendSmallInt(res, int64(%s))\n", access))
+		} else {
+			g.WriteString(fmt.Sprintf("res = lib.AppendInt16(res, %s)\n", access))
+		}
 	case "int32":
-		g.WriteString(fmt.Sprintf("res = lib.AppendInt32(res, %s)\n", access))
+		if j.small {
+			g.WriteString(fmt.Sprintf("res = lib.AppendSmallInt(res, int64(%s))\n", access))
+		} else {
+			g.WriteString(fmt.Sprintf("res = lib.AppendInt32(res, %s)\n", access))
+		}
 	case "int64":
-		g.WriteString(fmt.Sprintf("res = lib.AppendInt64(res, %s)\n", access))
+		if j.small {
+			g.WriteString(fmt.Sprintf("res = lib.AppendSmallInt(res, %s)\n", access))
+		} else {
+			g.WriteString(fmt.Sprintf("res = lib.AppendInt64(res, %s)\n", access))
+		}
 	case "uint":
-		g.WriteString(fmt.Sprintf("res = lib.AppendUint(res, %s)\n", access))
+		if j.small {
+			g.WriteString(fmt.Sprintf("res = lib.AppendSmallUint(res, uint64(%s))\n", access))
+		} else {
+			g.WriteString(fmt.Sprintf("res = lib.AppendUint(res, %s)\n", access))
+		}
 	case "uint8":
 		g.WriteString(fmt.Sprintf("res = lib.AppendUint8(res, %s)\n", access))
 	case "uint16":
-		g.WriteString(fmt.Sprintf("res = lib.AppendUint16(res, %s)\n", access))
+		if j.small {
+			g.WriteString(fmt.Sprintf("res = lib.AppendSmallUint(res, uint64(%s))\n", access))
+		} else {
+			g.WriteString(fmt.Sprintf("res = lib.AppendUint16(res, %s)\n", access))
+		}
 	case "uint32":
-		g.WriteString(fmt.Sprintf("res = lib.AppendUint32(res, %s)\n", access))
+		if j.small {
+			g.WriteString(fmt.Sprintf("res = lib.AppendSmallUint(res, uint64(%s))\n", access))
+		} else {
+			g.WriteString(fmt.Sprintf("res = lib.AppendUint32(res, %s)\n", access))
+		}
 	case "uint64":
-		g.WriteString(fmt.Sprintf("res = lib.AppendUint64(res, %s)\n", access))
+		if j.small {
+			g.WriteString(fmt.Sprintf("res = lib.AppendSmallUint(res, %s)\n", access))
+		} else {
+			g.WriteString(fmt.Sprintf("res = lib.AppendUint64(res, %s)\n", access))
+		}
 	case "float32":
 		g.WriteString(fmt.Sprintf("res = lib.AppendFloat32(res, %s, -1)\n", access))
 	case "float64":

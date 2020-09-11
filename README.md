@@ -51,6 +51,28 @@ func main() {
 }
 ```
 
+### `small`
+If this option were set, it assumes the number is 0 or is between 0 and 999.
+It may panic when number over 999 or under 0 comes.
+
+```go
+type A struct {
+  n string `json:",small"`
+}
+
+func main() {
+  a := A {
+    n: 2
+  }
+  fmt.Println(string(a.NewJsonMarshal())) // {"name":2}
+
+  b := A {
+    n: 2000
+  }
+  fmt.Println(string(b.NewJsonMarshal())) // panic!
+}
+```
+
 ## options for array/map types
 ```go
 // value:",noescape"

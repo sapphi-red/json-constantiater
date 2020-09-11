@@ -11,8 +11,8 @@ type SmallPayload struct {
 	Uuid string `json:",noescape"`
 	Ip   string `json:",noescape"`
 	Ua   string
-	Tz   int
-	V    int
+	Tz   int `json:",small"`
+	V    int `json:",small"`
 }
 
 func (t *SmallPayload) MarshalJSONObject(enc *gojay.Encoder) {

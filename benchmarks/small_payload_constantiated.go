@@ -32,9 +32,9 @@ func (t *SmallPayload) AppendJsonString(res []byte) []byte {
 	res = append(res, "\",\"ua\":\""...)
 	res = lib.AppendByteWithEscape(res, t.Ua)
 	res = append(res, "\",\"tz\":"...)
-	res = lib.AppendInt(res, t.Tz)
+	res = lib.AppendSmallInt(res, int64(t.Tz))
 	res = append(res, ",\"v\":"...)
-	res = lib.AppendInt(res, t.V)
+	res = lib.AppendSmallInt(res, int64(t.V))
 	res = append(res, '}')
 	return res
 }

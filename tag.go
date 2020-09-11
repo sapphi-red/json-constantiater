@@ -34,6 +34,7 @@ type jsonTag struct {
 	noescape  bool
 	omitempty bool
 	omitnano  bool
+	small     bool
 }
 
 func parseJsonTag(tag string) (j jsonTag) {
@@ -60,6 +61,8 @@ func parseJsonTagInner(tag string) (j jsonTag) {
 				j.omitempty = true
 			case "omitnano":
 				j.omitnano = true
+			case "small":
+				j.small = true
 			}
 		}
 	}
