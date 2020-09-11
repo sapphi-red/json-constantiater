@@ -5,8 +5,14 @@ package benchmark
 import "github.com/sapphi-red/json-constantiater/lib"
 
 func (t *DSUser) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -27,8 +33,14 @@ func (t *DSUser) JsonLen() int {
 }
 
 func (t *DSTopic) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -53,8 +65,14 @@ func (t *DSTopic) JsonLen() int {
 }
 
 func (t *DSTopics) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -93,8 +111,14 @@ func (t *DSTopics) IsEmpty() bool {
 }
 
 func (t *DSTopicsList) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -119,8 +143,14 @@ func (t *DSTopicsList) JsonLen() int {
 }
 
 func (t *DSUsers) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -159,8 +189,14 @@ func (t *DSUsers) IsEmpty() bool {
 }
 
 func (t *LargePayload) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -193,8 +229,14 @@ func (t *LargePayload) JsonLen() int {
 }
 
 func (t *DSUserNonOptimized) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -215,8 +257,14 @@ func (t *DSUserNonOptimized) JsonLen() int {
 }
 
 func (t *DSTopicNonOptimized) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -241,8 +289,14 @@ func (t *DSTopicNonOptimized) JsonLen() int {
 }
 
 func (t *DSTopicsNonOptimized) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -281,8 +335,14 @@ func (t *DSTopicsNonOptimized) IsEmpty() bool {
 }
 
 func (t *DSTopicsListNonOptimized) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -307,8 +367,14 @@ func (t *DSTopicsListNonOptimized) JsonLen() int {
 }
 
 func (t *DSUsersNonOptimized) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -347,8 +413,14 @@ func (t *DSUsersNonOptimized) IsEmpty() bool {
 }
 
 func (t *LargePayloadNonOptimized) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit

@@ -5,8 +5,14 @@ package benchmark
 import "github.com/sapphi-red/json-constantiater/lib"
 
 func (t *CBAvatar) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -27,8 +33,14 @@ func (t *CBAvatar) JsonLen() int {
 }
 
 func (t *Avatars) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -67,8 +79,14 @@ func (t *Avatars) IsEmpty() bool {
 }
 
 func (t *CBGravatar) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -89,8 +107,14 @@ func (t *CBGravatar) JsonLen() int {
 }
 
 func (t *CBGithub) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -111,8 +135,14 @@ func (t *CBGithub) JsonLen() int {
 }
 
 func (t *CBName) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -133,8 +163,14 @@ func (t *CBName) JsonLen() int {
 }
 
 func (t *CBPerson) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -187,8 +223,14 @@ func (t *CBPerson) JsonLen() int {
 }
 
 func (t *MediumPayload) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -221,8 +263,14 @@ func (t *MediumPayload) JsonLen() int {
 }
 
 func (t *CBAvatarNonOptimized) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -243,8 +291,14 @@ func (t *CBAvatarNonOptimized) JsonLen() int {
 }
 
 func (t *AvatarsNonOptimized) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -283,8 +337,14 @@ func (t *AvatarsNonOptimized) IsEmpty() bool {
 }
 
 func (t *CBGravatarNonOptimized) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -305,8 +365,14 @@ func (t *CBGravatarNonOptimized) JsonLen() int {
 }
 
 func (t *CBGithubNonOptimized) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -327,8 +393,14 @@ func (t *CBGithubNonOptimized) JsonLen() int {
 }
 
 func (t *CBNameNonOptimized) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -349,8 +421,14 @@ func (t *CBNameNonOptimized) JsonLen() int {
 }
 
 func (t *CBPersonNonOptimized) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -403,8 +481,14 @@ func (t *CBPersonNonOptimized) JsonLen() int {
 }
 
 func (t *MediumPayloadNonOptimized) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit

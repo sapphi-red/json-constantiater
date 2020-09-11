@@ -5,8 +5,14 @@ package benchmark
 import "github.com/sapphi-red/json-constantiater/lib"
 
 func (t *SmallPayload) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit
@@ -59,8 +65,14 @@ func (t *SmallPayload) JsonLen() int {
 }
 
 func (t *SmallPayloadNonOptimized) NewJsonMarshal() []byte {
-	res := make([]byte, 0, t.JsonLen())
-	return t.AppendJsonString(res)
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	res := make([]byte, len(tmp))
+	copy(res, tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return res
 }
 
 //go:nosplit

@@ -12,7 +12,7 @@ func AppendByteWithEscape(dest []byte, src string) []byte {
 		switch sizeTable[srcb[i]] {
 		case 1:
 			dest = append(dest, src[start:i]...)
-			start = i+1
+			start = i + 1
 
 			switch srcb[i] {
 			case '"':
@@ -28,7 +28,7 @@ func AppendByteWithEscape(dest []byte, src string) []byte {
 			}
 		case 4:
 			dest = append(dest, src[start:i]...)
-			start = i+1
+			start = i + 1
 
 			dest = append(dest, 'u', '0', '0', hextable[srcb[i]>>4], hextable[srcb[i]&0x0f])
 		}
