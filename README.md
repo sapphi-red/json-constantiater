@@ -56,6 +56,30 @@ func main() {
 }
 ```
 
+### `omitnano`
+This options omit nanoseconds of time.Time.
+
+```go
+type A struct {
+  t string
+}
+type B struct {
+  t string `json:",omitnano"`
+}
+
+func main() {
+  a := A {
+    t: time.Now()
+  }
+  fmt.Println(string(a.NewJsonMarshal())) // {"t":"2020-09-11T20:51:06.5260311+09:00"}
+
+  b := B {
+    t: time.Now()
+  }
+  fmt.Println(string(b.NewJsonMarshal())) // {"t":"2020-09-11T20:51:06+09:00"}
+}
+```
+
 ## options for array/map types
 ```go
 // value:",noescape"

@@ -34,6 +34,7 @@ type jsonTag struct {
 	len       uint64
 	noescape  bool
 	omitempty bool
+	omitnano  bool
 }
 
 func parseJsonTag(tag string) (j jsonTag) {
@@ -58,6 +59,8 @@ func parseJsonTagInner(tag string) (j jsonTag) {
 				j.noescape = true
 			case "omitempty":
 				j.omitempty = true
+			case "omitnano":
+				j.omitnano = true
 			default:
 				if strings.HasPrefix(s, "len") {
 					l, err := strconv.ParseUint(s[3:], 10, 64)

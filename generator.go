@@ -221,10 +221,14 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 	case "float64":
 		g.WriteString(fmt.Sprintf("res = lib.AppendFloat64(res, %s, -1)\n", access))
 	case "time.Time":
-		if isPointerAndNotOmitEmpty {
-			g.WriteString(fmt.Sprintf("res = lib.AppendTime(res, %s)\n", access))
+		if !isPointerAndNotOmitEmpty {
+			access = "&" + access
+		}
+
+		if j.omitnano {
+			g.WriteString(fmt.Sprintf("res = lib.AppendTimeWithoutNano(res, %s)\n", access))
 		} else {
-			g.WriteString(fmt.Sprintf("res = lib.AppendTime(res, &%s)\n", access))
+			g.WriteString(fmt.Sprintf("res = lib.AppendTime(res, %s)\n", access))
 		}
 	default:
 		g.WriteString(fmt.Sprintf("res = %s.AppendJsonString(res)\n", strings.TrimPrefix(access, "*")))
