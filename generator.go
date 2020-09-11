@@ -220,6 +220,12 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 		g.WriteString(fmt.Sprintf("res = lib.AppendFloat32(res, %s, -1)\n", access))
 	case "float64":
 		g.WriteString(fmt.Sprintf("res = lib.AppendFloat64(res, %s, -1)\n", access))
+	case "time.Time":
+		if isPointerAndNotOmitEmpty {
+			g.WriteString(fmt.Sprintf("res = lib.AppendTime(res, %s)\n", access))
+		} else {
+			g.WriteString(fmt.Sprintf("res = lib.AppendTime(res, &%s)\n", access))
+		}
 	default:
 		g.WriteString(fmt.Sprintf("res = %s.AppendJsonString(res)\n", strings.TrimPrefix(access, "*")))
 	}
@@ -287,6 +293,8 @@ func (g *Generator) GenerateJsonLenSingle(access string, typeExpr ast.Expr, j js
 		}
 	case "bool":
 		g.WriteString(fmt.Sprintf("l += %d\n", getLenOfSimpleType(typName)))
+	case "time.Time":
+		g.WriteString("l += 32\n")
 	default:
 		if numReg.MatchString(typName) {
 			g.WriteString(fmt.Sprintf("l += %d\n", getLenOfSimpleType(typName)))
@@ -307,6 +315,8 @@ func (g *Generator) GenerateOmitEmptyIfNot(access string, typeExpr ast.Expr) {
 		g.WriteString(fmt.Sprintf("if %s != \"\" {\n", access))
 	case "bool":
 		g.WriteString(fmt.Sprintf("if %s {\n", access))
+	case "time.Time":
+		g.WriteString(fmt.Sprintf("if !%s.IsZero() {\n", access))
 	default:
 		if numReg.MatchString(typName) {
 			g.WriteString(fmt.Sprintf("if %s != 0 {\n", access))
