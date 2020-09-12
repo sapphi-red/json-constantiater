@@ -61,6 +61,9 @@ func (t *DSTopics) NewJsonMarshal() []byte {
 
 //go:nosplit
 func (t *DSTopics) AppendJsonString(res []byte) []byte {
+	if len(*t) <= 0 {
+		return append(res, `[]`...)
+	}
 	res = append(res, '[')
 
 	for _, e := range *t {
@@ -114,6 +117,9 @@ func (t *DSUsers) NewJsonMarshal() []byte {
 
 //go:nosplit
 func (t *DSUsers) AppendJsonString(res []byte) []byte {
+	if len(*t) <= 0 {
+		return append(res, `[]`...)
+	}
 	res = append(res, '[')
 
 	for _, e := range *t {
@@ -223,6 +229,9 @@ func (t *DSTopicsNonOptimized) NewJsonMarshal() []byte {
 
 //go:nosplit
 func (t *DSTopicsNonOptimized) AppendJsonString(res []byte) []byte {
+	if len(*t) <= 0 {
+		return append(res, `[]`...)
+	}
 	res = append(res, '[')
 
 	for _, e := range *t {
@@ -276,6 +285,9 @@ func (t *DSUsersNonOptimized) NewJsonMarshal() []byte {
 
 //go:nosplit
 func (t *DSUsersNonOptimized) AppendJsonString(res []byte) []byte {
+	if len(*t) <= 0 {
+		return append(res, `[]`...)
+	}
 	res = append(res, '[')
 
 	for _, e := range *t {

@@ -36,6 +36,9 @@ func (t *Avatars) NewJsonMarshal() []byte {
 
 //go:nosplit
 func (t *Avatars) AppendJsonString(res []byte) []byte {
+	if len(*t) <= 0 {
+		return append(res, `[]`...)
+	}
 	res = append(res, '[')
 
 	for _, e := range *t {
@@ -208,6 +211,9 @@ func (t *AvatarsNonOptimized) NewJsonMarshal() []byte {
 
 //go:nosplit
 func (t *AvatarsNonOptimized) AppendJsonString(res []byte) []byte {
+	if len(*t) <= 0 {
+		return append(res, `[]`...)
+	}
 	res = append(res, '[')
 
 	for _, e := range *t {
