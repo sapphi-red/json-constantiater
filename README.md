@@ -57,7 +57,7 @@ It will panic when the number is over 999 or under 0.
 
 ```go
 type A struct {
-  n string `json:",small"`
+  n int `json:",small"`
 }
 
 func main() {
