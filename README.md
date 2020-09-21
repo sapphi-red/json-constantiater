@@ -11,19 +11,19 @@ It may output invalid JSON when it is set to a field which might include those l
 
 ```go
 type A struct {
-  name string `json:"name,noescape"`
+	name string `json:"name,noescape"`
 }
 
 func main() {
-  a := A {
-    name: "john"
-  }
-  fmt.Println(string(a.NewJsonMarshal())) // {"name":"john"}
+	a := A {
+		name: "john"
+	}
+	fmt.Println(string(a.NewJsonMarshal())) // {"name":"john"}
 
-  b := A {
-    name: "jo\"hn"
-  }
-  fmt.Println(string(b.NewJsonMarshal())) // {"name":"jo"hn"}
+	b := A {
+		name: "jo\"hn"
+	}
+	fmt.Println(string(b.NewJsonMarshal())) // {"name":"jo"hn"}
 }
 ```
 
@@ -32,22 +32,22 @@ Set this option to omit nanoseconds of time.Time.
 
 ```go
 type A struct {
-  t string
+	t string
 }
 type B struct {
-  t string `json:",omitnano"`
+	t string `json:",omitnano"`
 }
 
 func main() {
-  a := A {
-    t: time.Now()
-  }
-  fmt.Println(string(a.NewJsonMarshal())) // {"t":"2020-09-11T20:51:06.5260311+09:00"}
+	a := A {
+		t: time.Now()
+	}
+	fmt.Println(string(a.NewJsonMarshal())) // {"t":"2020-09-11T20:51:06.5260311+09:00"}
 
-  b := B {
-    t: time.Now()
-  }
-  fmt.Println(string(b.NewJsonMarshal())) // {"t":"2020-09-11T20:51:06+09:00"}
+	b := B {
+		t: time.Now()
+	}
+	fmt.Println(string(b.NewJsonMarshal())) // {"t":"2020-09-11T20:51:06+09:00"}
 }
 ```
 
@@ -57,19 +57,19 @@ It will panic when the number is over 999 or under 0.
 
 ```go
 type A struct {
-  n int `json:",small"`
+	n int `json:",small"`
 }
 
 func main() {
-  a := A {
-    n: 2
-  }
-  fmt.Println(string(a.NewJsonMarshal())) // {"n":2}
+	a := A {
+		n: 2
+	}
+	fmt.Println(string(a.NewJsonMarshal())) // {"n":2}
 
-  b := A {
-    n: 2000
-  }
-  fmt.Println(string(b.NewJsonMarshal())) // panic!
+	b := A {
+		n: 2000
+	}
+	fmt.Println(string(b.NewJsonMarshal())) // panic!
 }
 ```
 
@@ -79,19 +79,19 @@ It will panic when the number is below 0.
 
 ```go
 type A struct {
-  n int `json:",unsigned"`
+	n int `json:",unsigned"`
 }
 
 func main() {
-  a := A {
-    n: 2
-  }
-  fmt.Println(string(a.NewJsonMarshal())) // {"n":2}
+	a := A {
+		n: 2
+	}
+	fmt.Println(string(a.NewJsonMarshal())) // {"n":2}
 
-  b := A {
-    n: -5
-  }
-  fmt.Println(string(b.NewJsonMarshal())) // panic!
+	b := A {
+		n: -5
+	}
+	fmt.Println(string(b.NewJsonMarshal())) // panic!
 }
 ```
 
@@ -102,20 +102,20 @@ This overrides `omitempty` option.
 
 ```go
 type A struct {
-  n *string `json:",nonnil"`
+	n *string `json:",nonnil"`
 }
 
 func main() {
-  str := "str"
-  a := A {
-    n: &str
-  }
-  fmt.Println(string(a.NewJsonMarshal())) // {"n":"str"}
+	str := "str"
+	a := A {
+		n: &str
+	}
+	fmt.Println(string(a.NewJsonMarshal())) // {"n":"str"}
 
-  b := A {
-    n: nil
-  }
-  fmt.Println(string(b.NewJsonMarshal())) // panic!
+	b := A {
+		n: nil
+	}
+	fmt.Println(string(b.NewJsonMarshal())) // panic!
 }
 ```
 
