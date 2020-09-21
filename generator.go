@@ -118,7 +118,7 @@ func (g *Generator) GenerateMapAppendJsonString(n string, s *ast.MapType, c comm
 }
 
 func (g *Generator) GenerateArrayAppendJsonString(n string, s *ast.ArrayType, c comment) {
-	g.WriteString(fmt.Sprintf("func (t *%s) AppendJsonString(res []byte) []byte {\n", n))
+	g.WriteLinef("func (t *%s) AppendJsonString(res []byte) []byte {", n)
 	g.WriteLine("if len(*t) <= 0 {")
 	g.WriteLine("return append(res, `[]`...)")
 	g.WriteLine("}")
@@ -153,7 +153,7 @@ func (g *Generator) GenerateAppendJsonStringField(f *ast.Field) {
 		g.GenerateOmitEmptyIfNot(access, f.Type)
 	}
 
-	g.WriteString(fmt.Sprintf("res = append(res, `\"%s\":`...)\n", escapeString(j.name)))
+	g.WriteLinef("res = append(res, `\"%s\":`...)", escapeString(j.name))
 	g.GenerateAppendJsonStringValue(access, f.Type, j)
 
 	g.WriteLine("res = append(res, ',')")
@@ -169,7 +169,7 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 
 	if isPointerAndNotOmitEmpty {
 		if !j.nonnil {
-			g.WriteString(fmt.Sprintf("if %s == nil {\n", access))
+			g.WriteLinef("if %s == nil {", access)
 			g.WriteLine("res = append(res, `null`...)")
 			g.WriteLine("} else {")
 		}
