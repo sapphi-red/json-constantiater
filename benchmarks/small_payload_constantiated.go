@@ -15,7 +15,6 @@ func (t *SmallPayload) NewJsonMarshal() []byte {
 	return res
 }
 
-//go:nosplit
 func (t *SmallPayload) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"st\":"...)
 	if t.St < lib.NSmalls {
@@ -74,7 +73,6 @@ func (t *SmallPayloadNonOptimized) NewJsonMarshal() []byte {
 	return res
 }
 
-//go:nosplit
 func (t *SmallPayloadNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"st\":"...)
 	if 0 <= t.St {

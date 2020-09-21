@@ -15,7 +15,6 @@ func (t *DSUser) NewJsonMarshal() []byte {
 	return res
 }
 
-//go:nosplit
 func (t *DSUser) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"username\":\""...)
 	res = append(res, t.Username...)
@@ -34,7 +33,6 @@ func (t *DSTopic) NewJsonMarshal() []byte {
 	return res
 }
 
-//go:nosplit
 func (t *DSTopic) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"id\":"...)
 	if t.Id < lib.NSmalls {
@@ -59,7 +57,6 @@ func (t *DSTopics) NewJsonMarshal() []byte {
 	return res
 }
 
-//go:nosplit
 func (t *DSTopics) AppendJsonString(res []byte) []byte {
 	if len(*t) <= 0 {
 		return append(res, `[]`...)
@@ -94,7 +91,6 @@ func (t *DSTopicsList) NewJsonMarshal() []byte {
 	return res
 }
 
-//go:nosplit
 func (t *DSTopicsList) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"topics\":"...)
 	res = t.Topics.AppendJsonString(res)
@@ -115,7 +111,6 @@ func (t *DSUsers) NewJsonMarshal() []byte {
 	return res
 }
 
-//go:nosplit
 func (t *DSUsers) AppendJsonString(res []byte) []byte {
 	if len(*t) <= 0 {
 		return append(res, `[]`...)
@@ -150,7 +145,6 @@ func (t *LargePayload) NewJsonMarshal() []byte {
 	return res
 }
 
-//go:nosplit
 func (t *LargePayload) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"users\":"...)
 	res = t.Users.AppendJsonString(res)
@@ -175,7 +169,6 @@ func (t *DSUserNonOptimized) NewJsonMarshal() []byte {
 	return res
 }
 
-//go:nosplit
 func (t *DSUserNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"username\":\""...)
 	res = lib.AppendByteWithEscape(res, t.Username)
@@ -194,7 +187,6 @@ func (t *DSTopicNonOptimized) NewJsonMarshal() []byte {
 	return res
 }
 
-//go:nosplit
 func (t *DSTopicNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"id\":"...)
 	if 0 <= t.Id {
@@ -227,7 +219,6 @@ func (t *DSTopicsNonOptimized) NewJsonMarshal() []byte {
 	return res
 }
 
-//go:nosplit
 func (t *DSTopicsNonOptimized) AppendJsonString(res []byte) []byte {
 	if len(*t) <= 0 {
 		return append(res, `[]`...)
@@ -262,7 +253,6 @@ func (t *DSTopicsListNonOptimized) NewJsonMarshal() []byte {
 	return res
 }
 
-//go:nosplit
 func (t *DSTopicsListNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"topics\":"...)
 	res = t.Topics.AppendJsonString(res)
@@ -283,7 +273,6 @@ func (t *DSUsersNonOptimized) NewJsonMarshal() []byte {
 	return res
 }
 
-//go:nosplit
 func (t *DSUsersNonOptimized) AppendJsonString(res []byte) []byte {
 	if len(*t) <= 0 {
 		return append(res, `[]`...)
@@ -318,7 +307,6 @@ func (t *LargePayloadNonOptimized) NewJsonMarshal() []byte {
 	return res
 }
 
-//go:nosplit
 func (t *LargePayloadNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"users\":"...)
 	res = t.Users.AppendJsonString(res)

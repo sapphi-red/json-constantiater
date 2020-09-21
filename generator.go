@@ -60,7 +60,6 @@ func (g *Generator) GenerateMapIsEmpty(n string) {
 }
 
 func (g *Generator) GenerateStructAppendJsonString(n string, s *ast.StructType) {
-	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) AppendJsonString(res []byte) []byte {\n", n))
 	if len(s.Fields.List) <= 0 {
 		g.WriteString("return append(res, `{}`...)\n")
@@ -77,7 +76,6 @@ func (g *Generator) GenerateStructAppendJsonString(n string, s *ast.StructType) 
 }
 
 func (g *Generator) GenerateMapAppendJsonString(n string, s *ast.MapType, c comment) {
-	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) AppendJsonString(res []byte) []byte {\n", n))
 	g.WriteString("if len(*t) <= 0 {\n")
 	g.WriteString("return append(res, `[]`...)\n")
@@ -98,7 +96,6 @@ func (g *Generator) GenerateMapAppendJsonString(n string, s *ast.MapType, c comm
 }
 
 func (g *Generator) GenerateArrayAppendJsonString(n string, s *ast.ArrayType, c comment) {
-	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) AppendJsonString(res []byte) []byte {\n", n))
 	g.WriteString("if len(*t) <= 0 {\n")
 	g.WriteString("return append(res, `[]`...)\n")
