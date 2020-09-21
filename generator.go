@@ -83,6 +83,7 @@ func (g *Generator) GenerateStructAppendJsonString(n string, s *ast.StructType) 
 		g.WriteLine("return append(res, `{}`...)")
 		g.WriteLine("}")
 		g.WriteBR()
+		return
 	}
 
 	g.WriteLine("res = append(res, '{')")
