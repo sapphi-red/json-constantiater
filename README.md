@@ -88,7 +88,7 @@ type M map[string]string
 |Name in graph|Description|
 |---|---|
 |EncodingJson|[doc](https://golang.org/pkg/encoding/json/)|
-|JsonIterFastest|[GitHub](https://github.com/json-iterator/go) ConfigCompatibleWithStandardLibrary|
+|JsonIterFastest|[GitHub](https://github.com/json-iterator/go) ConfigFastest|
 |Jettison|[GitHub](https://github.com/wI2L/jettison) NoHTMLEscaping,NoUTF8Coercion,UnsortedMap,NoCompact|
 |EasyJson|[GitHub](https://github.com/mailru/easyjson)|
 |GoJay|[GitHub](https://github.com/francoispqt/gojay)|
