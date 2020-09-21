@@ -17,7 +17,7 @@ func parseComments(g *ast.CommentGroup) (c comment) {
 	}
 
 	for _, comment := range g.List {
-		t := comment.Text
+		t := strings.TrimPrefix(comment.Text, "//")
 		if strings.HasPrefix(t, "key:") {
 			tag, err := strconv.Unquote(strings.TrimPrefix(t, "key:"))
 			if err != nil {
