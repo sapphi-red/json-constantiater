@@ -1,8 +1,12 @@
 # json-constantiater
 
+## Usage
 ```shell
-$ go run constantiater.go -input p.go -output p_json.go
+$ go get -u github.com/sapphi-red/json-constantiater
+$ json-constantiater -input p.go -output p_json.go
 ```
+
+When `output` argument is not passed, is will behave as if `-output {{input name}}_constantiated.go` is passed.
 
 ## Extended options
 ### `noescape`
