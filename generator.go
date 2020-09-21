@@ -48,14 +48,14 @@ func (g *Generator) GenerateNewJsonMarshal(n string) {
 func (g *Generator) GenerateArrayIsEmpty(n string) {
 	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) IsEmpty() bool {\n", n))
-	g.WriteString("return len(*t) == 0")
+	g.WriteString("return len(*t) == 0\n")
 	g.WriteString("}\n\n")
 }
 
 func (g *Generator) GenerateMapIsEmpty(n string) {
 	g.GenerateNosplit()
 	g.WriteString(fmt.Sprintf("func (t *%s) IsEmpty() bool {\n", n))
-	g.WriteString("return len(*t) == 0")
+	g.WriteString("return len(*t) == 0\n")
 	g.WriteString("}\n\n")
 }
 
