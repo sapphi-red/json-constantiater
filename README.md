@@ -28,7 +28,7 @@ func main() {
 ```
 
 ### `omitnano`
-This options omit nanoseconds of time.Time.
+Set this option to omit nanoseconds of time.Time.
 
 ```go
 type A struct {
@@ -53,7 +53,7 @@ func main() {
 
 ### `small`
 If this option were set, it assumes the number is 0 or is between 0 and 999.
-It may panic when number over 999 or under 0 comes.
+It will panic when the number is over 999 or under 0.
 
 ```go
 type A struct {
@@ -64,7 +64,7 @@ func main() {
   a := A {
     n: 2
   }
-  fmt.Println(string(a.NewJsonMarshal())) // {"name":2}
+  fmt.Println(string(a.NewJsonMarshal())) // {"n":2}
 
   b := A {
     n: 2000
