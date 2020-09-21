@@ -73,6 +73,28 @@ func main() {
 }
 ```
 
+### `unsigned`
+If this option were set, it assumes the number is 0 or over 0.
+It will panic when the number is below 0.
+
+```go
+type A struct {
+  n int `json:",unsigned"`
+}
+
+func main() {
+  a := A {
+    n: 2
+  }
+  fmt.Println(string(a.NewJsonMarshal())) // {"n":2}
+
+  b := A {
+    n: -5
+  }
+  fmt.Println(string(b.NewJsonMarshal())) // panic!
+}
+```
+
 ### `nonnil`
 If this option were set, it assumes the pointer is never nil.
 It will panic when the value is nil.
