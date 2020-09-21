@@ -288,20 +288,20 @@ func (g *Generator) GenerateOmitEmptyIfNot(access string, typeExpr ast.Expr) {
 	typName := types.ExprString(typeExpr)
 	switch typName {
 	case "string":
-		g.WriteLinef("if %s != \"\" {\n", access)
+		g.WriteLinef("if %s != \"\" {", access)
 	case "bool":
-		g.WriteLinef("if %s {\n", access)
+		g.WriteLinef("if %s {", access)
 	case "time.Time":
-		g.WriteLinef("if !%s.IsZero() {\n", access)
+		g.WriteLinef("if !%s.IsZero() {", access)
 	default:
 		if numReg.MatchString(typName) {
-			g.WriteLinef("if %s != 0 {\n", access)
+			g.WriteLinef("if %s != 0 {", access)
 		} else if strings.HasPrefix(typName, "[]") || strings.HasPrefix(typName, "map") {
-			g.WriteLinef("if len(%s) > 0 {\n", access)
+			g.WriteLinef("if len(%s) > 0 {", access)
 		} else if strings.HasPrefix(typName, "*") {
-			g.WriteLinef("if %s != nil {\n", access)
+			g.WriteLinef("if %s != nil {", access)
 		} else {
-			g.WriteLinef("if !%s.IsEmpty() {\n", access)
+			g.WriteLinef("if !%s.IsEmpty() {", access)
 		}
 	}
 }
