@@ -64,11 +64,7 @@ func (t *DSTopics) AppendJsonString(res []byte) []byte {
 	res = append(res, '[')
 
 	for _, e := range *t {
-		if e == nil {
-			res = append(res, `null`...)
-		} else {
-			res = e.AppendJsonString(res)
-		}
+		res = e.AppendJsonString(res)
 		res = append(res, ',')
 	}
 	res[len(res)-1] = ']'
@@ -118,11 +114,7 @@ func (t *DSUsers) AppendJsonString(res []byte) []byte {
 	res = append(res, '[')
 
 	for _, e := range *t {
-		if e == nil {
-			res = append(res, `null`...)
-		} else {
-			res = e.AppendJsonString(res)
-		}
+		res = e.AppendJsonString(res)
 		res = append(res, ',')
 	}
 	res[len(res)-1] = ']'
@@ -149,11 +141,7 @@ func (t *LargePayload) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"users\":"...)
 	res = t.Users.AppendJsonString(res)
 	res = append(res, ",\"topics\":"...)
-	if t.Topics == nil {
-		res = append(res, `null`...)
-	} else {
-		res = t.Topics.AppendJsonString(res)
-	}
+	res = t.Topics.AppendJsonString(res)
 	res = append(res, '}')
 	return res
 }

@@ -30,6 +30,7 @@ func (m *DSTopic) IsNil() bool {
 	return m == nil
 }
 
+//value:",nonnil"
 type DSTopics []*DSTopic
 
 func (m *DSTopics) MarshalJSONArray(enc *gojay.Encoder) {
@@ -54,6 +55,7 @@ func (m *DSTopicsList) IsNil() bool {
 	return m == nil
 }
 
+//value:",nonnil"
 type DSUsers []*DSUser
 
 func (m *DSUsers) MarshalJSONArray(enc *gojay.Encoder) {
@@ -68,7 +70,7 @@ func (m *DSUsers) IsNil() bool {
 //easyjson:json
 type LargePayload struct {
 	Users  DSUsers
-	Topics *DSTopicsList
+	Topics *DSTopicsList `json:",nonnil"`
 }
 
 func (m *LargePayload) MarshalJSONObject(enc *gojay.Encoder) {

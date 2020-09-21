@@ -40,11 +40,7 @@ func (t *Avatars) AppendJsonString(res []byte) []byte {
 	res = append(res, '[')
 
 	for _, e := range *t {
-		if e == nil {
-			res = append(res, `null`...)
-		} else {
-			res = e.AppendJsonString(res)
-		}
+		res = e.AppendJsonString(res)
 		res = append(res, ',')
 	}
 	res[len(res)-1] = ']'
@@ -127,23 +123,11 @@ func (t *CBPerson) NewJsonMarshal() []byte {
 
 func (t *CBPerson) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"name\":"...)
-	if t.Name == nil {
-		res = append(res, `null`...)
-	} else {
-		res = t.Name.AppendJsonString(res)
-	}
+	res = t.Name.AppendJsonString(res)
 	res = append(res, ",\"github\":"...)
-	if t.Github == nil {
-		res = append(res, `null`...)
-	} else {
-		res = t.Github.AppendJsonString(res)
-	}
+	res = t.Github.AppendJsonString(res)
 	res = append(res, ",\"gravatar\":"...)
-	if t.Gravatar == nil {
-		res = append(res, `null`...)
-	} else {
-		res = t.Gravatar.AppendJsonString(res)
-	}
+	res = t.Gravatar.AppendJsonString(res)
 	res = append(res, '}')
 	return res
 }
@@ -161,11 +145,7 @@ func (t *MediumPayload) NewJsonMarshal() []byte {
 
 func (t *MediumPayload) AppendJsonString(res []byte) []byte {
 	res = append(res, "{\"person\":"...)
-	if t.Person == nil {
-		res = append(res, `null`...)
-	} else {
-		res = t.Person.AppendJsonString(res)
-	}
+	res = t.Person.AppendJsonString(res)
 	res = append(res, ",\"company\":\""...)
 	res = lib.AppendByteWithEscape(res, t.Company)
 	res = append(res, "\"}"...)

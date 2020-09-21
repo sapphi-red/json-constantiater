@@ -14,6 +14,7 @@ func (m *CBAvatar) IsNil() bool {
 	return m == nil
 }
 
+//value:",nonnil"
 type Avatars []*CBAvatar
 
 func (m *Avatars) MarshalJSONArray(enc *gojay.Encoder) {
@@ -62,9 +63,9 @@ func (m *CBName) IsNil() bool {
 }
 
 type CBPerson struct {
-	Name     *CBName   `json:"name"`
-	Github   *CBGithub `json:"github"`
-	Gravatar *CBGravatar
+	Name     *CBName   `json:"name,nonnil"`
+	Github   *CBGithub `json:"github,nonnil"`
+	Gravatar *CBGravatar `json:",nonnil"`
 }
 
 func (m *CBPerson) MarshalJSONObject(enc *gojay.Encoder) {
@@ -79,7 +80,7 @@ func (m *CBPerson) IsNil() bool {
 
 //easyjson:json
 type MediumPayload struct {
-	Person  *CBPerson `json:"person"`
+	Person  *CBPerson `json:"person,nonnil"`
 	Company string    `json:"company"`
 }
 

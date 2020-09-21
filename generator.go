@@ -149,7 +149,7 @@ func (g *Generator) GenerateAppendJsonStringField(f *ast.Field) {
 	access := "t." + fd.fieldName
 	j := fd.tag
 
-	if j.omitempty {
+	if j.omitempty && !j.nonnil {
 		g.GenerateOmitEmptyIfNot(access, f.Type)
 	}
 
@@ -158,19 +158,21 @@ func (g *Generator) GenerateAppendJsonStringField(f *ast.Field) {
 
 	g.WriteLine("res = append(res, ',')")
 
-	if j.omitempty {
+	if j.omitempty && !j.nonnil {
 		g.WriteLine("}")
 	}
 }
 
 func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Expr, j jsonTag) {
 	typName := types.ExprString(typeExpr)
-	isPointerAndNotOmitEmpty := !j.omitempty && strings.HasPrefix(typName, "*")
+	isPointerAndNotOmitEmpty := strings.HasPrefix(typName, "*")
 
 	if isPointerAndNotOmitEmpty {
-		g.WriteString(fmt.Sprintf("if %s == nil {\n", access))
-		g.WriteLine("res = append(res, `null`...)")
-		g.WriteLine("} else {")
+		if !j.nonnil {
+			g.WriteString(fmt.Sprintf("if %s == nil {\n", access))
+			g.WriteLine("res = append(res, `null`...)")
+			g.WriteLine("} else {")
+		}
 
 		typName = strings.TrimPrefix(typName, "*")
 		access = "*" + access
@@ -225,7 +227,7 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 		g.WriteLinef("res = %s.AppendJsonString(res)", strings.TrimPrefix(access, "*"))
 	}
 
-	if isPointerAndNotOmitEmpty {
+	if isPointerAndNotOmitEmpty && !j.nonnil {
 		g.WriteLine("}")
 	}
 }

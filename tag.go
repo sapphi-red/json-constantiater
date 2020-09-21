@@ -36,6 +36,7 @@ type jsonTag struct {
 	omitnano  bool
 	small     bool
 	unsigned  bool
+	nonnil    bool
 }
 
 func parseJsonTag(tag string) (j jsonTag) {
@@ -66,6 +67,8 @@ func parseJsonTagInner(tag string) (j jsonTag) {
 				j.small = true
 			case "unsigned":
 				j.unsigned = true
+			case "nonnil":
+				j.nonnil = true
 			}
 		}
 	}

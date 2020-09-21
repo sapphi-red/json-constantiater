@@ -73,6 +73,30 @@ func main() {
 }
 ```
 
+### `nonnil`
+If this option were set, it assumes the pointer is never nil.
+It will panic when the value is nil.
+This overrides `omitempty` option.
+
+```go
+type A struct {
+  n *string `json:",nonnil"`
+}
+
+func main() {
+  str := "str"
+  a := A {
+    n: &str
+  }
+  fmt.Println(string(a.NewJsonMarshal())) // {"n":"str"}
+
+  b := A {
+    n: nil
+  }
+  fmt.Println(string(b.NewJsonMarshal())) // panic!
+}
+```
+
 ## options for array/map types
 ```go
 // value:",noescape"
