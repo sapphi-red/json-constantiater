@@ -7,6 +7,7 @@ import (
 	"go/parser"
 	"go/token"
 	"log"
+	"strings"
 
 	"strconv"
 
@@ -149,9 +150,10 @@ func appendComposedStmt(list []ast.Stmt, lits []ast.BasicLit) []ast.Stmt {
 	var newLit *ast.BasicLit
 	var ellipsis token.Pos
 	if len(newStr) > 1 {
+		quoted := quoteWithBackquoteIfPossible(newStr)
 		newLit = &ast.BasicLit{
 			Kind:  token.STRING,
-			Value: strconv.Quote(newStr),
+			Value: quoted,
 		}
 		ellipsis = 1
 	} else {
@@ -186,9 +188,10 @@ func createReplacedStmt(baseLit *ast.BasicLit, lastLit *ast.BasicLit) *ast.Assig
 	var newLit *ast.BasicLit
 	var ellipsis token.Pos
 	if len(newBase) > 1 {
+		quoted := quoteWithBackquoteIfPossible(newBase)
 		newLit = &ast.BasicLit{
 			Kind:  token.STRING,
-			Value: strconv.Quote(newBase),
+			Value: quoted,
 		}
 		ellipsis = 1
 	} else {
@@ -311,4 +314,11 @@ func ifIsArgStringOrChar(args []ast.Expr) *ast.BasicLit {
 		return litArg
 	}
 	return nil
+}
+
+func quoteWithBackquoteIfPossible(str string) string {
+	if strings.Contains(str, "`") {
+		return strconv.Quote(str)
+	}
+	return "`" + str +  "`"
 }

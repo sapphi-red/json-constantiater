@@ -16,9 +16,9 @@ func (t *DSUser) NewJsonMarshal() []byte {
 }
 
 func (t *DSUser) AppendJsonString(res []byte) []byte {
-	res = append(res, "{\"username\":\""...)
+	res = append(res, `{"username":"`...)
 	res = append(res, t.Username...)
-	res = append(res, "\"}"...)
+	res = append(res, `"}`...)
 	return res
 }
 
@@ -34,15 +34,15 @@ func (t *DSTopic) NewJsonMarshal() []byte {
 }
 
 func (t *DSTopic) AppendJsonString(res []byte) []byte {
-	res = append(res, "{\"id\":"...)
+	res = append(res, `{"id":`...)
 	if t.Id < lib.NSmalls {
 		res = lib.AppendSmallInt(res, t.Id)
 	} else {
 		res = lib.AppendInt(res, t.Id)
 	}
-	res = append(res, ",\"slug\":\""...)
+	res = append(res, `,"slug":"`...)
 	res = append(res, t.Slug...)
-	res = append(res, "\"}"...)
+	res = append(res, `"}`...)
 	return res
 }
 
@@ -88,11 +88,11 @@ func (t *DSTopicsList) NewJsonMarshal() []byte {
 }
 
 func (t *DSTopicsList) AppendJsonString(res []byte) []byte {
-	res = append(res, "{\"topics\":"...)
+	res = append(res, `{"topics":`...)
 	res = t.Topics.AppendJsonString(res)
-	res = append(res, ",\"more_topics_url\":\""...)
+	res = append(res, `,"more_topics_url":"`...)
 	res = append(res, t.MoreTopicsUrl...)
-	res = append(res, "\"}"...)
+	res = append(res, `"}`...)
 	return res
 }
 
@@ -138,9 +138,9 @@ func (t *LargePayload) NewJsonMarshal() []byte {
 }
 
 func (t *LargePayload) AppendJsonString(res []byte) []byte {
-	res = append(res, "{\"users\":"...)
+	res = append(res, `{"users":`...)
 	res = t.Users.AppendJsonString(res)
-	res = append(res, ",\"topics\":"...)
+	res = append(res, `,"topics":`...)
 	res = t.Topics.AppendJsonString(res)
 	res = append(res, '}')
 	return res
@@ -158,9 +158,9 @@ func (t *DSUserNonOptimized) NewJsonMarshal() []byte {
 }
 
 func (t *DSUserNonOptimized) AppendJsonString(res []byte) []byte {
-	res = append(res, "{\"username\":\""...)
+	res = append(res, `{"username":"`...)
 	res = lib.AppendByteWithEscape(res, t.Username)
-	res = append(res, "\"}"...)
+	res = append(res, `"}`...)
 	return res
 }
 
@@ -176,7 +176,7 @@ func (t *DSTopicNonOptimized) NewJsonMarshal() []byte {
 }
 
 func (t *DSTopicNonOptimized) AppendJsonString(res []byte) []byte {
-	res = append(res, "{\"id\":"...)
+	res = append(res, `{"id":`...)
 	if 0 <= t.Id {
 		if t.Id < lib.NSmalls {
 			res = lib.AppendSmallInt(res, t.Id)
@@ -190,9 +190,9 @@ func (t *DSTopicNonOptimized) AppendJsonString(res []byte) []byte {
 			res = lib.AppendInt(res, t.Id)
 		}
 	}
-	res = append(res, ",\"slug\":\""...)
+	res = append(res, `,"slug":"`...)
 	res = lib.AppendByteWithEscape(res, t.Slug)
-	res = append(res, "\"}"...)
+	res = append(res, `"}`...)
 	return res
 }
 
@@ -242,11 +242,11 @@ func (t *DSTopicsListNonOptimized) NewJsonMarshal() []byte {
 }
 
 func (t *DSTopicsListNonOptimized) AppendJsonString(res []byte) []byte {
-	res = append(res, "{\"topics\":"...)
+	res = append(res, `{"topics":`...)
 	res = t.Topics.AppendJsonString(res)
-	res = append(res, ",\"more_topics_url\":\""...)
+	res = append(res, `,"more_topics_url":"`...)
 	res = lib.AppendByteWithEscape(res, t.MoreTopicsUrl)
-	res = append(res, "\"}"...)
+	res = append(res, `"}`...)
 	return res
 }
 
@@ -296,9 +296,9 @@ func (t *LargePayloadNonOptimized) NewJsonMarshal() []byte {
 }
 
 func (t *LargePayloadNonOptimized) AppendJsonString(res []byte) []byte {
-	res = append(res, "{\"users\":"...)
+	res = append(res, `{"users":`...)
 	res = t.Users.AppendJsonString(res)
-	res = append(res, ",\"topics\":"...)
+	res = append(res, `,"topics":`...)
 	if t.Topics == nil {
 		res = append(res, `null`...)
 	} else {
