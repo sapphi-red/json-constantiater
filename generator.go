@@ -40,6 +40,7 @@ func (g *Generator) DeclarePkgNameAndImports(name string) {
 	g.WriteLinef("package %s", name)
 	g.WriteBR()
 	g.WriteLine(`import "github.com/sapphi-red/json-constantiater/lib"`)
+	g.WriteLine(`import "io"`)
 	g.WriteBR()
 }
 
@@ -57,6 +58,19 @@ func (g *Generator) GenerateNewJsonMarshal(n string) {
 	g.WriteLine("*tmpPtr = tmp")
 	g.WriteLine("lib.PutToPool(tmpPtr)")
 	g.WriteLine("return res")
+	g.WriteLine("}")
+	g.WriteBR()
+}
+
+func (g *Generator) GenerateWriteJsonString(n string) {
+	g.WriteLinef("func (t *%s) WriteJsonString(w io.Writer) error {", n)
+	g.WriteLine("tmpPtr := lib.GetFromPool()")
+	g.WriteLine("tmp := *tmpPtr")
+	g.WriteLine("tmp = t.AppendJsonString(tmp)")
+	g.WriteLine("_, err := w.Write(tmp)")
+	g.WriteLine("*tmpPtr = tmp")
+	g.WriteLine("lib.PutToPool(tmpPtr)")
+	g.WriteLine("return err")
 	g.WriteLine("}")
 	g.WriteBR()
 }

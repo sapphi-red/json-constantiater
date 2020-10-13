@@ -43,14 +43,17 @@ func main() {
 		switch typ := typDef.Type.(type) {
 		case *ast.StructType:
 			g.GenerateNewJsonMarshal(name)
+			g.GenerateWriteJsonString(name)
 			g.GenerateStructAppendJsonString(name, typ)
 		case *ast.ArrayType:
 			g.GenerateNewJsonMarshal(name)
+			g.GenerateWriteJsonString(name)
 			g.GenerateArrayAppendJsonString(name, typ, comment)
 			g.GenerateArrayIsEmpty(name)
 		case *ast.MapType:
 			if types.ExprString(typ.Key) == "string" {
 				g.GenerateNewJsonMarshal(name)
+				g.GenerateWriteJsonString(name)
 				g.GenerateMapAppendJsonString(name, typ, comment)
 				g.GenerateMapIsEmpty(name)
 			}

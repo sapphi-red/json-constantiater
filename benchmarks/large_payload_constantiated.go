@@ -3,6 +3,7 @@
 package benchmark
 
 import "github.com/sapphi-red/json-constantiater/lib"
+import "io"
 
 func (t *DSUser) NewJsonMarshal() []byte {
 	tmpPtr := lib.GetFromPool()
@@ -13,6 +14,16 @@ func (t *DSUser) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *DSUser) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *DSUser) AppendJsonString(res []byte) []byte {
@@ -31,6 +42,16 @@ func (t *DSTopic) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *DSTopic) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *DSTopic) AppendJsonString(res []byte) []byte {
@@ -55,6 +76,16 @@ func (t *DSTopics) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *DSTopics) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *DSTopics) AppendJsonString(res []byte) []byte {
@@ -87,6 +118,16 @@ func (t *DSTopicsList) NewJsonMarshal() []byte {
 	return res
 }
 
+func (t *DSTopicsList) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
+}
+
 func (t *DSTopicsList) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"topics":`...)
 	res = t.Topics.AppendJsonString(res)
@@ -105,6 +146,16 @@ func (t *DSUsers) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *DSUsers) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *DSUsers) AppendJsonString(res []byte) []byte {
@@ -137,6 +188,16 @@ func (t *LargePayload) NewJsonMarshal() []byte {
 	return res
 }
 
+func (t *LargePayload) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
+}
+
 func (t *LargePayload) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"users":`...)
 	res = t.Users.AppendJsonString(res)
@@ -157,6 +218,16 @@ func (t *DSUserNonOptimized) NewJsonMarshal() []byte {
 	return res
 }
 
+func (t *DSUserNonOptimized) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
+}
+
 func (t *DSUserNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"username":"`...)
 	res = lib.AppendByteWithEscape(res, t.Username)
@@ -173,6 +244,16 @@ func (t *DSTopicNonOptimized) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *DSTopicNonOptimized) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *DSTopicNonOptimized) AppendJsonString(res []byte) []byte {
@@ -205,6 +286,16 @@ func (t *DSTopicsNonOptimized) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *DSTopicsNonOptimized) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *DSTopicsNonOptimized) AppendJsonString(res []byte) []byte {
@@ -241,6 +332,16 @@ func (t *DSTopicsListNonOptimized) NewJsonMarshal() []byte {
 	return res
 }
 
+func (t *DSTopicsListNonOptimized) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
+}
+
 func (t *DSTopicsListNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"topics":`...)
 	res = t.Topics.AppendJsonString(res)
@@ -259,6 +360,16 @@ func (t *DSUsersNonOptimized) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *DSUsersNonOptimized) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *DSUsersNonOptimized) AppendJsonString(res []byte) []byte {
@@ -293,6 +404,16 @@ func (t *LargePayloadNonOptimized) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *LargePayloadNonOptimized) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *LargePayloadNonOptimized) AppendJsonString(res []byte) []byte {

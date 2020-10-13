@@ -3,6 +3,7 @@
 package benchmark
 
 import "github.com/sapphi-red/json-constantiater/lib"
+import "io"
 
 func (t *SmallPayload) NewJsonMarshal() []byte {
 	tmpPtr := lib.GetFromPool()
@@ -13,6 +14,16 @@ func (t *SmallPayload) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *SmallPayload) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *SmallPayload) AppendJsonString(res []byte) []byte {
@@ -71,6 +82,16 @@ func (t *SmallPayloadNonOptimized) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *SmallPayloadNonOptimized) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *SmallPayloadNonOptimized) AppendJsonString(res []byte) []byte {

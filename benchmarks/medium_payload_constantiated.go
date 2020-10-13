@@ -3,6 +3,7 @@
 package benchmark
 
 import "github.com/sapphi-red/json-constantiater/lib"
+import "io"
 
 func (t *CBAvatar) NewJsonMarshal() []byte {
 	tmpPtr := lib.GetFromPool()
@@ -13,6 +14,16 @@ func (t *CBAvatar) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *CBAvatar) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *CBAvatar) AppendJsonString(res []byte) []byte {
@@ -31,6 +42,16 @@ func (t *Avatars) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *Avatars) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *Avatars) AppendJsonString(res []byte) []byte {
@@ -63,6 +84,16 @@ func (t *CBGravatar) NewJsonMarshal() []byte {
 	return res
 }
 
+func (t *CBGravatar) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
+}
+
 func (t *CBGravatar) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"avatars":`...)
 	res = t.Avatars.AppendJsonString(res)
@@ -79,6 +110,16 @@ func (t *CBGithub) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *CBGithub) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *CBGithub) AppendJsonString(res []byte) []byte {
@@ -103,6 +144,16 @@ func (t *CBName) NewJsonMarshal() []byte {
 	return res
 }
 
+func (t *CBName) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
+}
+
 func (t *CBName) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"fullName":"`...)
 	res = append(res, t.FullName...)
@@ -119,6 +170,16 @@ func (t *CBPerson) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *CBPerson) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *CBPerson) AppendJsonString(res []byte) []byte {
@@ -143,6 +204,16 @@ func (t *MediumPayload) NewJsonMarshal() []byte {
 	return res
 }
 
+func (t *MediumPayload) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
+}
+
 func (t *MediumPayload) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"person":`...)
 	res = t.Person.AppendJsonString(res)
@@ -163,6 +234,16 @@ func (t *CBAvatarNonOptimized) NewJsonMarshal() []byte {
 	return res
 }
 
+func (t *CBAvatarNonOptimized) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
+}
+
 func (t *CBAvatarNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"url":"`...)
 	res = lib.AppendByteWithEscape(res, t.Url)
@@ -179,6 +260,16 @@ func (t *AvatarsNonOptimized) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *AvatarsNonOptimized) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *AvatarsNonOptimized) AppendJsonString(res []byte) []byte {
@@ -215,6 +306,16 @@ func (t *CBGravatarNonOptimized) NewJsonMarshal() []byte {
 	return res
 }
 
+func (t *CBGravatarNonOptimized) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
+}
+
 func (t *CBGravatarNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"avatars":`...)
 	res = t.Avatars.AppendJsonString(res)
@@ -231,6 +332,16 @@ func (t *CBGithubNonOptimized) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *CBGithubNonOptimized) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *CBGithubNonOptimized) AppendJsonString(res []byte) []byte {
@@ -263,6 +374,16 @@ func (t *CBNameNonOptimized) NewJsonMarshal() []byte {
 	return res
 }
 
+func (t *CBNameNonOptimized) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
+}
+
 func (t *CBNameNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"fullName":"`...)
 	res = lib.AppendByteWithEscape(res, t.FullName)
@@ -279,6 +400,16 @@ func (t *CBPersonNonOptimized) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *CBPersonNonOptimized) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *CBPersonNonOptimized) AppendJsonString(res []byte) []byte {
@@ -313,6 +444,16 @@ func (t *MediumPayloadNonOptimized) NewJsonMarshal() []byte {
 	*tmpPtr = tmp
 	lib.PutToPool(tmpPtr)
 	return res
+}
+
+func (t *MediumPayloadNonOptimized) WriteJsonString(w io.Writer) error {
+	tmpPtr := lib.GetFromPool()
+	tmp := *tmpPtr
+	tmp = t.AppendJsonString(tmp)
+	_, err := w.Write(tmp)
+	*tmpPtr = tmp
+	lib.PutToPool(tmpPtr)
+	return err
 }
 
 func (t *MediumPayloadNonOptimized) AppendJsonString(res []byte) []byte {
