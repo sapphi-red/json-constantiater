@@ -57,9 +57,9 @@ func (t *DSTopic) WriteJsonString(w io.Writer) error {
 func (t *DSTopic) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"id":`...)
 	if t.Id < lib.NSmalls {
-		res = lib.AppendSmallInt(res, t.Id)
+		res = lib.AppendSmallInt(res, &t.Id)
 	} else {
-		res = lib.AppendInt(res, t.Id)
+		res = lib.AppendInt(res, &t.Id)
 	}
 	res = append(res, `,"slug":"`...)
 	res = append(res, t.Slug...)
@@ -230,7 +230,7 @@ func (t *DSUserNonOptimized) WriteJsonString(w io.Writer) error {
 
 func (t *DSUserNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"username":"`...)
-	res = lib.AppendByteWithEscape(res, t.Username)
+	res = lib.AppendByteWithEscape(res, &t.Username)
 	res = append(res, `"}`...)
 	return res
 }
@@ -260,19 +260,19 @@ func (t *DSTopicNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"id":`...)
 	if 0 <= t.Id {
 		if t.Id < lib.NSmalls {
-			res = lib.AppendSmallInt(res, t.Id)
+			res = lib.AppendSmallInt(res, &t.Id)
 		} else {
-			res = lib.AppendInt(res, t.Id)
+			res = lib.AppendInt(res, &t.Id)
 		}
 	} else {
 		if -lib.NSmalls < t.Id {
-			res = lib.AppendSmallMinusInt(res, t.Id)
+			res = lib.AppendSmallMinusInt(res, &t.Id)
 		} else {
-			res = lib.AppendInt(res, t.Id)
+			res = lib.AppendInt(res, &t.Id)
 		}
 	}
 	res = append(res, `,"slug":"`...)
-	res = lib.AppendByteWithEscape(res, t.Slug)
+	res = lib.AppendByteWithEscape(res, &t.Slug)
 	res = append(res, `"}`...)
 	return res
 }
@@ -346,7 +346,7 @@ func (t *DSTopicsListNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"topics":`...)
 	res = t.Topics.AppendJsonString(res)
 	res = append(res, `,"more_topics_url":"`...)
-	res = lib.AppendByteWithEscape(res, t.MoreTopicsUrl)
+	res = lib.AppendByteWithEscape(res, &t.MoreTopicsUrl)
 	res = append(res, `"}`...)
 	return res
 }

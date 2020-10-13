@@ -3,8 +3,8 @@ package lib
 import "unsafe"
 
 //go:nosplit
-func AppendByteWithEscape(dest []byte, src string) []byte {
-	srcb := *(*[]byte)(unsafe.Pointer(&src))
+func AppendByteWithEscape(dest []byte, src *string) []byte {
+	srcb := *(*[]byte)(unsafe.Pointer(src))
 
 	start := 0
 	// avoid `i, c :=` for not copying `c`
@@ -34,7 +34,7 @@ func AppendByteWithEscape(dest []byte, src string) []byte {
 		}
 	}
 
-	if start < len(src) {
+	if start < len(*src) {
 		dest = append(dest, srcb[start:]...)
 	}
 	return dest

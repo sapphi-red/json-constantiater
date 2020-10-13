@@ -125,9 +125,9 @@ func (t *CBGithub) WriteJsonString(w io.Writer) error {
 func (t *CBGithub) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"followers":`...)
 	if t.Followers < lib.NSmalls {
-		res = lib.AppendSmallInt(res, t.Followers)
+		res = lib.AppendSmallInt(res, &t.Followers)
 	} else {
-		res = lib.AppendInt(res, t.Followers)
+		res = lib.AppendInt(res, &t.Followers)
 	}
 	res = append(res, '}')
 	return res
@@ -218,7 +218,7 @@ func (t *MediumPayload) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"person":`...)
 	res = t.Person.AppendJsonString(res)
 	res = append(res, `,"company":"`...)
-	res = lib.AppendByteWithEscape(res, t.Company)
+	res = lib.AppendByteWithEscape(res, &t.Company)
 	res = append(res, `"}`...)
 	return res
 }
@@ -246,7 +246,7 @@ func (t *CBAvatarNonOptimized) WriteJsonString(w io.Writer) error {
 
 func (t *CBAvatarNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"url":"`...)
-	res = lib.AppendByteWithEscape(res, t.Url)
+	res = lib.AppendByteWithEscape(res, &t.Url)
 	res = append(res, `"}`...)
 	return res
 }
@@ -348,15 +348,15 @@ func (t *CBGithubNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"followers":`...)
 	if 0 <= t.Followers {
 		if t.Followers < lib.NSmalls {
-			res = lib.AppendSmallInt(res, t.Followers)
+			res = lib.AppendSmallInt(res, &t.Followers)
 		} else {
-			res = lib.AppendInt(res, t.Followers)
+			res = lib.AppendInt(res, &t.Followers)
 		}
 	} else {
 		if -lib.NSmalls < t.Followers {
-			res = lib.AppendSmallMinusInt(res, t.Followers)
+			res = lib.AppendSmallMinusInt(res, &t.Followers)
 		} else {
-			res = lib.AppendInt(res, t.Followers)
+			res = lib.AppendInt(res, &t.Followers)
 		}
 	}
 	res = append(res, '}')
@@ -386,7 +386,7 @@ func (t *CBNameNonOptimized) WriteJsonString(w io.Writer) error {
 
 func (t *CBNameNonOptimized) AppendJsonString(res []byte) []byte {
 	res = append(res, `{"fullName":"`...)
-	res = lib.AppendByteWithEscape(res, t.FullName)
+	res = lib.AppendByteWithEscape(res, &t.FullName)
 	res = append(res, `"}`...)
 	return res
 }
@@ -464,7 +464,7 @@ func (t *MediumPayloadNonOptimized) AppendJsonString(res []byte) []byte {
 		res = t.Person.AppendJsonString(res)
 	}
 	res = append(res, `,"company":"`...)
-	res = lib.AppendByteWithEscape(res, t.Company)
+	res = lib.AppendByteWithEscape(res, &t.Company)
 	res = append(res, `"}`...)
 	return res
 }

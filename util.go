@@ -18,6 +18,6 @@ func ToSnakeCase(str string) string {
 
 func escapeString(str string) string {
 	dest := make([]byte, 0, len(str))
-	dest = lib.AppendByteWithEscape(dest, str)
+	dest = lib.AppendByteWithEscape(dest, &str)
 	return string(dest)
 }

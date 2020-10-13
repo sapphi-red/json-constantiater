@@ -6,8 +6,8 @@ import (
 )
 
 //go:nosplit
-func AppendFloat32(dest []byte, src float32, prec int) []byte {
-	src64 := float64(src)
+func AppendFloat32(dest []byte, src *float32, prec int) []byte {
+	src64 := float64(*src)
 	abs := math.Abs(src64)
 	fmt := byte('f')
 	// Note: Must use float32 comparisons for underlying float32 value to get precise cutoffs right.
@@ -21,8 +21,8 @@ func AppendFloat32(dest []byte, src float32, prec int) []byte {
 }
 
 //go:nosplit
-func AppendFloat64(dest []byte, src float64, prec int) []byte {
-	abs := math.Abs(src)
+func AppendFloat64(dest []byte, src *float64, prec int) []byte {
+	abs := math.Abs(*src)
 	fmt := byte('f')
 	// Note: Must use float32 comparisons for underlying float32 value to get precise cutoffs right.
 	if abs != 0 {
@@ -30,5 +30,5 @@ func AppendFloat64(dest []byte, src float64, prec int) []byte {
 			fmt = 'e'
 		}
 	}
-	return strconv.AppendFloat(dest, src, fmt, prec, 64)
+	return strconv.AppendFloat(dest, *src, fmt, prec, 64)
 }

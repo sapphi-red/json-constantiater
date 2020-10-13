@@ -177,6 +177,13 @@ func (g *Generator) GenerateAppendJsonStringField(f *ast.Field) {
 	}
 }
 
+func getPointerAccess(access string) string {
+	if strings.HasPrefix(access, "*") {
+		return strings.TrimPrefix(access, "*")
+	}
+	return "&" + access
+}
+
 func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Expr, j jsonTag) {
 	typName := types.ExprString(typeExpr)
 	isPointerAndNotOmitEmpty := strings.HasPrefix(typName, "*")
@@ -198,15 +205,15 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 		if j.noescape {
 			g.WriteLinef("res = append(res, %s...)", access)
 		} else {
-			g.WriteLinef("res = lib.AppendByteWithEscape(res, %s)", access)
+			g.WriteLinef("res = lib.AppendByteWithEscape(res, %s)", getPointerAccess(access))
 		}
 		g.WriteLine("res = append(res, '\"')")
 	case "bool":
-		g.WriteLinef("res = lib.AppendBool(res, %s)", access)
+		g.WriteLinef("res = lib.AppendBool(res, %s)", getPointerAccess(access))
 	case "int":
 		g.GenerateAppendInlinedInt("", access, j)
 	case "int8":
-		g.WriteLinef("res = lib.AppendSmallInt8(res, %s)", access)
+		g.WriteLinef("res = lib.AppendSmallInt8(res, %s)", getPointerAccess(access))
 	case "int16":
 		g.GenerateAppendInlinedInt("16", access, j)
 	case "int32":
@@ -216,7 +223,7 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 	case "uint":
 		g.GenerateAppendInlinedUint("Uint", access, j)
 	case "uint8":
-		g.WriteLinef("res = lib.AppendSmallUint8(res, %s)", access)
+		g.WriteLinef("res = lib.AppendSmallUint8(res, %s)", getPointerAccess(access))
 	case "uint16":
 		g.GenerateAppendInlinedUint("16", access, j)
 	case "uint32":
@@ -224,18 +231,14 @@ func (g *Generator) GenerateAppendJsonStringValue(access string, typeExpr ast.Ex
 	case "uint64":
 		g.GenerateAppendInlinedUint("64", access, j)
 	case "float32":
-		g.WriteLinef("res = lib.AppendFloat32(res, %s, -1)", access)
+		g.WriteLinef("res = lib.AppendFloat32(res, %s, -1)", getPointerAccess(access))
 	case "float64":
-		g.WriteLinef("res = lib.AppendFloat64(res, %s, -1)", access)
+		g.WriteLinef("res = lib.AppendFloat64(res, %s, -1)", getPointerAccess(access))
 	case "time.Time":
-		if !isPointerAndNotOmitEmpty {
-			access = "&" + access
-		}
-
 		if j.omitnano {
-			g.WriteLinef("res = lib.AppendTimeWithoutNano(res, %s)", access)
+			g.WriteLinef("res = lib.AppendTimeWithoutNano(res, %s)", getPointerAccess(access))
 		} else {
-			g.WriteLinef("res = lib.AppendTime(res, %s)", access)
+			g.WriteLinef("res = lib.AppendTime(res, %s)", getPointerAccess(access))
 		}
 	default:
 		g.WriteLinef("res = %s.AppendJsonString(res)", strings.TrimPrefix(access, "*"))
@@ -251,10 +254,10 @@ func (g *Generator) GenerateAppendInlinedInt(size, access string, j jsonTag) {
 		if !j.unsigned {
 			g.WriteLinef("if 0 <= %s {", access)
 		}
-		g.WriteLinef("res = lib.AppendSmallInt%s(res, %s)", size, access)
+		g.WriteLinef("res = lib.AppendSmallInt%s(res, %s)", size, getPointerAccess(access))
 		if !j.unsigned {
 			g.WriteLine("} else {")
-			g.WriteLinef("res = lib.AppendSmallMinusInt%s(res, %s)", size, access)
+			g.WriteLinef("res = lib.AppendSmallMinusInt%s(res, %s)", size, getPointerAccess(access))
 			g.WriteLine("}")
 		}
 		return
@@ -265,18 +268,18 @@ func (g *Generator) GenerateAppendInlinedInt(size, access string, j jsonTag) {
 	}
 
 	g.WriteLinef("if %s < lib.NSmalls {", access)
-	g.WriteLinef("res = lib.AppendSmallInt%s(res, %s)", size, access)
+	g.WriteLinef("res = lib.AppendSmallInt%s(res, %s)", size, getPointerAccess(access))
 	g.WriteLine("} else {")
-	g.WriteLinef("res = lib.AppendInt%s(res, %s)", size, access)
+	g.WriteLinef("res = lib.AppendInt%s(res, %s)", size, getPointerAccess(access))
 	g.WriteLine("}")
 
 	if !j.unsigned {
 		g.WriteLine("} else {")
 
 		g.WriteLinef("if -lib.NSmalls < %s {", access)
-		g.WriteLinef("res = lib.AppendSmallMinusInt%s(res, %s)", size, access)
+		g.WriteLinef("res = lib.AppendSmallMinusInt%s(res, %s)", size, getPointerAccess(access))
 		g.WriteLine("} else {")
-		g.WriteLinef("res = lib.AppendInt%s(res, %s)", size, access)
+		g.WriteLinef("res = lib.AppendInt%s(res, %s)", size, getPointerAccess(access))
 		g.WriteLine("}")
 
 		g.WriteLine("}")
@@ -285,14 +288,14 @@ func (g *Generator) GenerateAppendInlinedInt(size, access string, j jsonTag) {
 
 func (g *Generator) GenerateAppendInlinedUint(size, access string, j jsonTag) {
 	if j.small {
-		g.WriteLinef("res = lib.AppendSmallUint%s(res, %s)", size, access)
+		g.WriteLinef("res = lib.AppendSmallUint%s(res, %s)", size, getPointerAccess(access))
 		return
 	}
 
 	g.WriteLinef("if %s < lib.NSmalls {", access)
-	g.WriteLinef("res = lib.AppendSmallUint%s(res, %s)", size, access)
+	g.WriteLinef("res = lib.AppendSmallUint%s(res, %s)", size, getPointerAccess(access))
 	g.WriteLine("} else {")
-	g.WriteLinef("res = lib.AppendUint%s(res, %s)", size, access)
+	g.WriteLinef("res = lib.AppendUint%s(res, %s)", size, getPointerAccess(access))
 	g.WriteLine("}")
 }
 
