@@ -28,7 +28,7 @@ func easyjson21677a1cDecodeGithubComSapphiRedJsonConstantiaterBenchmarks(in *jle
 	}
 	in.Delim('{')
 	for !in.IsDelim('}') {
-		key := in.UnsafeString()
+		key := in.UnsafeFieldName(false)
 		in.WantColon()
 		if in.IsNull() {
 			in.Skip()
@@ -70,92 +70,47 @@ func easyjson21677a1cEncodeGithubComSapphiRedJsonConstantiaterBenchmarks(out *jw
 	_ = first
 	{
 		const prefix string = ",\"St\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix[1:])
 		out.Int(int(in.St))
 	}
 	{
 		const prefix string = ",\"Sid\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.Int(int(in.Sid))
 	}
 	{
 		const prefix string = ",\"Tt\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.String(string(in.Tt))
 	}
 	{
 		const prefix string = ",\"Gr\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.Int(int(in.Gr))
 	}
 	{
 		const prefix string = ",\"Uuid\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.String(string(in.Uuid))
 	}
 	{
 		const prefix string = ",\"Ip\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.String(string(in.Ip))
 	}
 	{
 		const prefix string = ",\"Ua\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.String(string(in.Ua))
 	}
 	{
 		const prefix string = ",\"Tz\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.Int(int(in.Tz))
 	}
 	{
 		const prefix string = ",\"V\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.Int(int(in.V))
 	}
 	out.RawByte('}')

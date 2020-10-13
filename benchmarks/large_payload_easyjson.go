@@ -28,7 +28,7 @@ func easyjsonD519278DecodeGithubComSapphiRedJsonConstantiaterBenchmarks(in *jlex
 	}
 	in.Delim('{')
 	for !in.IsDelim('}') {
-		key := in.UnsafeString()
+		key := in.UnsafeFieldName(false)
 		in.WantColon()
 		if in.IsNull() {
 			in.Skip()
@@ -93,12 +93,7 @@ func easyjsonD519278EncodeGithubComSapphiRedJsonConstantiaterBenchmarks(out *jwr
 	_ = first
 	{
 		const prefix string = ",\"Users\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix[1:])
 		if in.Users == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
 			out.RawString("null")
 		} else {
@@ -118,12 +113,7 @@ func easyjsonD519278EncodeGithubComSapphiRedJsonConstantiaterBenchmarks(out *jwr
 	}
 	{
 		const prefix string = ",\"Topics\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		if in.Topics == nil {
 			out.RawString("null")
 		} else {
@@ -153,7 +143,7 @@ func easyjsonD519278DecodeGithubComSapphiRedJsonConstantiaterBenchmarks2(in *jle
 	}
 	in.Delim('{')
 	for !in.IsDelim('}') {
-		key := in.UnsafeString()
+		key := in.UnsafeFieldName(false)
 		in.WantColon()
 		if in.IsNull() {
 			in.Skip()
@@ -210,12 +200,7 @@ func easyjsonD519278EncodeGithubComSapphiRedJsonConstantiaterBenchmarks2(out *jw
 	_ = first
 	{
 		const prefix string = ",\"Topics\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix[1:])
 		if in.Topics == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
 			out.RawString("null")
 		} else {
@@ -235,12 +220,7 @@ func easyjsonD519278EncodeGithubComSapphiRedJsonConstantiaterBenchmarks2(out *jw
 	}
 	{
 		const prefix string = ",\"MoreTopicsUrl\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.String(string(in.MoreTopicsUrl))
 	}
 	out.RawByte('}')
@@ -256,7 +236,7 @@ func easyjsonD519278DecodeGithubComSapphiRedJsonConstantiaterBenchmarks3(in *jle
 	}
 	in.Delim('{')
 	for !in.IsDelim('}') {
-		key := in.UnsafeString()
+		key := in.UnsafeFieldName(false)
 		in.WantColon()
 		if in.IsNull() {
 			in.Skip()
@@ -284,22 +264,12 @@ func easyjsonD519278EncodeGithubComSapphiRedJsonConstantiaterBenchmarks3(out *jw
 	_ = first
 	{
 		const prefix string = ",\"Id\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix[1:])
 		out.Int(int(in.Id))
 	}
 	{
 		const prefix string = ",\"Slug\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.String(string(in.Slug))
 	}
 	out.RawByte('}')
@@ -315,7 +285,7 @@ func easyjsonD519278DecodeGithubComSapphiRedJsonConstantiaterBenchmarks1(in *jle
 	}
 	in.Delim('{')
 	for !in.IsDelim('}') {
-		key := in.UnsafeString()
+		key := in.UnsafeFieldName(false)
 		in.WantColon()
 		if in.IsNull() {
 			in.Skip()
@@ -341,12 +311,7 @@ func easyjsonD519278EncodeGithubComSapphiRedJsonConstantiaterBenchmarks1(out *jw
 	_ = first
 	{
 		const prefix string = ",\"Username\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix[1:])
 		out.String(string(in.Username))
 	}
 	out.RawByte('}')
