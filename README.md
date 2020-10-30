@@ -148,10 +148,10 @@ type M map[string]string
 |Constantiate|This one. Using Extended options.|
 
 ### SmallStruct
-![Small](https://user-images.githubusercontent.com/49056869/95884083-a813a200-0db6-11eb-8be8-018d0f0e8a48.png)
+![Small](https://user-images.githubusercontent.com/49056869/97721180-77e53680-1b0c-11eb-8d47-35fdd73d33dd.png)
 
 ### MediumStruct
-![Medium](https://user-images.githubusercontent.com/49056869/95884087-a944cf00-0db6-11eb-96a0-0b89ddfb019b.png)
+![Medium](https://user-images.githubusercontent.com/49056869/97721178-77e53680-1b0c-11eb-8f78-9f3c92ecde3b.png)
 
 ### LargeStruct
-![Large](https://user-images.githubusercontent.com/49056869/95884086-a944cf00-0db6-11eb-8c41-7558a683ec9f.png)
+![Large](https://user-images.githubusercontent.com/49056869/97721175-76b40980-1b0c-11eb-82b3-8e63ffb6ce19.png)
