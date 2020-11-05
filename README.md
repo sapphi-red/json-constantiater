@@ -6,7 +6,7 @@ $ go get -u github.com/sapphi-red/json-constantiater
 $ json-constantiater -input p.go -output p_json.go
 ```
 
-When `output` argument is not passed, is will behave as if `-output {{input name}}_constantiated.go` is passed.
+When `output` argument is not passed, it will behave as if `-output {{input name}}_constantiated.go` is passed.
 
 ## Extended options
 ### `noescape`
